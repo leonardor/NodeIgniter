@@ -26,7 +26,7 @@ Coding Philosophy
 -----------------
 
 Basically I simply converted the CodeIgniter's base and core libraries from PHP to Javascript, adjusting 
-the prototyping where it needed to and keeping the CdeIgniter's folder structure so anyone who knows how 
+the prototyping where it needed to and keeping the CodeIgniter's folder structure so anyone who knows how 
 to work with CodeIgniter surely will do just fine with NodeIgniter. The use of PHP-like functions was a 
 good idea for me at that time because I only wanted to see if the pure Javascript conversion is working 
 as expected. Now it seems that it does, still I know that it can be done better.
