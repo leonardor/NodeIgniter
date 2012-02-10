@@ -35,7 +35,7 @@ What you can do with it
 -----------------------
 
 You would simply run the command "node index.js" and go to http://localhost:3000. It will automatically 
-load the default controller which is located in application/controllers/index.js. I made three method 
+load the default controller which is located in application/controllers/index.js. I made three methods 
 available for navigation, one is the default index method, the second is a custom route and the third is 
 a method that accepts parameters.
 
