@@ -27,14 +27,14 @@ var constants = {
 	|
 	*/
 
-	'FOPEN_READ': 'rb',
-	'FOPEN_READ_WRITE': 'r+b',
-	'FOPEN_WRITE_CREATE_DESTRUCTIVE': 'wb', // truncates existing file data, use with care
-	'FOPEN_READ_WRITE_CREATE_DESTRUCTIVE': 'w+b', // truncates existing file data, use with care
-	'FOPEN_WRITE_CREATE': 'ab',
-	'FOPEN_READ_WRITE_CREATE': 'a+b',
-	'FOPEN_WRITE_CREATE_STRICT': 'xb',
-	'FOPEN_READ_WRITE_CREATE_STRICT': 'x+b'
+	'FOPEN_READ': 'r',
+	'FOPEN_READ_WRITE': 'r',
+	'FOPEN_WRITE_CREATE_DESTRUCTIVE': 'w', // truncates existing file data, use with care
+	'FOPEN_READ_WRITE_CREATE_DESTRUCTIVE': 'w', // truncates existing file data, use with care
+	'FOPEN_WRITE_CREATE': 'a',
+	'FOPEN_READ_WRITE_CREATE': 'a',
+	'FOPEN_WRITE_CREATE_STRICT': 'x',
+	'FOPEN_READ_WRITE_CREATE_STRICT': 'x'
 };
 
 module.exports = constants;
