@@ -50,7 +50,7 @@ var database = {
 			'db_debug': true,
 			'cache_on': false,
 			'cachedir': '',
-			'char_set': 'utf8'
+			'char_set': 'utf8',
 			'dbcollat': 'utf8_general_ci'
 		}
 	}

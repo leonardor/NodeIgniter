@@ -32,6 +32,12 @@ dir
 models
 dir
 
+cache
+dir
+
+logs
+dir
+
 config
 dir
 
