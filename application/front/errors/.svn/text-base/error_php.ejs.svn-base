@@ -1,0 +1,6 @@
+ERROR PHP:
+url: <?= PHP.$_SERVER['REQUEST_URI']?>
+<?= $severity ?>
+<?= $message ?>
+<?= $filepath ?>
+<?= $line?>
