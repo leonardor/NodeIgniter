@@ -1,0 +1,129 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<style type="text/css">
+	body {background-color: #ffffff; color: #000000;}
+	body, td, th, h1, h2 {font-family: sans-serif;}
+	pre {margin: 0px; font-family: monospace;}
+	a:link {color: #000099; text-decoration: none; background-color: #ffffff;}
+	a:hover {text-decoration: underline;}
+	table {border-collapse: collapse;}
+	.center {text-align: center;}
+	.center table { margin-left: auto; margin-right: auto; text-align: left;}
+	.center th { text-align: center !important; }
+	td, th { border: 1px solid #000000; font-size: 75%; vertical-align: baseline;}
+	h1 {font-size: 150%;}
+	h2 {font-size: 125%;}
+	.p {text-align: left;}
+	.e {background-color: #ccccff; font-weight: bold; color: #000000;}
+	.h {background-color: #9999cc; font-weight: bold; color: #000000;}
+	.v {background-color: #cccccc; color: #000000;}
+	.vr {background-color: #cccccc; text-align: right; color: #000000;}
+	img {float: right; border: 0px;}
+	hr {width: 600px; background-color: #cccccc; border: 0px; height: 1px; color: #000000;}
+</style>
+<title>phpinfo()</title></head>
+<body>
+
+<div class="center">
+
+<hr />
+<h1>Configuration</h1>
+<? for (i in modules) { ?>
+<? var module = modules[i]; ?>
+<h2><?= i ?></h2>
+<table border="0" cellpadding="3" width="600">
+<? for (m in module) { ?>
+	<tr class="h">
+	<th colspan="2"><?= m ?></td>
+	</tr>
+	<? var submodule = module[m]; ?>
+
+	<? for(s in submodule) { ?>
+		<? var keys = PHP.array_keys(submodule[s]) ?>
+		<? if(typeof(submodule[s]) == 'object') { ?>
+			<tr>
+			<td class="e" colspan="2"><?= s ?></td>
+			</tr>
+			<tr>
+			<? for(k in keys) { ?>
+				<? if(typeof(submodule[s][keys[k]]) == 'object') { ?>
+					<tr>
+					<td colspan="2" class="e"><?= keys[k] ?></td>
+					<tr>
+					<tr>
+					<? for(o in submodule[s][keys[k]]) { ?>
+						<tr>
+						<td class="v"><?= o ?></td>
+						<td class="v"><?= submodule[s][keys[k]][o] ?></td>
+						</tr>
+					<? } ?>
+					</tr>
+				<? } else { ?>
+					<tr>
+					<td class="v"><?= keys[k] ?></td>
+					<td class="v"><?= submodule[s][keys[k]] ?></td>
+					</tr>
+				<? } ?>
+			<? } ?>
+			</tr>
+		<? } else { ?>
+			<tr>
+			<td class="e"><?= s ?></td>
+			<td class="v"><?= submodule[s] ?></td>
+			</tr>
+		<? } ?>
+	<? } ?>
+<? } ?>
+</table>
+<br />
+<? } ?>
+<h2>Environment</h2>
+<table border="0" cellpadding="3" width="600">
+<tr class="h">
+<th>Variable</th>
+<th>Value</th>
+</tr>
+<? for(i in env) { ?>
+<tr>
+<td class="e"><?= i ?></td>
+<td class="v"><?= env[i] ?></td>
+</tr>
+<? } ?>
+</table>
+<br />
+<h2>PHP Variables</h2>
+<table border="0" cellpadding="3" width="600">
+<tr class="h">
+<th>Variable</th>
+<th>Value</th>
+</tr>
+<? for(i in server) { ?>
+	<tr>
+	<td class="e">_SERVER["<?= i ?>"]</td>
+	<td class="v"><?= server[i] ?></td>
+	</tr>
+<? } ?>
+<? for(i in env) { ?>
+	<tr>
+	<td class="e">_ENV["<?= i ?>"]</td>
+	<td class="v"><?= env[i] ?></td>
+	</tr>
+<? } ?>
+<? for(i in cookies) { ?>
+	<tr>
+	<td class="e">_COOKIES["<?= i ?>"]</td>
+	<td class="v"><?= cookies[i] ?></td>
+	</tr>
+<? } ?>
+<? for(i in globals) { ?>
+	<tr>
+	<td class="e">_GLOBALS["<?= i ?>"]</td>
+	<td class="v"><?= globals[i] ?></td>
+	</tr>
+<? } ?>
+</table>
+
+</div>
+</body>
+</html>

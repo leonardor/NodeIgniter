@@ -1,8 +1,8 @@
 var cms = {
-    'site_name': 'bubu',
-    'meta_title': 'Titlu meta',
-    'meta_description': 'Descriere meta',
-    'meta_keywords': 'Keywords meta'
+    'site_name': 'NodeIgniter',
+    'meta_title': 'Meta Title',
+    'meta_description': 'Meta Description',
+    'meta_keywords': 'Meta Keywords'
 };
 
 module.exports = cms;
