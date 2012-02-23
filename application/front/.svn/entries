@@ -26,6 +26,12 @@ leonardo
 
 a4b13bc7-8a40-0410-a248-d7564483f918
 
+helpers
+dir
+
+models
+dir
+
 config
 dir
 
@@ -53,6 +59,9 @@ svn://dev/nodejs/branches/framework/1.0/application/controllers
 28656
 
 errors
+dir
+
+libraries
 dir
 
 views

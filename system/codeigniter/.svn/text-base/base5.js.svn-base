@@ -31,24 +31,18 @@
  */
 
 	var CI_Base = new function CI_Base() {
-		var $instance;
-
 		CI_Base.__construct = function() {
-			this.$instance = this;
+			CI_Base.instance = this;
 		}
 	
 		CI_Base.get_instance = function() {
-			return this.$instance;
+			return CI_Base.instance;
 		}
 		
 		return CI_Base;
 	}
 	
-	function get_instance() {
-		return CI_Base.get_instance();
-	}
-
-	//CI_Base.prototype.constructor = CI_Base.__construct();
+	CI_Base.instance = null;
 	
 	module.exports = CI_Base;
 })();

@@ -26,7 +26,7 @@
 	 * @category	Loader
 	 * @link		http://codeigniter.com/user_guide/libraries/loader.html
 	 */
-	var CI_Loader = new function CI_Loader() {
+	function CI_Loader() {
 	
 		// All these are set automatically. Don't mess with them.
 		var $_ci_ob_level;
@@ -41,6 +41,9 @@
 		var $_ci_plugins		= [];
 		var $_ci_varmap			= {'unit_test': 'unit', 'user_agent': 'agent'};
 		
+		var _helpers = {};
+		var _plugins = {};
+		
 		/**
 		 * Constructor
 		 *
@@ -48,11 +51,11 @@
 		 *
 		 * @access	public
 		 */
-		CI_Loader.__construct = function() {	
+		this.__construct = function() {	
 			$_ci_is_php5 = (Math.floor(PHP.phpversion()) >= 5) ? true : false;
 			$_ci_view_path = PHP.constant('APPPATH') + 'views/';
 			$_ci_ob_level  = PHP.ob_get_level();
-					
+
 			CI_Common.log_message('debug', "Loader Class Initialized");
 		}
 		
@@ -70,7 +73,11 @@
 		 * @param	string	an optional object name
 		 * @return	void
 		 */	
-		CI_Loader.library = function($library, $params, $object_name) {
+		this.library = function($library, $params, $object_name) {
+			$library = $library || '';
+			$params = $params || null;
+			$object_name = $object_name || null;
+			
 			if ($library == '') {
 				return false;
 			}
@@ -103,7 +110,10 @@
 		 * @param	bool	database connection
 		 * @return	void
 		 */	
-		CI_Loader.model = function($model, $name, $db_conn) {		
+		this.model = function($model, $name, $db_conn) {	
+			$name = $name || '';
+			$db_conn = $db_conn || false;
+
 			if (PHP.is_array($model)) {
 				for($babe in $model) {
 					this.model($babe);	
@@ -118,12 +128,12 @@
 		
 			// Is the model in a sub-folder? If so, parse out the filename and path.
 			if (PHP.strpos($model, '/') == false) {
-				$path = '';
+				var $path = '';
 			} else {
-				$x = PHP.explode('/', $model);
+				var $x = PHP.explode('/', $model);
 				$model = PHP.end($x);			
 				PHP.unset($x[PHP.count($x)-1]);
-				$path = PHP.implode('/', $x) + '/';
+				var $path = PHP.implode('/', $x) + '/';
 			}
 		
 			if ($name == '') {
@@ -134,18 +144,25 @@
 				return;
 			}
 			
-			if (PHP.isset(CI.$name)) {
+			if (CI[$name]) {
 				CI_Common.show_error('The model name you are loading is the name of a resource that is already being used: ' + $name);
+				return;
 			}
 		
 			$model = PHP.strtolower($model);
 			
-			if (!PHP.file_exists(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constants('EXT')))
-			{
-				CI_Common.show_error('Unable to locate the model you have specified: ' + $model);
+			if (!global.CI_Model) {
+				CI_Model = CI_Common.load_class('Model');
+			}
+	
+			if (PHP.file_exists(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constant('EXT'))) {
+				var $c = require(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constant('EXT'));
+			} else {
+				CI_Common.show_error('Unable to locate the model you have specified: ' + $model, 500);
+				return;
 			}
 					
-			if ($db_conn !== false && !this.class_exists('CI_DB')) {
+			if ($db_conn !== false && !global.CI_DB) {
 				if ($db_conn === true) {
 					$db_conn = '';
 				}
@@ -153,15 +170,6 @@
 				CI.load.database($db_conn, false, true);
 			}
 		
-			if (!this.class_exists('Model')) {
-				CI_Common.load_class('Model', false);
-				CI_Model.__construct();
-			}
-	
-			var $c = require(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constant('EXT'));
-	
-			$model = PHP.ucfirst($model);
-					
 			CI[$name] = $c;
 			CI[$name]._assign_libraries();
 			
@@ -179,15 +187,19 @@
 		 * @param	bool	whether to enable active record (this allows us to override the config setting)
 		 * @return	object
 		 */	
-		CI_Loader.database = function($params, $return, $active_record) {
+		this.database = function($params, $return, $active_record) {
+			$params = $params || '';
+			$return = $return || false;
+			$active_record = $active_record || false;
+			
 			// Grab the super object
 
 			// Do we even need to load the database class?
-			if (this.class_exists('CI_DB') && $return == false && $active_record == false && PHP.isset($CI.db) && PHP.is_object($CI.db)) {
+			if (global.CI_DB && $return == false && $active_record == false && PHP.isset(CI.db) && PHP.is_object(CI.db)) {
 				return false;
 			}	
 		
-			require(PHP.constant.BASEPATH + 'database/DB' + PHP.constant.EXT);
+			DB = require(PHP.constant('BASEPATH') + 'database/DB' + PHP.constant('EXT'));
 	
 			if ($return === true) {
 				return DB($params, $active_record);
@@ -212,8 +224,8 @@
 		 * @access	public
 		 * @return	string		
 		 */		
-		CI_Loader.dbutil = function() {
-			if (!this.class_exists('CI_DB')) {
+		this.dbutil = function() {
+			if (!global.CI_DB) {
 				this.database();
 			}
 			
@@ -221,13 +233,10 @@
 			// this use is deprecated and strongly discouraged
 			CI.load.dbforge();
 		
-			require(PHP.constant('BASEPATH') + 'database/DB_utility' + PHP.constant('EXT'));
+			var CI_DB_Utility = require(PHP.constant('BASEPATH') + 'database/DB_utility' + PHP.constant('EXT'));
+			var CI_DB_Driver = require(PHP.constant('BASEPATH') + 'database/drivers/' + CI.db.dbdriver + '/' + CI.db.dbdriver + '_utility' + PHP.constant('EXT'));
 			
-			require(PHP.constant('BASEPATH') + 'database/drivers/' + CI.db.dbdriver + '/' + CI.db.dbdriver + '_utility' + PHP.constant.EXT);
-			
-			$class = 'CI_DB_' + CI.db.dbdriver + '_utility';
-	
-			CI.dbutil = this.instantiate_class(new $class());
+			CI.dbutil = CI_DB_Driver;
 	
 			CI.load.$_ci_assign_to_models();
 		}
@@ -240,17 +249,16 @@
 		 * @access	public
 		 * @return	string		
 		 */		
-		CI_Loader.dbforge = function() {
-			if (!this.class_exists('CI_DB')) {
+		this.dbforge = function() {
+			if (!global.CI_DB) {
 				this.database();
 			}
 			
-			require(PHP.constant.BASEPATH + 'database/DB_forge' + PHP.constant.EXT);
+			var CI_DB_Forge = require(PHP.constant.BASEPATH + 'database/DB_forge' + PHP.constant('EXT'));
 			
-			require(PHP.constant.BASEPATH + 'database/drivers/' + CI.db.dbdriver + '/' + CI.db.dbdriver + '_forge' + PHP.constant.EXT);
-			$class = 'CI_DB_' + $CI.db.dbdriver + '_forge';
-	
-			CI.dbforge = new $class();
+			var CI_DB_Driver_Forge = require(PHP.constant.BASEPATH + 'database/drivers/' + CI.db.dbdriver + '/' + CI.db.dbdriver + '_forge' + PHP.constant('EXT'));
+			
+			CI.dbforge = CI_DB_Driver_Forge;
 			
 			CI.load.$_ci_assign_to_models();
 		}
@@ -274,7 +282,10 @@
 		 * @param	bool
 		 * @return	void
 		 */
-		CI_Loader.view = function($view, $vars, $return) {
+		this.view = function($view, $vars, $return) {
+			$vars = $vars || [];
+			$return = $return || false;
+			
 			return this.$_ci_load({'_ci_view': $view, '_ci_vars': this.$_ci_object_to_array($vars), '_ci_return': $return});
 		}
 		
@@ -290,7 +301,9 @@
 		 * @param	bool
 		 * @return	string
 		 */
-		CI_Loader.file = function($path, $return) {
+		this.file = function($path, $return) {
+			$return = $return || false;
+			
 			return this.$_ci_load({'_ci_path': $path, '_ci_return': $return});
 		}
 		
@@ -306,7 +319,10 @@
 		 * @param	array
 		 * @return	void
 		 */
-		CI_Loader.vars = function($vars, $val) {
+		this.vars = function($vars, $val) {
+			$vars = $vars || [];
+			$val = $val || '';
+				
 			if($val != '' && PHP.is_string($vars)) {
 				$vars = {$vars: $val};
 			}
@@ -314,8 +330,8 @@
 			$vars = this.$_ci_object_to_array($vars);
 		
 			if (PHP.is_array($vars) && PHP.count($vars) > 0) {
-				for($key in $vars) {
-					this.$_ci_cached_vars[$key] = $vars[$key];
+				for(var $key in $vars) {
+					$_ci_cached_vars[$key] = $vars[$key];
 				}
 			}
 		}
@@ -332,42 +348,52 @@
 		 * @return	void
 		 */
 		
-		CI_Loader.helper = function($helpers) {
+		this.helper = function($helpers) {
+			$helpers = $helpers || [];
+			
 			if (!PHP.is_array($helpers)) {
-				$helpers = [ ];
+				$helpers = [$helpers];
 			}
 		
-			for($helper in $helpers) {		
-				$helper = PHP.strtolower(PHP.str_replace(PHP.constant('EXT'), '', PHP.str_replace('_helper', '', $helper)) + '_helper');
+			for(var $helper in $helpers) {	
+				var $name = $helpers[$helper];
+				
+				$helpers[$helper] = PHP.strtolower(PHP.str_replace(PHP.constant('EXT'), '', PHP.str_replace('_helper', '', $helpers[$helper])) + '_helper');
 	
-				if ($_ci_helpers[$helper]) {
-					continue;
+				if ($_ci_helpers[$helpers[$helper]]) {
+					CI.helpers = _helpers;
 				}
 				
-				$ext_helper = PHP.constant('APPPATH') + 'helpers/' + CI_Common.config_item('subclass_prefix') + $helper + PHP.constant.EXT;
+				var $ext_helper = PHP.constant('APPPATH') + 'helpers/' + CI_Common.config_item('subclass_prefix') + $helpers[$helper] + PHP.constant('EXT');
 	
 				// Is this a helper extension request?			
 				if (PHP.file_exists($ext_helper)) {
-					$base_helper = PHP.constant('BASEPATH') + 'helpers/' + $helper + PHP.constant('EXT');
+					var $base_helper = PHP.constant('BASEPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT');
 					
 					if (!PHP.file_exists($base_helper)) {
-						CI_Common.show_error('Unable to load the requested file: helpers/' + $helper + PHP.constant('EXT'));
+						CI_Common.show_error('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'));
+						return;
 					}
 					
-					require($ext_helper);
-					require($base_helper);
-				} else if (PHP.file_exists(PHP.constant('APPPATH') + 'helpers/' + $helper + PHP.constant('EXT'))) { 
-					require(PHP.constant('APPPATH') + 'helpers/' + $helper + PHP.constant.EXT);
+					var $eh = require($ext_helper);
+					var $h = require($base_helper);
+				} else if (PHP.file_exists(PHP.constant('APPPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT'))) { 
+					var $h = require(PHP.constant('APPPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT'));
 				} else {		
-					if(PHP.file_exists(PHP.constant.BASEPATH + 'helpers/' + $helper + PHP.constant('EXT'))) {
-						require(PHP.constant('BASEPATH') + 'helpers/' + $helper + PHP.constant('EXT'));
+					if(PHP.file_exists(PHP.constant('BASEPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT'))) {
+						var $h = require(PHP.constant('BASEPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT'));
 					} else {
-						CI_Common.show_error('Unable to load the requested file: helpers/' + $helper + PHP.constant('EXT'));
+						CI_Common.show_error('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'));
+						return;
 					}
 				}
-	
-				this.$_ci_helpers[$helper] = true;
-				CI_Common.log_message('debug', 'Helper loaded: ' + $helper);	
+		
+				_helpers = PHP.array_merge(_helpers, $h);
+				
+				CI.helpers = PHP.array_merge(CI.helpers, $h);
+				
+				$_ci_helpers[$helpers[$helper]] = true;
+				CI_Common.log_message('debug', 'Helper loaded: ' + $helpers[$helper]);	
 			}		
 		}
 		
@@ -383,7 +409,9 @@
 		 * @param	array
 		 * @return	void
 		 */
-		CI_Loader.helpers = function($helpers) {
+		this.helpers = function($helpers) {
+			$helpers = $helpers || [];
+			
 			this.helper($helpers);
 		}
 		
@@ -398,31 +426,39 @@
 		 * @param	array
 		 * @return	void
 		 */
-		CI_Loader.plugin = function($plugins) {
+		this.plugin = function($plugins) {
+			$plugins = $plugins || [];
+			
 			if (!PHP.is_array($plugins)) {
-				$plugins = [ ];
+				$plugins = [$plugins];
 			}
 		
-			for($plugin in $plugins) {	
-				$plugin = PHP.strtolower(PHP.str_replace(PHP.constant('EXT'), '', PHP.str_replace('_pi', '', $plugin)) + '_pi');		
+			for(var $plugin in $plugins) {	
+				var $name = $plugins[$plugin];
+				
+				$plugins[$plugin] = PHP.strtolower(PHP.str_replace(PHP.constant('EXT'), '', PHP.str_replace('_pi', '', $plugins[$plugin])) + '_pi');		
 	
-				if ($_ci_plugins[$plugin]) {
-					continue;
+				if ($_ci_plugins[$plugins[$plugin]]) {
+					CI.plugins = _plugins;
 				}
 	
-				if (PHP.file_exists(PHP.constant('APPPATH') + 'plugins/' + $plugin + PHP.constant('EXT'))) {
-					require(PHP.constant('APPPATH') + 'plugins/' + $plugin + PHP.constant('EXT'));	
+				if (PHP.file_exists(PHP.constant('APPPATH') + 'plugins/' + $plugins[$plugin] + PHP.constant('EXT'))) {
+					var $p = require(PHP.constant('APPPATH') + 'plugins/' + $plugins[$plugin] + PHP.constant('EXT'));	
 				} else {
-					if (PHP.file_exists(PHP.constant('BASEPATH') + 'plugins/' + $plugin + PHP.constant('EXT'))) {
-						require(PHP.constant('BASEPATH') + 'plugins/' + $plugin + PHP.constant('EXT'));	
+					if (PHP.file_exists(PHP.constant('BASEPATH') + 'plugins/' + $plugins[$plugin] + PHP.constant('EXT'))) {
+						var $p = require(PHP.constant('BASEPATH') + 'plugins/' + $plugins[$plugin] + PHP.constant('EXT'));	
 					} else {
-						CI_Common.show_error('Unable to load the requested file: plugins/' + $plugin + PHP.constant('EXT'));
+						CI_Common.show_error('Unable to load the requested file: plugins/' + $plugins[$plugin] + PHP.constant('EXT'));
+						return;
 					}
 				}
 				
-				this.$_ci_plugins[$plugin] = true;
+				_plugins = PHP.array_merge(_plugins, $p);
 				
-				CI_Common.log_message('debug', 'Plugin loaded: ' + $plugin);
+				CI.plugins = PHP.array_merge(CI.plugins, $p);
+				
+				$_ci_plugins[$plugins[$plugin]] = true;
+				CI_Common.log_message('debug', 'Plugin loaded: ' + $plugins[$plugin]);
 			}		
 		}
 	
@@ -438,7 +474,9 @@
 		 * @param	array
 		 * @return	void
 		 */
-		CI_Loader.plugins = function($plugins) {
+		this.plugins = function($plugins) {
+			$plugins = $plugins || [];
+			
 			this.plugin($plugins);
 		}
 			
@@ -452,9 +490,12 @@
 		 * @param	string
 		 * @return	void
 		 */
-		CI_Loader.language = function($file, $lang) {
+		this.language = function($file, $lang) {
+			$file = $file || [];
+			$lang = $lang || '';
+				
 			if (!PHP.is_array($file)) {
-				$file = [ $file ];
+				$file = [$file];
 			}
 	
 			for($langfile in $file) {	
@@ -470,7 +511,11 @@
 		 * @return	arra
 		 */
 		
-		CI_Loader.scaffold_language = function($file, $lang, $return) {
+		this.scaffold_language = function($file, $lang, $return) {
+			$file = $file || '';
+			$lang = $lang || '';
+			$return = $return || false;
+			
 			return CI.lang.load($file, $lang, $return);
 		}
 		
@@ -484,7 +529,11 @@
 		 * @return	void
 		 */
 		
-		CI_Loader.config = function($file, $use_sections, $fail_gracefully) {			
+		this.config = function($file, $use_sections, $fail_gracefully) {	
+			$file = $file || '';
+			$use_sections = $use_sections || false;
+			$fail_gracefully = $fail_gracefully || false;
+			
 			CI.config.load($file, $use_sections, $fail_gracefully);
 		}
 	
@@ -505,13 +554,16 @@
 		 * @param	string
 		 * @return	void
 		 */	
-		CI_Loader.scaffolding = function($table) {		
+		this.scaffolding = function($table) {	
+			$table = $table || '';
+				
 			if($table === false) {
 				CI_Common.show_error('You must include the name of the table you would like to access when you initialize scaffolding');
+				return;
 			}
 			
-			CI.$_ci_scaffolding = true;
-			CI.$_ci_scaff_table = $table;
+			CI.Controller.$_ci_scaffolding = true;
+			CI.Controller.$_ci_scaff_table = $table;
 		}
 	
 		// --------------------------------------------------------------------
@@ -528,7 +580,7 @@
 		 * @return	void
 		 */
 		
-		CI_Loader._ci_load = function($_ci_data) {
+		this._ci_load = function($_ci_data) {
 			// Set the default data variables
 			for($_ci_val in ['_ci_view', '_ci_vars', '_ci_path', '_ci_return']) {
 				$$_ci_val = (!$_ci_data[$_ci_val]) ? false : $_ci_data[$_ci_val];
@@ -557,7 +609,7 @@
 				
 				for($_ci_key in PHP.get_object_vars($_ci_CI)) {
 					if (!this[$_ci_key]) {
-						this[$_ci_key] = $_ci_CI.$_ci_key;
+						this[$_ci_key] = $_ci_CI[$_ci_key];
 					}
 				}
 			}
@@ -644,7 +696,10 @@
 		 * @param	string	an optional object name
 		 * @return 	void
 		 */
-		CI_Loader._ci_load_class = function($class, $params, $object_name) {	
+		this._ci_load_class = function($class, $params, $object_name) {	
+			$params = $params || null;
+			$object_name = $object_name || null;
+			
 			// Get the class name, and while we're at it trim any slashes.  
 			// The directory path can be included as part of the class name, 
 			// but we don't want a leading slash
@@ -653,11 +708,11 @@
 		
 			// Was the path included with the class name?
 			// We look for a slash to determine this
-			$subdir = '';
+			var $subdir = '';
 			
 			if (PHP.strpos($class, '/') !== false) {
 				// explode the path so we can separate the filename from the path
-				$x = PHP.explode('/', $class);	
+				var $x = PHP.explode('/', $class);	
 				
 				// Reset the $class variable now that we know the actual filename
 				$class = PHP.end($x);
@@ -669,6 +724,8 @@
 				$subdir = PHP.implode($x, '/') + '/';
 			}
 	
+			var $name = $class;
+			
 			// We'll test for both lowercase and capitalized versions of the file name
 			var $classes = [PHP.ucfirst($class), PHP.strtolower($class)];
 			
@@ -677,21 +734,25 @@
 	
 				// Is this a class extension request?			
 				if (PHP.file_exists($subclass)) {
-					var $baseclass = PHP.constant('BASEPATH') + 'libraries/' + PHP.ucfirst($classes[$class]) + PHP.constant('EXT');
-					
+					var $baseclass = PHP.constant('BASEPATH') + 'libraries/' + PHP.strtolower($classes[$class]) + PHP.constant('EXT');
+				
 					if (!PHP.file_exists($baseclass)) {
-						CI_Common.log_message('error', "Unable to load the requested class: " + $classes[$class]);
+						CI_Common.log_message("error", "Unable to load the requested class: " + $classes[$class]);
 						CI_Common.show_error("Unable to load the requested class: " + $classes[$class]);
+						return;
 					}
 	
+					var $bc = require($baseclass);	
+					CI[$classes[$class]] = new $bc;
+					
 					// Safety:  Was the class already loaded by a previous call?
 					if (PHP.in_array($subclass, $_ci_loaded_files)) {
 						// Before we deem this to be a duplicate request, let's see
 						// if a custom object name is being supplied.  If so, we'll
 						// return a new instance of the object
 						if (!PHP.is_null($object_name)) {
-							if (!CI.$object_name) {
-								return this._ci_init_class($class, CI_Common.config_item('subclass_prefix'), $params, $object_name);			
+							if (!CI[$object_name]) {
+								return this._ci_init_class($class, CI_Common.config_item('subclass_prefix'), $params, $object_name, $subclass);
 							}
 						}
 						
@@ -701,20 +762,18 @@
 						return;
 					}
 		
-					require($baseclass);				
-					require($subclass);
 					$_ci_loaded_files.push($subclass);
 		
-					return this._ci_init_class($class, CI_Common.config_item('subclass_prefix'), $params, $object_name);			
+					return this._ci_init_class($class, CI_Common.config_item('subclass_prefix'), $params, $object_name, $baseclass);			
 				}
 			
 				// Lets search for the requested library file and load it.
 				$is_duplicate = false;	
 				
-				for ($i = 1; $i < 3; $i++) {
-					$path = ($i % 2) ? PHP.constant('APPPATH') : PHP.constant('BASEPATH');	
+				for (var $i = 1; $i < 3; $i++) {
+					var $path = ($i % 2) ? PHP.constant('APPPATH') : PHP.constant('BASEPATH');	
 					
-					$filepath = $path + 'libraries/' + $subdir + $classes[$class] + PHP.constant('EXT');
+					var $filepath = $path + 'libraries/' + $subdir + $classes[$class] + PHP.constant('EXT');
 					
 					// Does the file exist?  No?  Bummer...
 					if (!PHP.file_exists($filepath)) {
@@ -726,9 +785,10 @@
 						// Before we deem this to be a duplicate request, let's see
 						// if a custom object name is being supplied.  If so, we'll
 						// return a new instance of the object
+
 						if (!PHP.is_null($object_name)) {
-							if (!CI.$object_name) {
-								return this._ci_init_class($classes[$class], '', $params, $object_name);
+							if (!CI[$object_name]) {
+								return this._ci_init_class($classes[$class], '', $params, $object_name, $filepath);
 							}
 						}
 					
@@ -738,16 +798,15 @@
 						return;
 					}
 					
-					require($filepath);
 					$_ci_loaded_files.push($filepath);
 					
-					return this._ci_init_class($classes[$class], '', $params, $object_name);
+					return this._ci_init_class($classes[$class], '', $params, $object_name, $filepath);
 				}
 			} // END FOREACH
 	
 			// One last attempt.  Maybe the library is in a subdirectory, but it wasn't specified?
 			if ($subdir == '') {
-				$path = PHP.strtolower($classes[$class]) + '/' + $classes[$class];
+				var $path = PHP.strtolower($classes[$class]) + '/' + $classes[$class];
 				return this._ci_load_class($path, $params);
 			}
 			
@@ -756,6 +815,7 @@
 			if ($is_duplicate == false) {
 				CI_Common.log_message('error', "Unable to load the requested class: " + $classes[$class]);
 				CI_Common.show_error("Unable to load the requested class: " + $classes[$class]);
+				return;
 			}
 		}
 		
@@ -770,7 +830,11 @@
 		 * @param	string	an optional object name
 		 * @return	null
 		 */
-		CI_Loader._ci_init_class = function($class, $prefix, $config, $object_name) {	
+		this._ci_init_class = function($class, $prefix, $config, $object_name, $filepath) {
+			$prefix = $prefix || '';
+			$config = $config || false;
+			$object_name = $object_name || null;
+			
 			// Is there an associated config file for this class?
 			if ($config === null) {
 				// We test for both uppercase and lowercase, for servers that
@@ -782,45 +846,36 @@
 				}
 			}
 			
-			if ($prefix == '') {			
-				if (this['CI_' + $class]) {
-					$name = 'CI_' + $class;
-				} else if (this[CI_Common.config_item('subclass_prefix') + $class]) {
-					$name = CI_Common.config_item('subclass_prefix') + $class;
-				} else {
-					$name = $class;
-				}
-			} else {
-				$name = $prefix + $class;
-			}
-			
-			// Is the class name valid?
-			if (!this[$name]) {
-				CI_Common.log_message('error', "Non-existent class: " + $name);
-				CI_Common.show_error("Non-existent class: " + $class);
-			}
-			
 			// Set the variable name we will assign the class to
 			// Was a custom class name supplied?  If so we'll use it
 			$class = PHP.strtolower($class);
 			
 			if (PHP.is_null($object_name)) {
-				$classvar = ( ! $_ci_varmap[$class]) ? $class : $_ci_varmap[$class];
+				var $classvar = ( ! $_ci_varmap[$class]) ? $class : $_ci_varmap[$class];
 			} else {
-				$classvar = $object_name;
+				var $classvar = $object_name;
 			}
-	
+			
 			// Save the class name and object name		
 			$_ci_classes[$class] = $classvar;
 	
 			// Instantiate the class		
-			$CI = CI.get_instance();
 			
-			if ($config !== null) {
-				$CI.$classvar = $class($config);
-			} else {		
-				$CI.$classvar = $class;
-			}	
+			var $c = require($filepath);
+
+			if ($config !== false) {
+				if(typeof($c) == '[object Object]') {
+					CI[$classvar] = $c.__construct($config);
+				} else {
+					CI[$classvar] = new $c($config);
+				}
+			} else {	
+				if(typeof($c) == '[object Object]') {
+					CI[$classvar] = new $c.__construct;
+				} else {
+					CI[$classvar] = new $c;
+				}
+			}
 		} 	
 		
 		// --------------------------------------------------------------------
@@ -835,24 +890,22 @@
 		 * @param	array
 		 * @return	void
 		 */
-		CI_Loader._ci_autoloader = function() {	
+		this._ci_autoloader = function() {	
 			var $autoload = require(PHP.constant('APPPATH') + 'config/autoload' + PHP.constant('EXT'));
 			
 			if (!$autoload) {
 				return false;
 			}
 			
-			$CI = CI.get_instance();
-
 			// Load any custom config file
 			if (PHP.count($autoload['config']) > 0) {			
-				for($key in $autoload['config']) {
-					CI_Config.load($autoload['config'][$key]);
+				for(var $key in $autoload['config']) {
+					CI.config.load($autoload['config'][$key]);
 				}
 			}		
 	
 			// Autoload plugins, helpers and languages
-			for($type in ['helper', 'plugin', 'language']) {			
+			for(var $type in ['helper', 'plugin', 'language']) {			
 				if ($autoload[$type] && PHP.count($autoload[$type]) > 0) {
 					this.$type($autoload[$type]);
 				}		
@@ -874,7 +927,7 @@
 	
 				// Load scaffolding
 				if (PHP.in_array('scaffolding', $autoload['libraries'])) {
-					$this.scaffolding();
+					this.scaffolding();
 					$autoload['libraries'] = PHP.array_diff($autoload['libraries'], ['scaffolding']);
 				}
 			
@@ -903,18 +956,18 @@
 		 * @param	object
 		 * @return	array
 		 */
-		CI_Loader._ci_assign_to_models = function() {
+		this._ci_assign_to_models = function() {
 			if (PHP.count($_ci_models) == 0) {
 				return;
 			}
 		
 			if (this._ci_is_instance()) {
-				for($model in $_ci_models) {			
-					CI.$model._assign_libraries();
+				for(var $model in $_ci_models) {			
+					CI[$_ci_models[$model]]._assign_libraries();
 				}
 			} else {		
-				for($model in $_ci_models) {			
-					this.$model._assign_libraries();
+				for(var $model in $_ci_models) {			
+					this[$_ci_models[$model]]._assign_libraries();
 				}
 			}
 		}  	
@@ -930,7 +983,7 @@
 		 * @param	object
 		 * @return	array
 		 */
-		CI_Loader._ci_object_to_array = function($object) {
+		this._ci_object_to_array = function($object) {
 			return (PHP.is_object($object)) ? PHP.get_object_vars($object) : $object;
 		}
 	
@@ -942,20 +995,18 @@
 		 * @access	private
 		 * @return	bool
 		 */
-		CI_Loader._ci_is_instance = function() {
+		this._ci_is_instance = function() {
 			if ($_ci_is_php5 == true) {
 				return true;
 			}
 		
-			$CI = PHP.$GLOBALS['CI'];
+			var $CI = PHP.$GLOBALS['CI'];
 			
 			return (PHP.is_object($CI)) ? true : false;
 		}
 	
-		return CI_Loader;
+		return this;
 	}
-
-	//CI_Loader.prototype.constructor = CI_Loader.__construct();
 	
 	module.exports = CI_Loader;
 })();

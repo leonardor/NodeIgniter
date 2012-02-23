@@ -26,7 +26,7 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/input.html
  */
-	var CI_Input = new function CI_Input() {
+	function CI_Input() {
 		var $use_xss_clean		= false;
 		var $xss_hash			= '';
 		var $ip_address			= false;
@@ -35,27 +35,25 @@
 	
 		/* never allowed, string replacement */
 		var $never_allowed_str = {
-									'document.cookie': '[removed]',
-									'document.write': '[removed]',
-									'.parentNode': '[removed]',
-									'.innerHTML': '[removed]',
-									'window.location': '[removed]',
-									'-moz-binding': '[removed]',
-									'<!--': '&lt;!--',
-									'-->': '--&gt;',
-									'<![CDATA[': '&lt;![CDATA['
-								};
+			'document.cookie': '[removed]',
+			'document.write': '[removed]',
+			'.parentNode': '[removed]',
+			'.innerHTML': '[removed]',
+			'window.location': '[removed]',
+			'-moz-binding': '[removed]',
+			'<!--': '&lt;!--',
+			'-->': '--&gt;',
+			'<![CDATA[': '&lt;![CDATA['
+		};
 		
 		/* never allowed, regex replacement */
 		var $never_allowed_regex = {
-									"javascript\s*:": '[removed]',
-									"expression\s*(\(|&\#40;)": '[removed]', // CSS and IE
-									"vbscript\s*:": '[removed]', // IE, surprise!
-									"Redirect\s+302": '[removed]'
-								};
+			"javascript\s*:": '[removed]',
+			"expression\s*(\(|&\#40;)": '[removed]', // CSS and IE
+			"vbscript\s*:": '[removed]', // IE, surprise!
+			"Redirect\s+302": '[removed]'
+		};
 	
-		this.$config = null;
-		
 		/**
 		* Constructor
 		*
@@ -64,12 +62,11 @@
 		*
 		* @access	public
 		*/
-		CI_Input.__construct = function() {
+		this.__construct = function() {
 			CI_Common.log_message('debug', "Input Class Initialized");
 	
-			this.$config = CI_Config;
-			$use_xss_clean	= (this.$config.item('global_xss_filtering') === true) ? true : false;
-			$allow_get_array	= (this.$config.item('enable_query_strings') === true) ? true : false;
+			$use_xss_clean	= (CI_Common.config_item('global_xss_filtering') === true) ? true : false;
+			$allow_get_array	= (CI_Common.config_item('enable_query_strings') === true) ? true : false;
 			this._sanitize_globals();
 		}
 	
@@ -89,14 +86,14 @@
 		* @access	private
 		* @return	void
 		*/
-		CI_Input._sanitize_globals = function() {
+		this._sanitize_globals = function() {
 			// Would kind of be "wrong" to unset any of these GLOBALS
-			$protected = ['_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
+			var $protected = ['_SERVER', '_GET', '_POST', '_FILES', '_REQUEST', '_SESSION', '_ENV', 'GLOBALS', 'HTTP_RAW_POST_DATA',
 								'system_folder', 'application_folder', 'BM', 'EXT', 'CFG', 'URI', 'RTR', 'OUT', 'IN'];
 	
 			// Unset globals for security. 
 			// This is effectively the same as register_globals = off
-			for($global in [PHP.$_GET, PHP.$_POST, PHP.$_COOKIE, PHP.$_SERVER, PHP.$_FILES, PHP.$_ENV, (PHP.$_SESSION && PHP.is_array(PHP.$_SESSION)) ? PHP.$_SESSION : {}]) {
+			for(var $global in [PHP.$_GET, PHP.$_POST, PHP.$_COOKIE, PHP.$_SERVER, PHP.$_FILES, PHP.$_ENV, (PHP.$_SESSION && PHP.is_array(PHP.$_SESSION)) ? PHP.$_SESSION : {}]) {
 				if ( ! PHP.is_array($global)) {
 					if ( ! PHP.in_array($global, $protected)) {
 						PHP.unset(PHP.$GLOBALS[$global]);
@@ -135,21 +132,21 @@
 			// http://www.ietf.org/rfc/rfc2109.txt
 			// note that the key names below are single quoted strings, and are not PHP variables
 			try {
-				PHP.unset(PHP.$_COOKIE['$Version']);
+				PHP.unset(PHP.$_COOKIES['$Version']);
 			} catch(e) {
 				
 			}
 			try {
-				PHP.unset(PHP.$_COOKIE['$Path']);
+				PHP.unset(PHP.$_COOKIES['$Path']);
 			} catch(e) {
 				
 			}
 			try {
-				PHP.unset(PHP.$_COOKIE['$Domain']);
+				PHP.unset(PHP.$_COOKIES['$Domain']);
 			} catch(e) {
 				
 			}
-			PHP.$_COOKIE = this._clean_input_data(PHP.$_COOKIE);
+			PHP.$_COOKIES = this._clean_input_data(PHP.$_COOKIES);
 	
 			CI_Common.log_message('debug', "Global POST and COOKIE data sanitized");
 		}
@@ -166,9 +163,9 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input._clean_input_data = function($str) {
+		this._clean_input_data = function($str) {
 			if (PHP.is_array($str)) {
-				$new_array = [];
+				var $new_array = [];
 				for($key in $str) {
 					$new_array[this._clean_input_keys($key)] = this._clean_input_data($str[$key]);
 				}
@@ -206,7 +203,7 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input._clean_input_keys = function($str) {
+		this._clean_input_keys = function($str) {
 			if ( ! PHP.preg_match("/^[a-z0-9:_\/-]+$/i", $str))
 			{
 				PHP.exit('Disallowed Key Characters.');
@@ -228,7 +225,7 @@
 		* @param	bool
 		* @return	string
 		*/
-		CI_Input._fetch_from_array = function($array, $index, $xss_clean) {
+		this._fetch_from_array = function($array, $index, $xss_clean) {
 			if ( ! PHP.isset($array[$index])) {
 				return false;
 			}
@@ -250,7 +247,7 @@
 		* @param	bool
 		* @return	string
 		*/
-		CI_Input.get = function($index, $xss_clean) {
+		this.get = function($index, $xss_clean) {
 			return this._fetch_from_array(PHP.$_GET, $index, $xss_clean);
 		}
 	
@@ -264,7 +261,7 @@
 		* @param	bool
 		* @return	string
 		*/
-		CI_Input.post = function($index, $xss_clean) {
+		this.post = function($index, $xss_clean) {
 			return this._fetch_from_array(PHP.$_POST, $index, $xss_clean);
 		}
 	
@@ -278,7 +275,7 @@
 		* @param	bool	XSS cleaning
 		* @return	string
 		*/
-		CI_Input.get_post = function($index, $xss_clean) {
+		this.get_post = function($index, $xss_clean) {
 			if ( ! PHP.isset(PHP.$_POST[$index]) ) {
 				return this.get($index, $xss_clean);
 			}
@@ -298,7 +295,7 @@
 		* @param	bool
 		* @return	string
 		*/
-		CI_Input.cookie = function($index, $xss_clean) {
+		this.cookie = function($index, $xss_clean) {
 			return this._fetch_from_array(PHP.$_COOKIE, $index, $xss_clean);
 		}
 	
@@ -312,7 +309,7 @@
 		* @param	bool
 		* @return	string
 		*/
-		CI_Input.server = function($index, $xss_clean) {
+		this.server = function($index, $xss_clean) {
 			return this._fetch_from_array(PHP.$_SERVER, $index, $xss_clean);
 		}
 	
@@ -324,7 +321,7 @@
 		* @access	public
 		* @return	string
 		*/
-		CI_Input.ip_address = function() {
+		this.ip_address = function() {
 			if ($ip_address !== false) {
 				return $ip_address;
 			}
@@ -372,8 +369,8 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input.valid_ip = function($ip) {
-			$ip_segments = PHP.explode('.', $ip);
+		this.valid_ip = function($ip) {
+			var $ip_segments = PHP.explode('.', $ip);
 	
 			// Always 4 segments needed
 			if (PHP.count($ip_segments) != 4) {
@@ -404,14 +401,14 @@
 		* @access	public
 		* @return	string
 		*/
-		CI_Input.user_agent = function() {
-			if (this.$user_agent != false) {
-				return this.$user_agent;
+		this.user_agent = function() {
+			if ($user_agent != false) {
+				return $user_agent;
 			}
 	
-			this.$user_agent = ( ! PHP.isset(PHP.$_SERVER['HTTP_USER_AGENT'])) ? false : PHP.$_SERVER['HTTP_USER_AGENT'];
+			$user_agent = ( ! PHP.isset(PHP.$_SERVER['HTTP_USER_AGENT'])) ? false : PHP.$_SERVER['HTTP_USER_AGENT'];
 	
-			return this.$user_agent;
+			return $user_agent;
 		}
 	
 		// --------------------------------------------------------------------
@@ -423,8 +420,8 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input.filename_security = function($str) {
-			$bad = [
+		this.filename_security = function($str) {
+			var $bad = [
 							"../",
 							"./",
 							"<!--",
@@ -490,7 +487,7 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input.xss_clean = function($str, $is_image) {
+		this.xss_clean = function($str, $is_image) {
 			/*
 			* Is the string an array?
 			*
@@ -756,18 +753,18 @@
 		* @access	public
 		* @return	string
 		*/
-		CI_Input.xss_hash = function() {
-			if (this.$xss_hash == '') {
+		this.xss_hash = function() {
+			if ($xss_hash == '') {
 				if (PHP.phpversion() >= 4.2) {
 					PHP.mt_srand();
 				} else {
 					PHP.mt_srand(PHP.hexdec(PHP.substr(PHP.md5(PHP.microtime()), -8)) & 0x7fffffff);
 				}
 				
-				this.$xss_hash = PHP.md5(PHP.time() + PHP.mt_rand(0, 1999999999));
+				$xss_hash = PHP.md5(PHP.time() + PHP.mt_rand(0, 1999999999));
 			}
 	
-			return this.$xss_hash;
+			return $xss_hash;
 		}
 	
 		// --------------------------------------------------------------------
@@ -782,7 +779,7 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input._remove_invisible_characters = function($str) {
+		this._remove_invisible_characters = function($str) {
 			var $non_displayables;
 	
 			if ( ! PHP.isset($non_displayables)) {
@@ -817,7 +814,7 @@
 		* @param	type
 		* @return	type
 		*/
-		CI_Input._compact_exploded_words = function($matches) {
+		this._compact_exploded_words = function($matches) {
 			return PHP.preg_replace('/\s+/s', '', $matches[1]).$matches[2];
 		}
 	
@@ -832,9 +829,9 @@
 		* @param	array
 		* @return	string
 		*/
-		CI_Input._sanitize_naughty_html = function($matches) {
+		this._sanitize_naughty_html = function($matches) {
 			// encode opening brace
-			$str = '&lt;' + $matches[1] + $matches[2] + $matches[3];
+			var $str = '&lt;' + $matches[1] + $matches[2] + $matches[3];
 	
 			// encode captured opening or closing brace to prevent recursive vectors
 			$str += PHP.str_replace(['>', '<'], ['&gt;', '&lt;'], $matches[4]);
@@ -856,8 +853,8 @@
 		* @param	array
 		* @return	string
 		*/
-		CI_Input._js_link_removal = function($match) {
-			$attributes = this._filter_attributes(PHP.str_replace(['<', '>'], '', $match[1]));
+		this._js_link_removal = function($match) {
+			var $attributes = this._filter_attributes(PHP.str_replace(['<', '>'], '', $match[1]));
 			return PHP.str_replace($match[1], PHP.preg_replace("#href=.*?(alert\(|alert&\#40;|javascript\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si", "", $attributes), $match[0]);
 		}
 	
@@ -873,8 +870,8 @@
 		* @param	array
 		* @return	string
 		*/
-		CI_Input._js_img_removal = function($match) {
-			$attributes = this._filter_attributes(PHP.str_replace(['<', '>'], '', $match[1]));
+		this._js_img_removal = function($match) {
+			var $attributes = this._filter_attributes(PHP.str_replace(['<', '>'], '', $match[1]));
 			return PHP.str_replace($match[1], PHP.preg_replace("#src=.*?(alert\(|alert&\#40;|javascript\:|charset\=|window\.|document\.|\.cookie|<script|<xss|base64\s*,)#si", "", $attributes), $match[0]);
 		}
 	
@@ -889,7 +886,7 @@
 		* @param	array
 		* @return	string
 		*/
-		CI_Input._convert_attribute = function($match) {
+		this._convert_attribute = function($match) {
 			return PHP.str_replace(['>', '<', '\\'], ['&gt;', '&lt;', '\\\\'], $match[0]);
 		}
 	
@@ -904,8 +901,8 @@
 		* @param	array
 		* @return	string
 		*/
-		CI_Input._html_entity_decode_callback = function($match) {
-			$charset = this.$config.item('charset');
+		this._html_entity_decode_callback = function($match) {
+			var $charset = CI_Common.config_item('charset');
 	
 			return this._html_entity_decode($match[0], PHP.strtoupper($charset));
 		}
@@ -936,7 +933,7 @@
 		character set, and the PHP developers said they were not back porting the
 		fix to versions other than PHP 5.x.
 		*/
-		CI_Input._html_entity_decode = function($str, $charset) {
+		this._html_entity_decode = function($str, $charset) {
 			if (PHP.stristr($str, '&') == false) return $str;
 	
 			// The reason we are not using html_entity_decode() by itself is because
@@ -945,8 +942,7 @@
 			// correctly.  html_entity_decode() does not convert entities without
 			// semicolons, so we are left with our own little solution here. Bummer.
 	
-			if (PHP.function_exists('html_entity_decode') && (PHP.strtolower($charset) != 'utf-8' || PHP.version_compare(PHP.phpversion(), '5.0.0', '>=')))
-			{
+			if (PHP.function_exists('html_entity_decode') && (PHP.strtolower($charset) != 'utf-8' || PHP.version_compare(PHP.phpversion(), '5.0.0', '>='))) {
 				$str = PHP.html_entity_decode($str, PHP.flag.ENT_COMPAT, $charset);
 				$str = PHP.preg_replace('~&#x(0*[0-9a-f]{2,5})~ei', 'chr(hexdec("\\1"))', $str);
 				return PHP.preg_replace('~&#([0-9]{2,4})~e', 'chr(\\1)', $str);
@@ -957,9 +953,8 @@
 			$str = PHP.preg_replace('~&#([0-9]{2,4});{0,1}~e', 'chr(\\1)', $str);
 	
 			// Literal Entities - Slightly slow so we do another check
-			if (PHP.stristr($str, '&') == false)
-			{
-				$str = PHP.strtr($str, PHP.array_flip(PHP.get_html_translation_table(PHP.flag.HTML_ENTITIES)));
+			if (PHP.stristr($str, '&') == false) {
+				$str = PHP.strtr($str, PHP.array_flip(PHP.get_html_translation_table(PHP.flag('HTML_ENTITIES'))));
 			}
 	
 			return $str;
@@ -976,8 +971,8 @@
 		* @param	string
 		* @return	string
 		*/
-		CI_Input._filter_attributes = function($str) {
-			$out = '';
+		this._filter_attributes = function($str) {
+			var $out = '';
 	
 			if (PHP.preg_match_all('#\s*[a-z\-]+\s*=\s*(\042|\047)([^\\1]*?)\\1#is', $str, $matches)) {
 				for($match in $matches[0]) {
@@ -990,11 +985,9 @@
 	
 		// --------------------------------------------------------------------
 	
-		return CI_Input;
+		return this;
 	}
-	
-	//CI_Input.prototype.constructor = CI_Input.__construct();
-	
+
 	module.exports = CI_Input;
 })();
 // END Input class

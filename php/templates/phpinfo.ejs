@@ -29,30 +29,30 @@
 
 <hr />
 <h1>Configuration</h1>
-<? for (i in modules) { ?>
+<? for (var i in modules) { ?>
 <? var module = modules[i]; ?>
 <h2><?= i ?></h2>
 <table border="0" cellpadding="3" width="600">
-<? for (m in module) { ?>
+<? for (var m in module) { ?>
 	<tr class="h">
 	<th colspan="2"><?= m ?></td>
 	</tr>
 	<? var submodule = module[m]; ?>
 
-	<? for(s in submodule) { ?>
+	<? for(var s in submodule) { ?>
 		<? var keys = PHP.array_keys(submodule[s]) ?>
 		<? if(typeof(submodule[s]) == 'object') { ?>
 			<tr>
 			<td class="e" colspan="2"><?= s ?></td>
 			</tr>
 			<tr>
-			<? for(k in keys) { ?>
+			<? for(var k in keys) { ?>
 				<? if(typeof(submodule[s][keys[k]]) == 'object') { ?>
 					<tr>
 					<td colspan="2" class="e"><?= keys[k] ?></td>
 					<tr>
 					<tr>
-					<? for(o in submodule[s][keys[k]]) { ?>
+					<? for(var o in submodule[s][keys[k]]) { ?>
 						<tr>
 						<td class="v"><?= o ?></td>
 						<td class="v"><?= submodule[s][keys[k]][o] ?></td>

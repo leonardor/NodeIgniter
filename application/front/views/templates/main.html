@@ -7,7 +7,29 @@
 <p><?= request.url ?></p>
 
 <p>
-<? if (typeof(params) == 'object') { ?>
+<?= typeof(items) ?>
+<? if (typeof(items) != 'undefined') { ?>
+	<table border="1" cellspacing="5">
+	<tr>
+	<th>id</th>
+	<th>title</th>
+	<th>text</th>
+	<th>created</th>
+	</tr>
+	<? for(var i in items) { ?>
+		<tr>
+		<td><?= items[i].id ?></td>
+		<td><?= items[i].title ?></td>
+		<td><?= items[i].text ?></td>
+		<td><?= items[i].created ?></td>
+		</tr>
+	<? } ?>
+	</table>
+<? } ?>
+</p>
+
+<p>
+<? if (typeof(params) != 'undefined') { ?>
 	<?- PHP.var_dump(params) ?>
 <? } ?>
 </p>

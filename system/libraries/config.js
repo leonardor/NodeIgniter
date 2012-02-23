@@ -26,10 +26,10 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/config.html
  */
-	var CI_Config = new function CI_Config() {
+	function CI_Config() {
 		var $config = {};
 		var $is_loaded = [];
-	
+
 		/**
 		 * Constructor
 		 *
@@ -41,7 +41,7 @@
 		 * @param   boolean  true if errors should just return false, false if an error message should be displayed
 		 * @return  boolean  if the file was successfully loaded or not
 		 */
-		CI_Config.__construct = function() {
+		this.__construct = function() {
 			$config = CI_Common.get_config();
 			CI_Common.log_message('debug', "Config Class Initialized");
 		}
@@ -55,31 +55,33 @@
 		 * @param	string	the config file name
 		 * @return	boolean	if the file was loaded correctly
 		 */	
-		CI_Config.load = function($file, $use_sections, $fail_gracefully) {
-			$file = ($file == '') ? 'config' : PHP.str_replace(PHP.constant('EXT'), '', $file);
+		this.load = function($file, $use_sections, $fail_gracefully) {
+			var $file = ($file == '') ? 'config' : PHP.str_replace(PHP.constant('EXT'), '', $file);
 		
 			if(PHP.in_array($file, $is_loaded, true)) {
 				return true;
 			}
 	
-			if ( ! file_exists(PHP.constant('APPPATH') + 'config/' + $file + PHP.constant('EXT'))) {
+			if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'config/' + $file + PHP.constant('EXT'))) {
 				if ($fail_gracefully === true) {
 					return false;
 				}
 				CI_Common.show_error('The configuration file ' + $file + PHP.constant('EXT') + ' does not exist.');
+				return;
 			}
 		
 			var $cfg = require(PHP.constant('APPPATH') + 'config/' + $file + PHP.constant('EXT'));
 	
-			if ( ! PHP.isset($cfg) || ! PHP.is_array($cfg)) {
+			if ( ! $cfg || ! PHP.is_array($cfg)) {
 				if ($fail_gracefully === true) {
 					return false;
 				}
 				CI_Common.show_error('Your ' + $file + PHP.constant('EXT') + ' file does not appear to contain a valid configuration array.');
+				return;
 			}
 	
 			if ($use_sections === true) {
-				if (PHP.isset($config[$file])) {
+				if ($config[$file]) {
 					$config[$file] = PHP.array_merge($config[$file], $cfg);
 				} else {
 					$config[$file] = $cfg;
@@ -107,16 +109,15 @@
 		 * @param	bool
 		 * @return	string
 		 */
-		CI_Config.item = function($item, $index) {	
+		this.item = function($item, $index) {	
 			var $index = $index || '';
 			
 			if ($index == '') {	
-				
 				if ( ! $config[$item]) {
 					return false;
 				}
 	
-				$pref = $config[$item];
+				var $pref = $config[$item];
 			} else {
 				if ( !$config[$index]) {
 					return false;
@@ -126,7 +127,7 @@
 					return false;
 				}
 	
-				$pref = $config[$index][$item];
+				var $pref = $config[$index][$item];
 			}
 			
 			return $pref;
@@ -150,7 +151,7 @@
 				return false;
 			}
 	
-			$pref = $config[$item];
+			var $pref = $config[$item];
 	
 			if ($pref != '' && PHP.substr($pref, -1) != '/') {	
 				$pref += '/';
@@ -176,7 +177,7 @@
 			if ($uri == '') {
 				return this.slash_item('base_url') + this.item('index_page');
 			} else {
-				$suffix = (this.item('url_suffix') == false) ? '' : this.item('url_suffix');
+				var $suffix = (this.item('url_suffix') == false) ? '' : this.item('url_suffix');
 				return this.slash_item('base_url') + $this.slash_item('index_page') + PHP.trim($uri, '/') + $suffix; 
 			}
 		}
@@ -190,7 +191,7 @@
 		 * @return	string
 		 */
 		this.system_url = function() {
-			$x = PHP.explode("/", PHP.preg_replace("|/*(.+?)/*$|", "\\1", PHP.constant('BASEPATH')));
+			var $x = PHP.explode("/", PHP.preg_replace("|/*(.+?)/*$|", "\\1", PHP.constant('BASEPATH')));
 			return this.slash_item('base_url') + PHP.end($x) + '/';
 		}
 	  	
@@ -207,12 +208,10 @@
 		this.set_item = function($item, $value) {
 			$config[$item] = $value;
 		}
-	
-		return CI_Config;
+
+		return this;
 	}
 
-	//CI_Config.prototype.constructor = CI_Config.__construct();
-	
 	module.exports = CI_Config;
 })();
 // END CI_Config class

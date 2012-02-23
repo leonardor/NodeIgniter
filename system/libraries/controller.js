@@ -1,47 +1,24 @@
 (function() {
-/**
- * CodeIgniter
- *
- * An open source application development framework for PHP 4.3.2 or newer
- *
- * @package		CodeIgniter
- * @author		ExpressionEngine Dev Team
- * @copyright	Copyright (c) 2008 - 2010, EllisLab, Inc.
- * @license		http://codeigniter.com/user_guide/license.html
- * @link		http://codeigniter.com
- * @since		Version 1.0
- * @filesource
- */
-
-// ------------------------------------------------------------------------
-
-/**
- * CodeIgniter Application Controller Class
- *
- * This class object is the super class that every library in
- * CodeIgniter will be assigned to.
- *
- * @package		CodeIgniter
- * @subpackage	Libraries
- * @category	Libraries
- * @author		ExpressionEngine Dev Team
- * @link		http://codeigniter.com/user_guide/general/controllers.html
- */
-	var Controller = new function Controller() {
-		var $_ci_scaffolding	= false;
-		var $_ci_scaff_table	= false;
-		
-		this.$load = null;
+	var Controller = {};
+	
+	Controller = Object.create(Events.EventEmitter.prototype);
+	
+	Controller.name = 'Controller';
+	
+	Controller.$_ci_scaffolding	= false;
+	Controller.$_ci_scaff_table	= false;
 		
 		/**
 		 * Constructor
 		 *
 		 * Calls the initialize() function
 		 */
-		Controller.__construct = function() {
-			this.prototype.__construct();
+	Controller.__construct = function() {
+			console.log('Controller.__construct()');
 			this._ci_initialize();
 			CI_Common.log_message('debug', "Controller Class Initialized");
+			
+			return this;
 		}
 	
 		// --------------------------------------------------------------------
@@ -55,11 +32,12 @@
 		 * @access	private
 		 * @return	void
 		 */
-		Controller._ci_initialize = function() {
+	Controller._ci_initialize = function() {
+		console.log('Controller._ci_initialize()');
 			// Assign all the class objects that were instantiated by the
 			// front controller to local class variables so that CI can be
 			// run as one big super object.
-			/*$classes = {
+			var $classes = {
 						'config': 'Config',
 						'input': 'Input',
 						'benchmark': 'Benchmark',
@@ -69,26 +47,26 @@
 						'router': 'Router'
 					};
 			
-			for($var in $classes) {
-				this[$var] = CI_Common.load_class($classes[$var]);
-			}*/
-	
+			for(var $var in $classes) {
+				CI[$var] = CI_Common.load_class($classes[$var]);
+				CI[$var].__construct();
+			}
+			
 			// In PHP 5 the Loader class is run as a discreet
 			// class.  In PHP 4 it extends the Controller
 
 			if (Math.floor(PHP.phpversion()) >= 5) {
-				this.$load = CI_Common.load_class('Loader');
-				this.$load.__construct();
-				this.$load._ci_autoloader();
+				CI.load = CI_Common.load_class('Loader');
+				CI.load._ci_autoloader();
 			} else {
 				this._ci_autoloader();
 				
 				// sync up the objects since PHP4 was working from a copy
-				$attributes = PHP.array_keys(PHP.get_object_vars(this));
+				var $attributes = PHP.array_keys(PHP.get_object_vars(this));
 				
 				for($attribute in $attributes) {
-					if (PHP.is_object(this[$attribute])) {
-						this.$load[$attribute] = this[$attribute];
+					if (PHP.is_object(this[$attributes[$attribute]])) {
+						this.load[$attributes[$attribute]] = this[$attributes[$attribute]];
 					}
 				}
 			}
@@ -102,24 +80,19 @@
 		 * @access	private
 		 * @return	void
 		 */	
-		Controller._ci_scaffolding = function() {
-			if($_ci_scaffolding == false || $_ci_scaff_table === false) {
+	Controller._ci_scaffolding = function() {
+			if(this.$_ci_scaffolding == false || this.$_ci_scaff_table === false) {
 				CI_Common.show_404('Scaffolding unavailable');
+				return;
 			}
 			
-			$method = ( ! PHP.in_array(this.uri.segment[3], ['add', 'insert', 'edit', 'update', 'view', 'delete', 'do_delete'], true)) ? 'view' : this.uri.segment[3];
+			var $method = ( ! PHP.in_array(CI_URI.segment[3], ['add', 'insert', 'edit', 'update', 'view', 'delete', 'do_delete'], true)) ? 'view' : CI_URI.segment[3];
 			
 			var Scaffolding = require(PHP.constant('BASEPATH') + 'scaffolding/Scaffolding' + PHP.constant('EXT'));
-			$scaff = Scaffolding($_ci_scaff_table);
+			var $scaff = Scaffolding(this.$_ci_scaff_table);
 			$scaff[$method]();
 		}
 
-		return Controller;
-	}
-
-	Controller.prototype = CI;
-	//Controller.prototype.constructor = Controller.__construct();
-	
 	module.exports = Controller;
 })();
 // END _Controller class

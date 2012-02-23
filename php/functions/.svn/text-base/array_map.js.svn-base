@@ -11,7 +11,7 @@ var array_map = function(callback, array) {
     // *     example 1: array_map( function (a){return (a * a * a)}, [1, 2, 3, 4, 5] );
     // *     returns 1: [ 1, 8, 27, 64, 125 ]
     var j = array.length,
-        i = 0;
+        i = 0,
         m = 0;
     var tmp = [],
         tmp_ar = [];

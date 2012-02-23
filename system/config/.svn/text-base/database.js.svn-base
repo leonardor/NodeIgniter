@@ -39,15 +39,15 @@ var database = {
 
 	'db': {
 		'default': {
-			'hostname': 'localhost',
-			'username': 'guest',
+			'hostname': '10.10.22.31',
+			'username': 'vlad',
 			'port': 3306,
-			'password: '',
-			'database': 'test',
-			'dbdriver': 'mysqli',
+			'password': 'cemese',
+			'database': 'nodejs',
+			'dbdriver': 'mysql',
 			'dbprefix': '',
 			'pconnect': false,
-			'db_debug': true,
+			'db_debug': false,
 			'cache_on': false,
 			'cachedir': '',
 			'char_set': 'utf8',

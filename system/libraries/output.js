@@ -26,14 +26,13 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/output.html
  */
-	var CI_Output = new function CI_Output() {
-
+	function CI_Output() {
 		var $final_output;
 		var $cache_expiration	= 0;
 		var $headers 			= [];
 		var $enable_profiler 	= false;
 	
-		CI_Output.__construct = function() {
+		this.__construct = function() {
 			CI_Common.log_message('debug', "Output Class Initialized");
 		}
 		
@@ -160,7 +159,7 @@
 		 * @access	public
 		 * @return	mixed
 		 */		
-		CI_Output._display = function($output) {	
+		this._display = function($output) {	
 			// Note:  We use globals because we can't use $CI =& get_instance()
 			// since this function is sometimes called by the caching mechanism,
 			// which happens before the CI super object is available.
@@ -184,10 +183,10 @@
 			// Parse out the elapsed time and memory usage,
 			// then swap the pseudo-variables with the data
 	
-			$elapsed = CI_Benchmark.elapsed_time('total_execution_time_start', 'total_execution_time_end', 3);		
+			var $elapsed = CI_Benchmark.elapsed_time('total_execution_time_start', 'total_execution_time_end', 3);		
 			$output = PHP.str_replace('{elapsed_time}', $elapsed, $output);
 			
-			$memory	 = ( ! PHP.method_exists(CI_Benchmark, 'memory_get_usage')) ? '0' : Math.round(CI_Benchmark.memory_get_usage()/1024/1024, 2) + 'MB';
+			var $memory	 = ( ! PHP.method_exists(CI_Benchmark, 'memory_get_usage')) ? '0' : Math.round(CI_Benchmark.memory_get_usage()/1024/1024, 2) + 'MB';
 			$output = PHP.str_replace('{memory_usage}', $memory, $output);		
 	
 			// --------------------------------------------------------------------
@@ -215,7 +214,7 @@
 			// Does the get_instance() function exist?
 			// If not we know we are dealing with a cache file so we'll
 			// simply echo out the data and exit.
-			if ( ! PHP.method_exists(CI, 'get_instance')) {
+			if ( ! PHP.method_exists(CI_Base, 'get_instance')) {
 				PHP.echo($output);
 				CI_Common.log_message('debug', "Final output sent to browser");
 				CI_Common.log_message('debug', "Total execution time: " + $elapsed);
@@ -224,22 +223,20 @@
 		
 			// --------------------------------------------------------------------
 	
-			// Grab the super object.  We'll need it in a moment...
-			$CI = CI.get_instance();
-			
 			// Do we need to generate profile data?
 			// If so, load the Profile class and run it.
 			if ($enable_profiler == true) {
-				$CI.load.library('profiler');				
+				var CI_Profiler = CI_Common.load_class('Profiler');	
+				CI_Profiler.__construct();
 											
 				// If the output data contains closing </body> and </html> tags
 				// we will remove them and add them back after we insert the profile data
 				if (PHP.preg_match("|</body>.*?</html>|is", $output)) {
 					$output  = PHP.preg_replace("|</body>.*?</html>|is", '', $output);
-					$output += $CI.profiler.run();
+					$output += CI_Profiler.run();
 					$output += '</body></html>';
 				} else {
-					$output += $CI.profiler.run();
+					$output += CI_Profiler.run();
 				}
 			}
 			
@@ -248,10 +245,15 @@
 			// Does the controller contain a function named _output()?
 			// If so send the output there.  Otherwise, echo it.
 			
-			if (PHP.method_exists($CI, '_output')) {
-				$CI._output($output);
+			if (PHP.method_exists(CI_Base, '_output')) {
+				CI_Base._output($output);
 			} else {
-				PHP.echo($output);  // Send it to the browser!
+				$CI.on('data', function(html) {
+					console.log('am interceptat eventul de controller.data');
+					response.write(html);
+					response.end();
+					
+				}); // Send it to the browser!
 			}
 			
 			CI_Common.log_message('debug', "Final output sent to browser");
@@ -266,21 +268,19 @@
 		 * @access	public
 		 * @return	void
 		 */	
-		CI_Output._write_cache = function($output) {
-			$CI = CI.get_instance();	
-			$path = $CI.config.item('cache_path');
+		this._write_cache = function($output) {
+			var $uri = CI_URI;
+			var $path = CI_Common.config_item('cache_path');
 		
-			$cache_path = ($path == '') ? PHP.constant('BASEPATH') + 'cache/' : $path;
+			var $cache_path = ($path == '') ? PHP.constant('BASEPATH') + 'cache/' : $path;
 			
 			if ( ! PHP.file_exists($cache_path) || ! CI_Common.is_really_writable($cache_path)) {
 				return;
 			}
 			
-			$uri =	$CI.config.item('base_url').
-					$CI.config.item('index_page').
-					$CI.uri.uri_string();
+			var uri =	CI_Common.config_item('base_url') + CI_Common.config_item('index_page') + $uri.uri_string();
 			
-			$cache_path += PHP.md5($uri);
+			$cache_path += PHP.md5(uri);
 	
 			if ( ! $fp = PHP.fopen($cache_path, PHP.constant('FOPEN_WRITE_CREATE_DESTRUCTIVE')))
 			{
@@ -288,20 +288,18 @@
 				return;
 			}
 			
-			$expire = PHP.time() + ($cache_expiration * 60);
+			var $expire = PHP.time() + ($cache_expiration * 60);
 			
-			if (PHP.flock($fp, PHP.flag.LOCK_EX))
-			{
+			if (PHP.flock($fp, PHP.flag('LOCK_EX'))) {
 				PHP.fwrite($fp, $expire + 'TS--->' + $output);
-				PHP.flock($fp, PHP.flag.LOCK_UN);
-			}
-			else
-			{
-				CI_Common.log_message('error', "Unable to secure a file lock for file at: ".$cache_path);
+				PHP.flock($fp, PHP.flag('LOCK_UN'));
+			} else {
+				CI_Common.log_message('error', "Unable to secure a file lock for file at: " + $cache_path);
 				return;
 			}
+			
 			PHP.fclose($fp);
-			PHP.chmod($cache_path, PHP.constant.DIR_WRITE_MODE);
+			PHP.chmod($cache_path, PHP.constant('DIR_WRITE_MODE'));
 	
 			CI_Common.log_message('debug', "Cache file written: " + $cache_path);
 		}
@@ -314,19 +312,17 @@
 		 * @access	public
 		 * @return	void
 		 */	
-		CI_Output._display_cache = function($CFG, $URI) {
-			$cache_path = ($CFG.item('cache_path') == '') ? PHP.constant('BASEPATH') + 'cache/' : $CFG.item('cache_path');
+		this._display_cache = function($CFG, $URI) {
+			var $cache_path = ($CFG.item('cache_path') == '') ? PHP.constant('BASEPATH') + 'cache/' : $CFG.item('cache_path');
 				
 			if ( ! PHP.file_exists($cache_path) || ! CI_Common.is_really_writable($cache_path)) {
 				return false;
 			}
 			
 			// Build the file path.  The file name is an MD5 hash of the full URI
-			$uri =	$CFG.item('base_url') + 
-					$CFG.item('index_page') +
-					$URI.uri_string;
+			var uri =	$CFG.item('base_url') + $CFG.item('index_page') + $URI.uri_string();
 					
-			$filepath = $cache_path + PHP.md5($uri);
+			var $filepath = $cache_path + PHP.md5(uri);
 			
 			if ( ! PHP.file_exists($filepath)) {
 				return false;
@@ -336,15 +332,15 @@
 				return false;
 			}
 				
-			PHP.flock($fp, PHP.flag.LOCK_SH);
+			PHP.flock($fp, PHP.flag('LOCK_SH'));
 			
-			$cache = '';
+			var $cache = '';
 			
 			if (PHP.filesize($filepath) > 0) {
 				$cache = PHP.fread($fp, PHP.filesize($filepath));
 			}
 		
-			PHP.flock($fp, PHP.flag.LOCK_UN);
+			PHP.flock($fp, PHP.flag('LOCK_UN'));
 			PHP.fclose($fp);
 						
 			// Strip out the embedded timestamp		
@@ -353,8 +349,7 @@
 			}
 			
 			// Has the file expired? If so we'll delete it.
-			if (PHP.time() >= PHP.trim(PHP.str_replace('TS--->', '', $match['1'])))
-			{ 		
+			if (PHP.time() >= PHP.trim(PHP.str_replace('TS--->', '', $match['1']))) { 		
 				PHP.unlink($filepath);
 				CI_Common.log_message('debug', "Cache file has expired. File deleted");
 				return false;
@@ -366,11 +361,9 @@
 			return true;
 		}
 		
-		return CI_Output;
+		return this;
 	}
 
-	//CI_Output.prototype.constructor = CI_Output.__construct();
-	
 	module.exports = CI_Output;
 })();
 // END Output Class

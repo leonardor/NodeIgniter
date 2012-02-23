@@ -1,6 +1,6 @@
 var preg_match = function(pattern, subject, matches, flags, offset) {
 	var offset = offset || 0;
-	var flags = flags || this.flag('PREG_OFFSET_CAPTURE');
+	var flags = flags || PHP.flag('PREG_OFFSET_CAPTURE');
 	
 	var regex = new RegExp(pattern);
 

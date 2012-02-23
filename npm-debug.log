@@ -1,0 +1,404 @@
+info it worked if it ends with ok
+verbose cli [ 'C:\\Program Files\\nodejs\\\\node.exe',
+verbose cli   'C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js',
+verbose cli   'install',
+verbose cli   'sequelize' ]
+info using npm@1.1.0-alpha-2
+info using node@v0.6.3
+verbose config file C:\Documents and Settings\leonardo.radoiu\.npmrc
+verbose config file C:\Program Files\etc\npmrc
+verbose config file C:\Program Files\nodejs\node_modules\npm\npmrc
+verbose mkdir done: W:\workspace\node-igniter 755
+verbose caching W:\workspace\node-igniter\package.json
+verbose loadDefaults NodeIgniter@0.0.1
+verbose caching W:\workspace\node-igniter\node_modules\ejs\package.json
+verbose loadDefaults ejs@0.6.1
+verbose caching W:\workspace\node-igniter\node_modules\mysql\package.json
+verbose loadDefaults mysql@0.9.5
+verbose caching W:\workspace\node-igniter\node_modules\mysql-queues\package.json
+verbose loadDefaults mysql-queues@0.3.3
+verbose from cache W:\workspace\node-igniter\package.json
+verbose into W:\workspace\node-igniter [ 'sequelize' ]
+verbose cache add sequelize
+verbose cache add [ 'sequelize', null ]
+silly cache add: name, spec, args [ undefined, 'sequelize', [ 'sequelize', null ] ]
+verbose parsed url { pathname: 'sequelize', path: 'sequelize', href: 'sequelize' }
+info addNamed [ 'sequelize', '' ]
+verbose addNamed [ null, '' ]
+verbose GET sequelize
+verbose raw, before any munging sequelize
+verbose url resolving [ 'https://registry.npmjs.org/', './sequelize' ]
+verbose url resolved https://registry.npmjs.org/sequelize
+verbose etag "6BYTLJI7H7CWFSA17DDUHLP1F"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"6BYTLJI7H7CWFSA17DDUHLP1F"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:23 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag sequelize from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\sequelize 755
+verbose GET sequelize/1.3.3
+verbose raw, before any munging sequelize/1.3.3
+verbose url resolving [ 'https://registry.npmjs.org/', './sequelize/1.3.3' ]
+verbose url resolved https://registry.npmjs.org/sequelize/1.3.3
+verbose etag "6BYTLJI7H7CWFSA17DDUHLP1F"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"6BYTLJI7H7CWFSA17DDUHLP1F"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:24 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag sequelize/1.3.3 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\sequelize\1.3.3 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { shasum: 'f169a6dd2b868e73de80c952769b0677efe42dbd',
+verbose bin dist     tarball: 'http://registry.npmjs.org/sequelize/-/sequelize-1.3.3.tgz' } ]
+verbose caching C:\Documents and Settings\leonardo.radoiu\npm-cache\sequelize\1.3.3\package\package.json
+verbose loadDefaults sequelize@1.3.3
+silly resolved [ { name: 'sequelize',
+silly resolved     description: 'MySQL ORM for Node.JS',
+silly resolved     version: '1.3.3',
+silly resolved     author: { name: 'Sascha Depold', email: 'sascha@depold.com' },
+silly resolved     contributors: 
+silly resolved      [ { name: 'Sascha Depold', email: 'sascha@depold.com' },
+silly resolved        { name: 'Meg Sharkey', email: 'meg@metamarkets.com' } ],
+silly resolved     dependencies: 
+silly resolved      { mysql: '0.9.x',
+silly resolved        underscore: '1.2.x',
+silly resolved        'underscore.string': '2.0.x',
+silly resolved        lingo: '0.0.x',
+silly resolved        validator: '0.3.x',
+silly resolved        moment: '1.1.x',
+silly resolved        commander: '0.5.x' },
+silly resolved     devDependencies: { 'jasmine-node': '1.0.x', sqlite3: '>=2.0.0' },
+silly resolved     keywords: [ 'mysql', 'orm', 'nodejs', 'object relational mapper' ],
+silly resolved     main: 'index',
+silly resolved     scripts: {},
+silly resolved     bin: { sequelize: 'bin/sequelize' },
+silly resolved     engines: { node: '>=0.4.6' },
+silly resolved     license: 'MIT',
+silly resolved     _id: 'sequelize@1.3.3',
+silly resolved     _engineSupported: true,
+silly resolved     _npmVersion: '1.1.0-alpha-2',
+silly resolved     _nodeVersion: 'v0.6.3',
+silly resolved     _defaultsLoaded: true } ]
+info into W:\workspace\node-igniter sequelize@1.3.3
+info installOne sequelize@1.3.3
+info unbuild W:\workspace\node-igniter\node_modules\sequelize
+verbose from cache C:\Documents and Settings\leonardo.radoiu\npm-cache\sequelize\1.3.3\package\package.json
+verbose mkdir (expected) error ENOENT, no such file or directory 'W:\workspace\node-igniter\node_modules\___sequelize.npm'
+verbose mkdir done: W:\workspace\node-igniter\node_modules\___sequelize.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget W:\workspace\node-igniter\node_modules\sequelize
+silly gunzTarPerm modes [ '755', '644' ]
+silly afterUntar undefined
+verbose gunzed W:\workspace\node-igniter\node_modules\___sequelize.npm\package
+verbose rm'ed W:\workspace\node-igniter\node_modules\sequelize
+verbose renamed [ 'W:\\workspace\\node-igniter\\node_modules\\___sequelize.npm\\package',
+verbose renamed   'W:\\workspace\\node-igniter\\node_modules\\sequelize' ]
+verbose caching W:\workspace\node-igniter\node_modules\sequelize\package.json
+verbose loadDefaults sequelize@1.3.3
+info preinstall sequelize@1.3.3
+verbose from cache W:\workspace\node-igniter\node_modules\sequelize\package.json
+verbose into W:\workspace\node-igniter\node_modules\sequelize [ 'underscore@1.2.x',
+verbose into W:\workspace\node-igniter\node_modules\sequelize   'underscore.string@2.0.x',
+verbose into W:\workspace\node-igniter\node_modules\sequelize   'lingo@0.0.x',
+verbose into W:\workspace\node-igniter\node_modules\sequelize   'validator@0.3.x',
+verbose into W:\workspace\node-igniter\node_modules\sequelize   'moment@1.1.x',
+verbose into W:\workspace\node-igniter\node_modules\sequelize   'commander@0.5.x' ]
+verbose cache add underscore@1.2.x
+verbose cache add [ 'underscore@1.2.x', null ]
+silly cache add: name, spec, args [ undefined, 'underscore@1.2.x', [ 'underscore@1.2.x', null ] ]
+verbose parsed url { pathname: 'underscore@1.2.x',
+verbose parsed url   path: 'underscore@1.2.x',
+verbose parsed url   href: 'underscore@1.2.x' }
+silly cache add: name, spec, args [ 'underscore', '1.2.x', [ 'underscore', '1.2.x' ] ]
+verbose parsed url { pathname: '1.2.x', path: '1.2.x', href: '1.2.x' }
+info addNamed [ 'underscore', '1.2.x' ]
+verbose addNamed [ null, '>=1.2.0- <1.3.0-' ]
+verbose cache add underscore.string@2.0.x
+verbose cache add [ 'underscore.string@2.0.x', null ]
+silly cache add: name, spec, args [ undefined,
+silly cache add: name, spec, args   'underscore.string@2.0.x',
+silly cache add: name, spec, args   [ 'underscore.string@2.0.x', null ] ]
+verbose parsed url { pathname: 'underscore.string@2.0.x',
+verbose parsed url   path: 'underscore.string@2.0.x',
+verbose parsed url   href: 'underscore.string@2.0.x' }
+silly cache add: name, spec, args [ 'underscore.string',
+silly cache add: name, spec, args   '2.0.x',
+silly cache add: name, spec, args   [ 'underscore.string', '2.0.x' ] ]
+verbose parsed url { pathname: '2.0.x', path: '2.0.x', href: '2.0.x' }
+info addNamed [ 'underscore.string', '2.0.x' ]
+verbose addNamed [ null, '>=2.0.0- <2.1.0-' ]
+verbose cache add lingo@0.0.x
+verbose cache add [ 'lingo@0.0.x', null ]
+silly cache add: name, spec, args [ undefined, 'lingo@0.0.x', [ 'lingo@0.0.x', null ] ]
+verbose parsed url { pathname: 'lingo@0.0.x',
+verbose parsed url   path: 'lingo@0.0.x',
+verbose parsed url   href: 'lingo@0.0.x' }
+silly cache add: name, spec, args [ 'lingo', '0.0.x', [ 'lingo', '0.0.x' ] ]
+verbose parsed url { pathname: '0.0.x', path: '0.0.x', href: '0.0.x' }
+info addNamed [ 'lingo', '0.0.x' ]
+verbose addNamed [ null, '>=0.0.0- <0.1.0-' ]
+verbose cache add validator@0.3.x
+verbose cache add [ 'validator@0.3.x', null ]
+silly cache add: name, spec, args [ undefined, 'validator@0.3.x', [ 'validator@0.3.x', null ] ]
+verbose parsed url { pathname: 'validator@0.3.x',
+verbose parsed url   path: 'validator@0.3.x',
+verbose parsed url   href: 'validator@0.3.x' }
+silly cache add: name, spec, args [ 'validator', '0.3.x', [ 'validator', '0.3.x' ] ]
+verbose parsed url { pathname: '0.3.x', path: '0.3.x', href: '0.3.x' }
+info addNamed [ 'validator', '0.3.x' ]
+verbose addNamed [ null, '>=0.3.0- <0.4.0-' ]
+verbose cache add moment@1.1.x
+verbose cache add [ 'moment@1.1.x', null ]
+silly cache add: name, spec, args [ undefined, 'moment@1.1.x', [ 'moment@1.1.x', null ] ]
+verbose parsed url { pathname: 'moment@1.1.x',
+verbose parsed url   path: 'moment@1.1.x',
+verbose parsed url   href: 'moment@1.1.x' }
+silly cache add: name, spec, args [ 'moment', '1.1.x', [ 'moment', '1.1.x' ] ]
+verbose parsed url { pathname: '1.1.x', path: '1.1.x', href: '1.1.x' }
+info addNamed [ 'moment', '1.1.x' ]
+verbose addNamed [ null, '>=1.1.0- <1.2.0-' ]
+verbose cache add commander@0.5.x
+verbose cache add [ 'commander@0.5.x', null ]
+silly cache add: name, spec, args [ undefined, 'commander@0.5.x', [ 'commander@0.5.x', null ] ]
+verbose parsed url { pathname: 'commander@0.5.x',
+verbose parsed url   path: 'commander@0.5.x',
+verbose parsed url   href: 'commander@0.5.x' }
+silly cache add: name, spec, args [ 'commander', '0.5.x', [ 'commander', '0.5.x' ] ]
+verbose parsed url { pathname: '0.5.x', path: '0.5.x', href: '0.5.x' }
+info addNamed [ 'commander', '0.5.x' ]
+verbose addNamed [ null, '>=0.5.0- <0.6.0-' ]
+verbose GET lingo
+verbose raw, before any munging lingo
+verbose url resolving [ 'https://registry.npmjs.org/', './lingo' ]
+verbose url resolved https://registry.npmjs.org/lingo
+verbose etag "1XL96YITW9QCPXC4JED8YZQW6"
+verbose GET commander
+verbose raw, before any munging commander
+verbose url resolving [ 'https://registry.npmjs.org/', './commander' ]
+verbose url resolved https://registry.npmjs.org/commander
+verbose etag "4ZZG73A76ULGOBJI14PCBAN2C"
+verbose GET moment
+verbose raw, before any munging moment
+verbose url resolving [ 'https://registry.npmjs.org/', './moment' ]
+verbose url resolved https://registry.npmjs.org/moment
+verbose etag "B1O5TWIZJSFXGHKWIYQ082J9J"
+verbose GET underscore
+verbose raw, before any munging underscore
+verbose url resolving [ 'https://registry.npmjs.org/', './underscore' ]
+verbose url resolved https://registry.npmjs.org/underscore
+verbose etag "64NE01DO6WMQ2NCBAV135BR7D"
+verbose GET underscore.string
+verbose raw, before any munging underscore.string
+verbose url resolving [ 'https://registry.npmjs.org/', './underscore.string' ]
+verbose url resolved https://registry.npmjs.org/underscore.string
+verbose etag "89KQ95CWO6T10ROF4VMGQK2HY"
+verbose GET validator
+verbose raw, before any munging validator
+verbose url resolving [ 'https://registry.npmjs.org/', './validator' ]
+verbose url resolved https://registry.npmjs.org/validator
+verbose etag "1CMB672E1TAMSI9KZR05OW3I4"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"1XL96YITW9QCPXC4JED8YZQW6"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:29 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag lingo from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\lingo 755
+verbose GET lingo/0.0.4
+verbose raw, before any munging lingo/0.0.4
+verbose url resolving [ 'https://registry.npmjs.org/', './lingo/0.0.4' ]
+verbose url resolved https://registry.npmjs.org/lingo/0.0.4
+verbose etag "1XL96YITW9QCPXC4JED8YZQW6"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"4ZZG73A76ULGOBJI14PCBAN2C"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:29 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag commander from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\commander 755
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"B1O5TWIZJSFXGHKWIYQ082J9J"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:29 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag moment from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\moment 755
+verbose GET moment/1.1.1
+verbose raw, before any munging moment/1.1.1
+verbose url resolving [ 'https://registry.npmjs.org/', './moment/1.1.1' ]
+verbose url resolved https://registry.npmjs.org/moment/1.1.1
+verbose etag "B1O5TWIZJSFXGHKWIYQ082J9J"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"89KQ95CWO6T10ROF4VMGQK2HY"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:29 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag underscore.string from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\underscore.string 755
+verbose GET commander/0.5.2
+verbose raw, before any munging commander/0.5.2
+verbose url resolving [ 'https://registry.npmjs.org/', './commander/0.5.2' ]
+verbose url resolved https://registry.npmjs.org/commander/0.5.2
+verbose etag "4ZZG73A76ULGOBJI14PCBAN2C"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"64NE01DO6WMQ2NCBAV135BR7D"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:29 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag underscore from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\underscore 755
+verbose GET underscore/1.2.4
+verbose raw, before any munging underscore/1.2.4
+verbose url resolving [ 'https://registry.npmjs.org/', './underscore/1.2.4' ]
+verbose url resolved https://registry.npmjs.org/underscore/1.2.4
+verbose etag "64NE01DO6WMQ2NCBAV135BR7D"
+verbose GET underscore.string/2.0.0
+verbose raw, before any munging underscore.string/2.0.0
+verbose url resolving [ 'https://registry.npmjs.org/', './underscore.string/2.0.0' ]
+verbose url resolved https://registry.npmjs.org/underscore.string/2.0.0
+verbose etag "89KQ95CWO6T10ROF4VMGQK2HY"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"1CMB672E1TAMSI9KZR05OW3I4"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:30 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag validator from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\validator 755
+verbose GET validator/0.3.9
+verbose raw, before any munging validator/0.3.9
+verbose url resolving [ 'https://registry.npmjs.org/', './validator/0.3.9' ]
+verbose url resolved https://registry.npmjs.org/validator/0.3.9
+verbose etag "1CMB672E1TAMSI9KZR05OW3I4"
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"1XL96YITW9QCPXC4JED8YZQW6"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:30 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag lingo/0.0.4 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\lingo\0.0.4 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { tarball: 'http://registry.npmjs.org/lingo/-/lingo-0.0.4.tgz' } ]
+verbose caching C:\Documents and Settings\leonardo.radoiu\npm-cache\lingo\0.0.4\package\package.json
+verbose loadDefaults lingo@0.0.4
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"B1O5TWIZJSFXGHKWIYQ082J9J"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:30 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag moment/1.1.1 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\moment\1.1.1 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { shasum: '7e83bd99b8b9145a88298ae9fdce38846dd1febc',
+verbose bin dist     tarball: 'http://registry.npmjs.org/moment/-/moment-1.1.1.tgz' } ]
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"4ZZG73A76ULGOBJI14PCBAN2C"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:30 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag commander/0.5.2 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\commander\0.5.2 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { shasum: '0cc59302bc1daa1ddc92e1f7ffb82599581a79b6',
+verbose bin dist     tarball: 'http://registry.npmjs.org/commander/-/commander-0.5.2.tgz' } ]
+verbose caching C:\Documents and Settings\leonardo.radoiu\npm-cache\commander\0.5.2\package\package.json
+verbose loadDefaults commander@0.5.2
+verbose caching C:\Documents and Settings\leonardo.radoiu\npm-cache\moment\1.1.1\package\package.json
+verbose loadDefaults moment@1.1.1
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"64NE01DO6WMQ2NCBAV135BR7D"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:30 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag underscore/1.2.4 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\underscore\1.2.4 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { shasum: 'e8da6241aa06f64df2473bb2590b8c17c84c3c7e',
+verbose bin dist     tarball: 'http://registry.npmjs.org/underscore/-/underscore-1.2.4.tgz' } ]
+verbose addRemoteTarball [ 'https://registry.npmjs.org/underscore/-/underscore-1.2.4.tgz',
+verbose addRemoteTarball   'e8da6241aa06f64df2473bb2590b8c17c84c3c7e' ]
+verbose mkdir (expected) error ENOENT, no such file or directory 'C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132'
+verbose mkdir (expected) error ENOENT, no such file or directory 'C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631'
+verbose mkdir done: C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631 755
+info fetch https://registry.npmjs.org/underscore/-/underscore-1.2.4.tgz
+verbose fetch to C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\tmp.tgz
+verbose mkdir done: C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631 755
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"89KQ95CWO6T10ROF4VMGQK2HY"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:31 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag underscore.string/2.0.0 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\underscore.string\2.0.0 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { shasum: '7470858a54a0bb3560d037da56dcc67b5181e11a',
+verbose bin dist     tarball: 'http://registry.npmjs.org/underscore.string/-/underscore.string-2.0.0.tgz' } ]
+verbose caching C:\Documents and Settings\leonardo.radoiu\npm-cache\underscore.string\2.0.0\package\package.json
+verbose loadDefaults underscore.string@2.0.0
+silly get cb [ 304,
+silly get cb   { server: 'CouchDB/1.1.0 (Erlang OTP/R14B04)',
+silly get cb     etag: '"1CMB672E1TAMSI9KZR05OW3I4"',
+silly get cb     date: 'Wed, 22 Feb 2012 12:22:31 GMT',
+silly get cb     'content-length': '0' } ]
+verbose etag validator/0.3.9 from cache
+verbose mkdir done: C:\Documents and Settings\leonardo.radoiu\npm-cache\validator\0.3.9 755
+verbose bin dist [ '0.6-ares1.7.5-DEV-evundefined-openssl0.9.8r-v83.6.6.8-win32-ia32-5.1.2600',
+verbose bin dist   { shasum: '95ce993ae81f837dd59dc36f47903dd151dff810',
+verbose bin dist     tarball: 'http://registry.npmjs.org/validator/-/validator-0.3.9.tgz' } ]
+verbose caching C:\Documents and Settings\leonardo.radoiu\npm-cache\validator\0.3.9\package\package.json
+verbose loadDefaults validator@0.3.9
+silly updated sha bytes 40960
+silly updated sha bytes 20480
+info shasum e8da6241aa06f64df2473bb2590b8c17c84c3c7e
+info shasum C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\tmp.tgz
+verbose mkdir (expected) error ENOENT, no such file or directory 'C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\___package.npm'
+verbose mkdir done: C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\___package.npm 755
+verbose unpack_ uid, gid [ undefined, undefined ]
+verbose unpackTarget C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\package
+silly gunzTarPerm modes [ '755', '644' ]
+ERR! Failed unpacking C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\tmp.tgz
+ERR! couldn't unpack C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631\tmp.tgz to C:\DOCUME~1\LEONAR~1.RAD\LOCALS~1\Temp\npm-1329913294132\1329913294132-0.605559371644631
+verbose about to build W:\workspace\node-igniter\node_modules\sequelize
+ERR! error installing sequelize@1.3.3 Error: write() after end()
+ERR! error installing sequelize@1.3.3     at decorate (C:\Program Files\nodejs\node_modules\npm\node_modules\fstream\lib\abstract.js:64:36)
+ERR! error installing sequelize@1.3.3     at Extract.error (C:\Program Files\nodejs\node_modules\npm\node_modules\fstream\lib\abstract.js:58:12)
+ERR! error installing sequelize@1.3.3     at Extract.write (C:\Program Files\nodejs\node_modules\npm\node_modules\tar\lib\parse.js:71:17)
+ERR! error installing sequelize@1.3.3     at Unzip.ondata (stream.js:38:26)
+ERR! error installing sequelize@1.3.3     at Unzip.emit (events.js:67:17)
+ERR! error installing sequelize@1.3.3     at Object.callback (zlib.js:366:12)
+info unbuild W:\workspace\node-igniter\node_modules\sequelize
+verbose from cache W:\workspace\node-igniter\node_modules\sequelize\package.json
+info preuninstall sequelize@1.3.3
+info uninstall sequelize@1.3.3
+verbose unbuild sequelize@1.3.3 [ true,
+verbose unbuild sequelize@1.3.3   'W:\\workspace\\node-igniter\\node_modules',
+verbose unbuild sequelize@1.3.3   'W:\\workspace\\node-igniter\\node_modules' ]
+verbose binRoot [ 'W:\\workspace\\node-igniter\\node_modules\\.bin',
+verbose binRoot   { sequelize: 'bin/sequelize' } ]
+info postuninstall sequelize@1.3.3
+verbose installOne cb sequelize@1.3.3
+ERR! Error: write() after end()
+ERR!     at decorate (C:\Program Files\nodejs\node_modules\npm\node_modules\fstream\lib\abstract.js:64:36)
+ERR!     at Extract.error (C:\Program Files\nodejs\node_modules\npm\node_modules\fstream\lib\abstract.js:58:12)
+ERR!     at Extract.write (C:\Program Files\nodejs\node_modules\npm\node_modules\tar\lib\parse.js:71:17)
+ERR!     at Unzip.ondata (stream.js:38:26)
+ERR!     at Unzip.emit (events.js:67:17)
+ERR!     at Object.callback (zlib.js:366:12)
+ERR! Report this *entire* log at:
+ERR!     <http://github.com/isaacs/npm/issues>
+ERR! or email it to:
+ERR!     <npm-@googlegroups.com>
+ERR! 
+ERR! System Windows_NT 5.1.2600
+ERR! command "C:\\Program Files\\nodejs\\\\node.exe" "C:\\Program Files\\nodejs\\node_modules\\npm\\bin\\npm-cli.js" "install" "sequelize"
+ERR! cwd W:\workspace\node-igniter
+ERR! node -v v0.6.3
+ERR! npm -v 1.1.0-alpha-2
+ERR! fstream_class Extract
+ERR! message write() after end()
+ERR! fstream_stack Extract.write (C:\Program Files\nodejs\node_modules\npm\node_modules\tar\lib\parse.js:71:17)
+ERR! fstream_stack Unzip.ondata (stream.js:38:26)
+ERR! fstream_stack Unzip.emit (events.js:67:17)
+ERR! fstream_stack Object.callback (zlib.js:366:12)
+verbose exit [ 1, true ]

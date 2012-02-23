@@ -10,6 +10,9 @@
 	}
 	
 	var CI_Compat = new function CI_Compat() {
+		CI_Compat.__construct = function() {
+			
+		}
 		/**
 		 * ctype_digit()
 		 *
@@ -20,16 +23,14 @@
 		 * @param	string
 		 * @return	bool
 		 */
-		if(PHP.function_exists('ctype_digit') == false) {
-			this.ctype_digit = function($str) {
-				if (PHP.is_string($str) == false || $str == '') {
-					return false;
-				}
-				
-				var regex = new RegExp('/[^0-9]/');
-				return ($str.test(regex) == false);
-			}	
-		}
+		CI_Compat.ctype_digit = function($str) {
+			if (PHP.is_string($str) == false || $str == '') {
+				return false;
+			}
+			
+			var regex = new RegExp('/[^0-9]/');
+			return ($str.test(regex) == false);
+		}	
 		
 		// --------------------------------------------------------------------
 		
@@ -43,19 +44,19 @@
 		 * @param	string
 		 * @return	bool
 		 */
-		if (PHP.function_exists('ctype_alnum') == false) {
-			this.ctype_alnum = function($str) {
-				if (PHP.is_string($str) == false || $str == '') {
-					return false;
-				}
-				
-				var regex = new RegExp('/[^0-9a-z]/i');
-				return ($str.text(regex) == false);
-			}	
-		}
+		CI_Compat.ctype_alnum = function($str) {
+			if (PHP.is_string($str) == false || $str == '') {
+				return false;
+			}
+			
+			var regex = new RegExp('/[^0-9a-z]/i');
+			return ($str.text(regex) == false);
+		}	
 		
 		return CI_Compat;
 	}
+	
+	CI_Compat.prototype.constructor = CI_Compat.__construct();
 	
 	module.exports = CI_Compat;
 })();

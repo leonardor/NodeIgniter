@@ -27,8 +27,7 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/encryption.html
  */
-	var CI_Hooks = new function CI_Hooks() {
-
+	function CI_Hooks() {
 		var $enabled 		= false;
 		var $hooks   		= [];
 		var $in_progress	= false;
@@ -37,8 +36,8 @@
 		 * Constructor
 		 *
 		 */
-		CI_Hooks.__construct = function() {
-			CI_Hooks._initialize();
+		this.__construct = function() {
+			this._initialize();
 			CI_Common.log_message('debug', "Hooks Class Initialized");
 		}
 	  
@@ -50,27 +49,25 @@
 		 * @access	private
 		 * @return	void
 		 */  
-		CI_Hooks._initialize = function() {
-			$CFG = CI_Config;
-	
+		this._initialize = function() {
 			// If hooks are not enabled in the config file
 			// there is nothing else to do
 	
-			if ($CFG.item('enable_hooks') == false) {
+			if (CI_Common.config_item('enable_hooks') == false) {
 				return;
 			}
 	
 			// Grab the "hooks" definition file.
 			// If there are no hooks, we're done.
 	
-			require(PHP.constant('APPPATH') + 'config/hooks' + PHP.constant('EXT'));
+			var $hook = require(PHP.constant('APPPATH') + 'config/hooks' + PHP.constant('EXT'));
 	
 			if ( ! $hook || ! PHP.is_array($hook)) {
 				return;
 			}
 	
-			this.$hooks = $hook;
-			this.$enabled = true;
+			$hooks = $hook;
+			$enabled = true;
 	  	}
 	  
 		// --------------------------------------------------------------------
@@ -84,14 +81,14 @@
 		 * @param	string	the hook name
 		 * @return	mixed
 		 */
-		CI_Hooks._call_hook = function($which) {
+		this._call_hook = function($which) {
 			if ( ! $enabled || ! PHP.isset($hooks[$which])) {
 				return false;
 			}
 	
 			if ($hooks[$which][0] && PHP.is_array($hooks[$which][0])) {
 				for($val in hooks[$which]) {
-					this._run_hook($val);
+					this._run_hook($hooks[$which]);
 				}
 			} else {
 				this._run_hook($hooks[$which]);
@@ -177,10 +174,10 @@
 	
 			if ($class != false) {
 				if ( ! PHP.class_exists($class)) {
-					var $HOOK = require($filepath);
+					var $hook = require($filepath);
 				}
 	
-				$HOOK.$function($params);
+				PHP.call_user_func_array([$hook, $function], $params);
 			} else {
 				if ( ! PHP.function_exists($function)) {
 					require($filepath);
@@ -192,12 +189,10 @@
 			$in_progress = false;
 			return true;
 		}
-	
-		return CI_Hooks;
+
+		return this;
 	}
-	
-	//CI_Hooks.prototype.constructor = CI_Hooks.__construct();
-	
+
 	module.exports = CI_Hooks;
 })();
 // END CI_Hooks class

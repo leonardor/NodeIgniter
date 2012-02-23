@@ -1,40 +1,37 @@
-(function () {
-	var PHP = (function PHP(){
-		var request = null;
-		var response = null;
-		
-		this.$_COOKIES = {};
-		this.$_ENV = {};
-		this.$_SESSION = {};
-		this.$_GET = {};
-		this.$_POST = {};
-		this.$_FILES = {};
-		this.$_REQUEST = {};
-		this.$_SERVER = {};
-		this.$GLOBALS = {};
+(function() {
+	var PHP = new function PHP(){
+		PHP.$_COOKIES = {};
+		PHP.$_ENV = {};
+		PHP.$_SESSION = {};
+		PHP.$_GET = {};
+		PHP.$_POST = {};
+		PHP.$_FILES = {};
+		PHP.$_REQUEST = {};
+		PHP.$_SERVER = {};
+		PHP.$GLOBALS = {};
 		
 		/* predefined constants */
 		
-		this.E_STRICT = 2048;
-		this.PHP_VERSION = '5.0';
-		this.PHP_VERSION_ID = '5.0';
-		this.DIRECTORY_SEPARATOR = '/';
-		this.PATH_SEPARATOR = ':';
-		this.PHP_INI_SCAN_DIR = __dirname;
+		PHP.E_STRICT = 2048;
+		PHP.PHP_VERSION = '5.0';
+		PHP.PHP_VERSION_ID = '5.0';
+		PHP.DIRECTORY_SEPARATOR = '/';
+		PHP.PATH_SEPARATOR = ':';
+		PHP.PHP_INI_SCAN_DIR = __dirname;
 		
-		this.conf = {
+		PHP.conf = {
 			configuration: {
 				core: {
-					ini: this.PHP_INI_SCAN_DIR + this.DIRECTORY_SEPARATOR + 'php.ini.js',
+					ini: PHP.PHP_INI_SCAN_DIR + PHP.DIRECTORY_SEPARATOR + 'php.ini.js',
 				}
 			},
 			xdebug: {
-				ini: this.PHP_INI_SCAN_DIR + this.DIRECTORY_SEPARATOR + 'modules' + this.DIRECTORY_SEPARATOR + 'xdebug' + this.DIRECTORY_SEPARATOR + 'xdebug.ini.js',
+				ini: PHP.PHP_INI_SCAN_DIR + PHP.DIRECTORY_SEPARATOR + 'modules' + PHP.DIRECTORY_SEPARATOR + 'xdebug' + PHP.DIRECTORY_SEPARATOR + 'xdebug.ini.js',
 				directives: {}
 			}
 		}
 		
-		this.flags = { 
+		PHP.flags = { 
 			SCANDIR_SORT_ASCENDING: 1,
 			SCANDIR_SORT_DESCENDING: 2,
 			SCANDIR_SORT_NONE: 0,
@@ -71,23 +68,23 @@
 			PREG_OFFSET_CAPTURE: 0
 		};
 		
-		this.modules = {}
+		PHP.modules = {}
 		
 		var _dl = function(name) {
 			var module = {};
 			
-			for(i in this.conf[name]) {
-				var mainconf = this.conf[name][i];
+			for(var i in PHP.conf[name]) {
+				var mainconf = PHP.conf[name][i];
 					
 				if(typeof(mainconf) == 'object') {
-					for(m in mainconf) {
+					for(var m in mainconf) {
 						if(m == 'ini') {
 							var file = mainconf[m];
 							var conf = require(file);
 							
 							module[m] = {};
 							
-							for(k in conf) {
+							for(var k in conf) {
 								module[m][k] = conf[k];
 							}
 						}
@@ -99,22 +96,19 @@
 							
 						module[i] = {};
 						
-						for(k in conf) {
+						for(var k in conf) {
 							module[i][k] = conf[k];
 						}
 					}
 				}
 			}
 			
-			this.modules[name] = module;
+			PHP.modules[name] = module;
 			
 			return module;
 		}
 		
-		this.init = function(request, response) {
-			this.request = request;
-			this.response = response;
-			
+		PHP.__construct = function(request, response) {
 			_init_server(request);
 			_init_cookies(request);
 			_init_environment(request);
@@ -131,38 +125,38 @@
 		var _init_server = function(request) {
 			var headers = request.headers;
 	    	
-	    	for(header in headers) {
+	    	for(var header in headers) {
 	    		switch(header) {
 	    			case 'some_header':
 	    			break;
 	    			default:
-	    				this.$_SERVER['HTTP_' + header.toUpperCase().replace('-', '_')] = headers[header];
+	    				PHP.$_SERVER['HTTP_' + header.toUpperCase().replace('-', '_')] = headers[header];
 	    		}
 	    	}
 	    	
-	    	this.$_SERVER['REQUEST_METHOD']		= request.method;
-	    	this.$_SERVER['REQUEST_URI']		= request.url;
-	    	this.$_SERVER['GATEWAY_PROTOCOL']	= 'CGI/1.1';
-	    	this.$_SERVER['SERVER_SOFTWARE']	= 'nodejs ' + process.version;
+	    	PHP.$_SERVER['REQUEST_METHOD']		= request.method;
+	    	PHP.$_SERVER['REQUEST_URI']		= request.url;
+	    	PHP.$_SERVER['GATEWAY_PROTOCOL']	= 'CGI/1.1';
+	    	PHP.$_SERVER['SERVER_SOFTWARE']	= 'nodejs ' + process.version;
 	    	
-	    	Url = require('url');
+	    	var Url = require('url');
 	    	
 	    	var queryString = [];
 	    	
-	    	for(key in Url.parse(request.url, true).query) {
+	    	for(var key in Url.parse(request.url, true).query) {
 	    		queryString.push(key+'='+Url.parse(request.url, true).query[key]);
 	    	}
 	    	
-	    	this.$_SERVER['QUERY_STRING']		= queryString.join('&');
-	    	this.$_SERVER['PATH_INFO']			= Url.parse(request.url, true).pathname;
-	    	this.$_SERVER['ORIG_PATH_INFO']		= Url.parse(request.url, true).path;
-	    	this.$_SERVER['SCRIPT_NAME']		= Url.parse(request.url, true).pathname;
-	    	this.$_SERVER['SCRIPT_FILENAME']	= process.cwd() + Url.parse(request.url, true).pathname;
-	    	this.$_SERVER['PHP_SELF']			= Url.parse(request.url, true).pathname;
+	    	PHP.$_SERVER['QUERY_STRING']		= queryString.join('&');
+	    	PHP.$_SERVER['PATH_INFO']			= Url.parse(request.url, true).pathname;
+	    	PHP.$_SERVER['ORIG_PATH_INFO']		= Url.parse(request.url, true).path;
+	    	PHP.$_SERVER['SCRIPT_NAME']		= Url.parse(request.url, true).pathname;
+	    	PHP.$_SERVER['SCRIPT_FILENAME']	= process.cwd() + Url.parse(request.url, true).pathname;
+	    	PHP.$_SERVER['PHP_SELF']			= Url.parse(request.url, true).pathname;
 
 	    	var Net = require('net');
 	    	
-	    	this.$_SERVER['REMOTE_ADDR'] 		= request.socket.remoteAddress;
+	    	PHP.$_SERVER['REMOTE_ADDR'] 		= request.socket.remoteAddress;
 		}
 		
 		var _init_cookies = function(request) {
@@ -171,14 +165,14 @@
 	    	if(cookie != undefined) {
 	    		cookie.split(';').forEach(function(cookie) {
 	    			var parts = cookie.split('=');
-	    			this.$_COOKIES[parts[0].trim()] = (parts[1] || '').trim();
+	    			PHP.$_COOKIES[parts[0].trim()] = (parts[1] || '').trim();
 	    		});
 	    	}
 	    }
 		
 		var _init_environment = function(request) {
-			for(i in process.env) {
-				this.$_ENV[i] = process.env[i];
+			for(var i in process.env) {
+				PHP.$_ENV[i] = process.env[i];
 			}
 		}
 		
@@ -186,12 +180,12 @@
 			
 		}
 		
-		this.constant = function(name) {
-	    	return this.$GLOBALS[name];
+		PHP.constant = function(name) {
+	    	return PHP.$GLOBALS[name];
 	    }
 		
-		this.flag = function(name) {
-	    	return this.flags[name];
+		PHP.flag = function(name) {
+	    	return PHP.flags[name];
 	    }
 		
 		/*
@@ -200,35 +194,39 @@
 		########################
 		*/
 
-		this.array_diff = function (array1) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_diff.js')(array1);  
+		PHP.addslashes = function (str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/addslashes.js')(str);  
 		}
 		
-		this.array_map = function (callback, array) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_map.js')(callback, array);  
+		PHP.array_diff = function (array1) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_diff.js')(array1);  
+		}
+		
+		PHP.array_map = function (callback, array) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_map.js')(callback, array);  
 		}
 
-		this.array_keys = function(input, search_value, argStrict) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_keys.js')(input, search_value, argStrict); 
+		PHP.array_keys = function(input, search_value, argStrict) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_keys.js')(input, search_value, argStrict); 
 		}
 		
-		this.array_merge = function(array1, array2) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_merge.js')(array1, array2); 
+		PHP.array_merge = function(array1, array2) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_merge.js')(array1, array2); 
 		}
 		
-		this.array_slice = function(arr, offst, lgth, preserve_keys) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_slice.js')(arr, offst, lgth, preserve_keys); 
+		PHP.array_slice = function(arr, offst, lgth, preserve_keys) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_slice.js')(arr, offst, lgth, preserve_keys); 
 		}
 		
-		this.array_values = function(input) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_values.js')(input); 
+		PHP.array_values = function(input) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_values.js')(input); 
 		}
 		
-		this.array_unshift = function(array) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/array_unshift.js')(array); 
+		PHP.array_unshift = function(array) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_unshift.js')(array); 
 		}
 		
-		this.chmod = function(filename, mode) {
+		PHP.chmod = function(filename, mode) {
 			FileSystem.chmod(filename, mode, function(err, changed) {
 				if(err) throw err;
 				
@@ -236,51 +234,51 @@
 			});
 		}
 		
-		this.call_user_func_array = function(cb, parameters) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/call_user_func_array.js')(cb, parameters); 
+		PHP.call_user_func_array = function(cb, parameters) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/call_user_func_array.js')(cb, parameters); 
 		}
 		
-		this.count = function(mixed_var, mode) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/count.js')(mixed_var, mode); 
+		PHP.count = function(mixed_var, mode) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/count.js')(mixed_var, mode); 
 		}
 		
-		this.date = function(format, timestamp) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/date.js')(format, timestamp);
+		PHP.date = function(format, timestamp) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/date.js')(format, timestamp);
 		}
 		
-		this.define = function($name, $value) {
-	    	this.$GLOBALS[$name] = $value;
+		PHP.define = function($name, $value) {
+			PHP.$GLOBALS[$name] = $value;
 	    }
 	    
-		this.defined = function($name) {
-	    	if(this.$GLOBALS[$name]) {
+		PHP.defined = function($name) {
+	    	if(PHP.$GLOBALS[$name]) {
 	    		return true;
 	    	} else {
 	    		return false;
 	    	}
 	    }
 	    
-		this.echo = function(str) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/echo.js')(str, response);
+		PHP.echo = function(str) {
+			response.write(str);
 	    }
 		
-		this.end = function(array) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/end.js')(array);
+		PHP.end = function(array) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/end.js')(array);
 		}
 	    
-		this.exit = function(status) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/exit.js')(status, this.response);
+		PHP.exit = function(status) {
+			response.end(status);
 	    }
 		
-		this.explode = function(delimiter, string, limit) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/explode.js')(delimiter, string, limit);
+		PHP.explode = function(delimiter, string, limit) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/explode.js')(delimiter, string, limit);
 		}
 		
-		this.extract = function(array, type, prefix) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/extract.js')(array, type, prefix);
+		PHP.extract = function(array, type, prefix) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/extract.js')(array, type, prefix);
 		}
 		
-		this.file_exists = function(filename) {
+		PHP.file_exists = function(filename) {
 			try {
 				var stat = FileSystem.lstatSync(filename);
 				
@@ -295,7 +293,7 @@
 			}
 		}
 		
-		this.file_get_contents = function(url, flags, context, offset, maxlen) {
+		PHP.file_get_contents = function(url, flags, context, offset, maxlen) {
 			FileSystem.readFile(url, undefined, function (err, data) {
 				if (err) throw err;
 				
@@ -303,7 +301,7 @@
 			})
 		}
 	    
-		this.fclose = function(handle) {
+		PHP.fclose = function(handle) {
 			try {
 				var fc = FileSystem.closeSync(handle);
 				
@@ -314,11 +312,11 @@
 			}
 		}
 
-		this.flock = function(handle, operation, wouldblock) {
+		PHP.flock = function(handle, operation, wouldblock) {
 			return true;
 		}
 		
-		this.fopen = function(filename, mode, use_include_path, context) {
+		PHP.fopen = function(filename, mode, use_include_path, context) {
 			var file = (use_include_path != null)?use_include_path + filename:filename;
 			
 			try {
@@ -331,7 +329,7 @@
 			}
 	    }
 			
-		this.fwrite = function(handle, string, length) {
+		PHP.fwrite = function(handle, string, length) {
 			try {
 				var bytes = FileSystem.writeSync(handle, string, null, undefined);
 				
@@ -342,50 +340,54 @@
 			}
 		}
 	    
-		this.function_exists = function(function_name) {
+		PHP.function_exists = function(function_name) {
 	    	return this[function_name];
 	    }
 	    
-		this.get_class_methods = function (obj) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/get_class_methods.js')(obj);  
+		PHP.get_class_methods = function (obj) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/get_class_methods.js')(obj);  
 		}
 		
-		this.get_constants = function(key) {
-	    	return this.$GLOBALS;
+		PHP.get_constants = function(key) {
+	    	return PHP.$GLOBALS;
 	    }
 		
-		this.get_object_vars = function(obj) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/get_object_vars.js')(obj);
+		PHP.get_object_vars = function(obj) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/get_object_vars.js')(obj);
 		}
 	    
-		this.getenv = function(value) {
-			return (this.$_ENV[value] || '');
+		PHP.getenv = function(value) {
+			return (PHP.$_ENV[value] || '');
 		}
 		
-		this.get_magic_quotes_gpc = function() {
+		PHP.get_magic_quotes_gpc = function() {
 			return false;
 		}
 		
-		this.headr = function(string, replace, http_response_code, response) {
+		PHP.get_class = function(object) {
+			return (object.name || '');
+		}
+		
+		PHP.header = function(string, replace, http_response_code, response) {
 			console.log('STATUS:' + http_response_code);
 			
 	    	var header = string.split(':');
 	    	console.log(header[0] + ':' + header[1]);
 	    }
 
-		this.implode = function(glue, pieces) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/implode.js')(glue, pieces);
+		PHP.implode = function(glue, pieces) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/implode.js')(glue, pieces);
 		}
 		
-		this.in_array = function(needle, haystack, argStrict) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/in_array.js')(needle, haystack, argStrict); 
+		PHP.in_array = function(needle, haystack, argStrict) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/in_array.js')(needle, haystack, argStrict); 
 		}
 	    
-		this.is_array = function(mixed_var) {
+		PHP.is_array = function(mixed_var) {
 			return (typeof(mixed_var) == 'object') || (mixed_var instanceof Array);
 	    }
 
-		this.is_dir = function(directory) {
+		PHP.is_dir = function(directory) {
 			try {
 				var stat = FileSystem.statSync(directory);
 				
@@ -400,48 +402,52 @@
 			}
 		}
 	    
-		this.is_numeric = function(mixed_var) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/is_numeric.js')(mixed_var);
+		PHP.is_numeric = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/is_numeric.js')(mixed_var);
 	    }
 		
-		this.is_null = function(mixed_var) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/is_null.js')(mixed_var);
+		PHP.is_null = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/is_null.js')(mixed_var);
 		}
 		
-		this.is_object = function(mixed_var) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/is_object.js')(mixed_var);
+		PHP.is_object = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/is_object.js')(mixed_var);
+		}
+		
+		PHP.is_resource = function(handle) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/is_resource.js')(handle);
 		}
 	    
-		this.is_string = function(mixed_var) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/is_string.js')(mixed_var);
+		PHP.is_string = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/is_string.js')(mixed_var);
 	    }
 	    
-		this.is_writable = function(filename) {
+		PHP.is_writable = function(filename) {
 	    	return true;
 	    }
 	    
-		this.isset = function(mixed_var) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/isset.js')(mixed_var);
+		PHP.isset = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/isset.js')(mixed_var);
 	    }
 	    
-		this.ini_get = function(varname) {
-	        if (this.modules['configuration'].ini && this.modules['configuration'].ini[varname] && this.modules['configuration'].ini[varname].local_value !== undefined) {
-	            if (this.modules['configuration'].ini[varname].local_value === null) {
+		PHP.ini_get = function(varname) {
+	        if (PHP.modules['configuration'].ini && PHP.modules['configuration'].ini[varname] && PHP.modules['configuration'].ini[varname].local_value !== undefined) {
+	            if (PHP.modules['configuration'].ini[varname].local_value === null) {
 	                return '';
 	            }
 	            
-	            return this.modules['configuration'].ini[varname].local_value;
+	            return PHP.modules['configuration'].ini[varname].local_value;
 	        }
 	        
 	        return '';
 	    }
 	    
-		this.ini_set = function (varname, newvalue) {
+		PHP.ini_set = function (varname, newvalue) {
 	        var oldval = '',
 	            that = this;
 	        
-	        this.modules['configuration'].ini[varname] = this.modules['configuration'].ini[varname] || {};
-	        oldval = this.modules['configuration'].ini[varname].local_value || undefined;
+	        PHP.modules['configuration'].ini[varname] = PHP.modules['configuration'].ini[varname] || {};
+	        oldval = PHP.modules['configuration'].ini[varname].local_value || undefined;
 	     
 	        var _set = function (oldval) {
 	            if (typeof oldval == undefined) {
@@ -451,147 +457,187 @@
 	            that.modules['configuration'].ini[varname].local_value.push(newvalue);
 	        };
 	     
-	        this.modules['configuration'].ini[varname].local_value = newvalue;
+	        PHP.modules['configuration'].ini[varname].local_value = newvalue;
 	        
 	        return oldval;
 	    }
 		
-		this.key = function(array) {
+		PHP.key = function(array) {
 			return false;
 		}
 	    
-		this.md5 = function(str) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/md5.js')(str);
+		PHP.md5 = function(str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/md5.js')(str);
 	    }
 		
-		this.method_exists = function(obj, method) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/method_exists.js')(obj, method);
+		PHP.method_exists = function(obj, method) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/method_exists.js')(obj, method);
 		}
 		
-		this.microtime = function(get_as_float) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/microtime.js')(get_as_float);
+		PHP.microtime = function(get_as_float) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/microtime.js')(get_as_float);
 		}
 		
-		this.number_format = function(number, decimals, dec_point, thousands_sep) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/number_format.js')(number, decimals, dec_point, thousands_sep);
+		PHP.mysql_connect = function(hostname, username, password, new_link, client_flags) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_connect.js')(hostname, username, password, new_link, client_flags);
 		}
 		
-		this.ob_end_clean = function() {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/ob_end_clean.js');
+		PHP.mysql_next_result = function(link_identifier) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_next_result.js')(link_identifier);
 		}
 		
-		this.ob_end_flush = function() {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/ob_end_flush.js');
+		PHP.mysql_select_db = function(database_name, link_identifier) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_select_db.js')(database_name, link_identifier);
 		}
 		
-		this.ob_get_contents = function() {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/ob_get_contents.js');
+		PHP.mysql_query = function(query, link_identifier) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_query.js')(query, link_identifier);
 		}
 		
-		this.ob_start = function (output_callback, chunk_size, erase) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/ob_start.js')(output_callback, chunk_size, erase);
+		PHP.mysql_close = function(link_identifier) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_close.js')(link_identifier);
 		}
 		
-		this.ob_get_level = function() {
-			return (this.ini_get('output_buffering') == '')? 0: this.ini_get('output_buffering');
+		PHP.mysql_error = function(link_identifier) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_error.js')(link_identifier);
 		}
 		
-		this.pathinfo = function(path, options) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/pathinfo.js')(path, options);
+		PHP.mysql_errno = function(link_identifier) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_errno.js')(link_identifier);
+		}
+		
+		PHP.mysql_num_rows = function(result) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_num_rows.js')(result);
+		}
+		
+		PHP.number_format = function(number, decimals, dec_point, thousands_sep) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/number_format.js')(number, decimals, dec_point, thousands_sep);
+		}
+		
+		PHP.ob_end_clean = function() {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_end_clean.js');
+		}
+		
+		PHP.ob_end_flush = function() {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_end_flush.js');
+		}
+		
+		PHP.ob_get_contents = function() {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_get_contents.js');
+		}
+		
+		PHP.ob_start = function (output_callback, chunk_size, erase) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_start.js')(output_callback, chunk_size, erase);
+		}
+		
+		PHP.ob_get_level = function() {
+			return (PHP.ini_get('output_buffering') == '')? 0: PHP.ini_get('output_buffering');
+		}
+		
+		PHP.pathinfo = function(path, options) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/pathinfo.js')(path, options);
 		}
 
-		this.php_sapi_name = function() {
+		PHP.php_sapi_name = function() {
 	    	
 	    }
 		
-		this.phpinfo = function() {
+		PHP.phpinfo = function() {
 			var file = __dirname + '/templates/phpinfo.ejs';
 			var str = FileSystem.readFileSync(file, 'utf8');
 			
 			var html = Ejs.render(str, {
-				modules: this.modules,
-				server: this.$_SERVER,
-				env: this.$_ENV,
-				cookies: this.$_COOKIES,
-				globals: this.$GLOBALS
+				modules: PHP.modules,
+				server: PHP.$_SERVER,
+				env: PHP.$_ENV,
+				cookies: PHP.$_COOKIES,
+				globals: PHP.$GLOBALS
 			});
 			
 			return html;
 		}
 		
-		this.preg_replace = function(pattern, replacement, subject, limit, count) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/preg_replace.js')(pattern, replacement, subject, limit, count);
+		PHP.preg_replace = function(pattern, replacement, subject, limit, count) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/preg_replace.js')(pattern, replacement, subject, limit, count);
 		}
 		
-		this.print_r = function(array, return_val) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/print_r.js')(array, return_val);
+		PHP.print_r = function(array, return_val) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/print_r.js')(array, return_val);
 		}
 	    
-		this.phpversion = function($extension) {
-			return this.PHP_VERSION_ID;
+		PHP.phpversion = function($extension) {
+			return PHP.PHP_VERSION_ID;
 		}
 		
-		this.preg_match = function(pattern, subject, matches, flags, offset) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/preg_match.js')(pattern, subject, matches, flags, offset);
+		PHP.preg_match = function(pattern, subject, matches, flags, offset) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/preg_match.js')(pattern, subject, matches, flags, offset);
 		}
 		
-		this.preg_quote = function(str, delimiter) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/preg_quote.js')(str, delimiter);
+		PHP.preg_quote = function(str, delimiter) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/preg_quote.js')(str, delimiter);
 		}
 		
-		this.rand = function(min, max) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/rand.js')(min, max);
+		PHP.rand = function(min, max) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/rand.js')(min, max);
 	    }
 	    
-		this.rtrim = function(str, charlist) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/rtrim.js')(str, charlist);
+		PHP.rtrim = function(str, charlist) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/rtrim.js')(str, charlist);
 	    }
 		
-		this.set_error_handler = function(error_handler, error_types) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/set_error_handler.js')(error_handler, error_types);
+		PHP.set_error_handler = function(error_handler, error_types) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/set_error_handler.js')(error_handler, error_types);
 		}
 		
-		this.str_replace = function(search, replace, subject, count) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/str_replace.js')(search, replace, subject, count);
+		PHP.str_replace = function(search, replace, subject, count) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/str_replace.js')(search, replace, subject, count);
 		}
 		
-		this.strncmp = function(str1, str2, lgth) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/strncmp.js')(str1, str2, lgth);
+		PHP.strncmp = function(str1, str2, lgth) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strncmp.js')(str1, str2, lgth);
 		}
 		
-		this.strtolower = function(str) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/strtolower.js')(str);
+		PHP.strtolower = function(str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strtolower.js')(str);
 		}
 		
-		this.strtoupper = function(str) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/strtoupper.js')(str);
+		PHP.strtoupper = function(str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strtoupper.js')(str);
 		}
 	    
-		this.strpos = function(haystack, needle, offset) {
-			require(this.PHP_INI_SCAN_DIR + '/functions/strpos.js')(haystack, needle, offset);
+		PHP.strpos = function(haystack, needle, offset) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strpos.js')(haystack, needle, offset);
 		}
 		
-		this.substr = function(str, start, len) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/substr.js')(str, start, len);
-	    }
-	    
-		this.trim = function(str, charlist) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/trim.js')(str, charlist);
+		PHP.substr = function(str, start, len) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/substr.js')(str, start, len);
 	    }
 		
-		this.ucfirst = function(str) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/ucfirst.js')(str);
+		PHP.stripslashes = function(str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/stripslashes.js')(str);
+	    }
+		
+		PHP.serialize = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/serialize.js')(mixed_var);
+	    }
+	    
+		PHP.trim = function(str, charlist) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/trim.js')(str, charlist);
+	    }
+		
+		PHP.ucfirst = function(str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ucfirst.js')(str);
 		}
 	    
-		this.unlink = function($filename, $context) {
+		PHP.unlink = function($filename, $context) {
 			
 	    }
 		
-		this.unset = function(mixed_var) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/unset.js')(mixed_var);
+		PHP.unset = function(mixed_var) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/unset.js')(mixed_var);
 		}
 		
-		this.var_dump = function($expression) {
+		PHP.var_dump = function($expression) {
 			var out = '';
 			
 			if(typeof($expression) == 'object') {
@@ -617,13 +663,12 @@
 			return out;
 		}
 	    
-		this.version_compare = function(v1, v2, operator) {
-			return require(this.PHP_INI_SCAN_DIR + '/functions/version_compare.js')(v1, v2, operator);
+		PHP.version_compare = function(v1, v2, operator) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/version_compare.js')(v1, v2, operator);
 	    }
-		
-	    
-	    return this;
-	})();
-	    
+
+	    return PHP;
+	}
+
 	module.exports = PHP;
-}());
+})();

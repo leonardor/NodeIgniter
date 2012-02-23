@@ -24,7 +24,7 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/exceptions.html
  */
-	var CI_Exceptions = new function CI_Exceptions() {
+	function CI_Exceptions() {
 		var $action;
 		var $severity;
 		var $message;
@@ -33,18 +33,18 @@
 		var $ob_level;
 	
 		var $levels = {
-							E_ERROR:	'Error',
-							E_WARNING:	'Warning',
-							E_PARSE:	'Parsing Error',
-							E_NOTICE:	'Notice',
-							E_CORE_ERROR:	'Core Error',
-							E_CORE_WARNING:	'Core Warning',
-							E_COMPILE_ERROR:	'Compile Error',
-							E_COMPILE_WARNING:	'Compile Warning',
-							E_USER_ERROR:	'User Error',
-							E_USER_WARNING:	'User Warning',
-							E_USER_NOTICE:	'User Notice',
-							E_STRICT:	'Runtime Notice'
+			E_ERROR:	'Error',
+			E_WARNING:	'Warning',
+			E_PARSE:	'Parsing Error',
+			E_NOTICE:	'Notice',
+			E_CORE_ERROR:	'Core Error',
+			E_CORE_WARNING:	'Core Warning',
+			E_COMPILE_ERROR:	'Compile Error',
+			E_COMPILE_WARNING:	'Compile Warning',
+			E_USER_ERROR:	'User Error',
+			E_USER_WARNING:	'User Warning',
+			E_USER_NOTICE:	'User Notice',
+			E_STRICT:	'Runtime Notice'
 		};
 	
 	
@@ -52,8 +52,8 @@
 		 * Constructor
 		 *
 		 */	
-		CI_Exceptions.__construct = function() {
-			this.$ob_level = PHP.ob_get_level();
+		this.__construct = function() {
+			$ob_level = PHP.ob_get_level();
 			// Note:  Do not log messages from this constructor.
 		}
 	  	
@@ -71,8 +71,8 @@
 		 * @param	string	the error line number
 		 * @return	string
 		 */
-		CI_Exceptions.log_exception = function($severity, $message, $filepath, $line) {	
-			$severity = ( ! PHP.isset(this.$levels[$severity])) ? $severity : this.$levels[$severity];
+		this.log_exception = function($severity, $message, $filepath, $line) {	
+			$severity = ( !$levels[$severity]) ? $severity : $levels[$severity];
 			
 			CI_Common.log_message('error', 'Severity: ' + $severity + '  --> ' + $message +  ' ' + $filepath + ' ' + $line, true);
 		}
@@ -86,14 +86,13 @@
 		 * @param	string
 		 * @return	string
 		 */
-		CI_Exceptions.show_404 = function($page) {	
+		this.show_404 = function($page) {	
 			$heading = "404 Page Not Found";
 			$message = "The page you requested was not found.";
 	
 			CI_Common.log_message('error', '404 Page Not Found --> ' + $page);
 			
-			PHP.echo(this.show_error($heading, $message, 'error_404', 404));
-			PHP.exit();
+			return this.show_error($heading, $message, 'error_404', 404);
 		}
 	  	
 		// --------------------------------------------------------------------
@@ -111,11 +110,13 @@
 		 * @param	string	the template name
 		 * @return	string
 		 */
-		CI_Exceptions.show_error = function($heading, $message, $template, $status_code) {
-			CI_Common.set_status_header($status_code);
+		this.show_error = function($heading, $message, $template, $status_code) {
+			CI_Common.set_status_header($status_code, $message);
 			
 			$message = '<p>' + PHP.implode('</p><p>', ( ! PHP.is_array($message)) ? $message : $message) + '</p>';
 	
+			console.log(PHP.constant('APPPATH') + 'errors/' + $template + '.ejs');
+			
 			var file = PHP.constant('APPPATH') + 'errors/' + $template + '.ejs';
 			
 			var str = FileSystem.readFileSync(file, 'utf8');
@@ -140,14 +141,14 @@
 		 * @param	string	the error line number
 		 * @return	string
 		 */
-		CI_Exceptions.show_php_error = function($severity, $message, $filepath, $line) {	
+		this.show_php_error = function($severity, $message, $filepath, $line) {	
 			$severity = ( ! isset(this.$levels[$severity])) ? $severity : this.$levels[$severity];
 		
 			$filepath = PHP.str_replace("\\", "/", $filepath);
 			
 			// For safety reasons we do not show the full file path
 			if (false !== PHP.strpos($filepath, '/')) {
-				$x = PHP.explode('/', $filepath);
+				var $x = PHP.explode('/', $filepath);
 				$filepath = $x[PHP.count($x)-2] + '/' + PHP.end($x);
 			}
 			
@@ -166,11 +167,9 @@
 
 		}
 	
-		return CI_Exceptions;
+		return this;
 	}
-	
-	CI_Exceptions.prototype.constructor = CI_Exceptions.__construct();
-	
+
 	module.exports = CI_Exceptions;
 })();
 // END Exceptions Class

@@ -27,11 +27,11 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/benchmark.html
  */
-	var CI_Benchmark = new function CI_Benchmark() {
+	function CI_Benchmark() {
 
 		var $marker = [];
 	
-		CI_Benchmark.__construct = function() {
+		this.__construct = function() {
 			
 		}
 		
@@ -47,7 +47,7 @@
 		 * @param	string	$name	name of the marker
 		 * @return	void
 		 */
-		CI_Benchmark.mark = function($name) {
+		this.mark = function($name) {
 			$marker[$name] = PHP.microtime();
 		}
 	
@@ -67,7 +67,7 @@
 		 * @param	integer	the number of decimal places
 		 * @return	mixed
 		 */
-		CI_Benchmark.elapsed_time = function($point1, $point2, $decimals) {
+		this.elapsed_time = function($point1, $point2, $decimals) {
 			if ($point1 == '') {
 				return '{elapsed_time}';
 			}
@@ -80,14 +80,14 @@
 				$marker[$point2] = PHP.microtime();
 			}
 		
-			$s = PHP.explode(' ', $marker[$point1]);
-			$sm = $s[0];
-			$ss = $s[1];
+			var $s = PHP.explode(' ', $marker[$point1]);
+			var $sm = $s[0];
+			var $ss = $s[1];
 	
-			$e = PHP.explode(' ', $marker[$point2]);
+			var $e = PHP.explode(' ', $marker[$point2]);
 
-			$em = $e[0];
-			$es = $e[1];
+			var $em = $e[0];
+			var $es = $e[1];
 	
 			return PHP.number_format(($em + $es) - ($sm + $ss), $decimals);
 		}
@@ -105,18 +105,15 @@
 		 * @access	public
 		 * @return	string
 		 */
-		CI_Benchmark.memory_usage = function() {
+		this.memory_usage = function() {
 			return '{memory_usage}';
 		}
 	
-		return CI_Benchmark;
+		return this;
 	}
-	
-	//CI_Benchmark.prototype.constructor = CI_Benchmark.__construct();
 	
 	module.exports = CI_Benchmark;
 })();
-
 // END CI_Benchmark class
 
 /* End of file Benchmark.php */

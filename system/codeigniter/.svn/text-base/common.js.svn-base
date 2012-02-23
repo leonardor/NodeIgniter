@@ -11,7 +11,10 @@
 	*/
 	var CI_Common = new function CI_Common() {
 		// ------------------------------------------------------------------------
+		var $objects = [];
 		
+		CI_Common.__construct = function() {
+		}
 		/**
 		 * Tests for file writability
 		 *
@@ -67,47 +70,59 @@
 		* @return	object
 		*/
 		CI_Common.load_class = function($class, $instantiate) {
-			var $objects = [];
-		
 			// Does the class exist?  If so, we're done...
-			if (PHP.isset($objects[$class])) {
+			if($objects[$class]) {
 				return $objects[$class];
 			}
 		
+			var $name = ($class != 'Controller') ? 'CI_' + $class : $class;
+			var $subname = this.config_item('subclass_prefix') + $class;
+			
 			// If the requested class does not exist in the application/libraries
 			// folder we'll load the native class from the system/libraries folder.	
 			if (PHP.file_exists(PHP.constant('APPPATH') + 'libraries/' + this.config_item('subclass_prefix') + $class + PHP.constant('EXT'))) {
 				var $c = require(PHP.constant('BASEPATH') + 'libraries/' + $class + PHP.constant('EXT'));
+				global[$name] = $c;
 				var $sc = require(PHP.constant('APPPATH') + 'libraries/' + this.config_item('subclass_prefix') + $class + PHP.constant('EXT'));
-				$is_subclass = true;
+				global[$subname] = $sc;
+				var $is_subclass = true;
 			} else {
 				if (PHP.file_exists(PHP.constant('APPPATH') + 'libraries/' + $class + PHP.constant('EXT'))) {
 					var $c = require(PHP.constant('APPPATH') + 'libraries/' + $class + PHP.constant('EXT'));
-					$is_subclass = false;
+					global[$name] = $c;
+					var $is_subclass = false;
 				} else {
 					var $c = require(PHP.constant('BASEPATH') + 'libraries/' + $class + PHP.constant('EXT'));
-					$is_subclass = false;
+					global[$name] = $c;
+					var $is_subclass = false;
 				}
-				
 			}
-		
+			
 			if ($instantiate == false) {
 				$objects[$class] = true;
 				return $objects[$class];
 			}
 		
 			if($is_subclass == true) {
-				$name = this.config_item('subclass_prefix') + $class;
-		
-				$objects[$class] = this.instantiate_class($sc);
+				var $name = this.config_item('subclass_prefix') + $class;
+
+				if(typeof($sc) == 'object') {
+					$objects[$class] = this.instantiate_class($sc);
+				} else {
+					$objects[$class] = this.instantiate_class(new $sc);
+				}
 				
 				return $objects[$class];
 			}
 		
-			$name = ($class != 'Controller') ? 'CI_' + $class : $class;
-		
-			$objects[$class] = this.instantiate_class($c);
-			
+			var $name = ($class != 'Controller') ? 'CI_' + $class : $class;
+
+			if(typeof($c) == 'object') {
+				$objects[$class] = this.instantiate_class($c);
+			} else {
+				$objects[$class] = this.instantiate_class(new $c);
+			}
+				
 			return $objects[$class];
 		}
 		
@@ -163,7 +178,7 @@
 			var $config_item = [];
 		
 			if (!PHP.isset($config_item[$item])) {
-				$config = this.get_config();
+				var $config = this.get_config();
 				
 				if (!$config[$item]) {
 					return false;
@@ -189,11 +204,10 @@
 		* @return	void
 		*/
 		CI_Common.show_error = function($message, $status_code) {
-			$error = this.load_class('Exceptions');
+			var $error = this.load_class('Exceptions');
 			$error.__construct();
-			
-			PHP.echo($error.show_error('An Error Was Encountered', $message, 'error_general', $status_code));
-			PHP.exit();
+			response.write($error.show_error('An Error Was Encountered', $message, 'error_general', $status_code));
+			response.end();
 		}
 		
 		
@@ -208,11 +222,10 @@
 		* @return	void
 		*/
 		CI_Common.show_404 = function($page) {
-			$error = this.load_class('Exceptions');
+			var $error = this.load_class('Exceptions');
 			$error.__construct();
-			
-			$error.show_404($page);
-			PHP.exit();
+			response.write($error.show_404($page));
+			response.end();
 		}
 		
 		/**
@@ -225,15 +238,15 @@
 		* @return	void
 		*/
 		CI_Common.log_message = function($level, $message, $php_error) {
-			$config = this.get_config();
-			
+			var $config = this.get_config();
+
 			if ($config['log_threshold'] == 0) {
 				return;
 			}
-		
-			$LOG = this.load_class('Log');
-			$LOG.__construct();
-			$LOG.write_log($level, $message, $php_error);
+
+			var $log = this.load_class('Log');
+			$log.__construct();
+			$log.write_log($level, $message, $php_error);
 		}
 		
 		/**
@@ -245,7 +258,7 @@
 		 * @return	void
 		 */
 		CI_Common.set_status_header = function($code, $text) {
-			$stati = {
+			var $stati = {
 				200: 'OK',
 				201: 'Created',
 				202: 'Accepted',
@@ -299,14 +312,14 @@
 				this.show_error('No status text available.  Please check your status code number or supply your own message text.', 500);
 			}
 			
-			$server_protocol = (PHP.$_SERVER['SERVER_PROTOCOL']) ? PHP.$_SERVER['SERVER_PROTOCOL'] : false;
+			var $server_protocol = (PHP.$_SERVER['SERVER_PROTOCOL']) ? PHP.$_SERVER['SERVER_PROTOCOL'] : false;
 		
 			if (PHP.substr(PHP.php_sapi_name(), 0, 3) == 'cgi') {
-				PHP.header("Status: " + $code + " " + $text, true);
+				response.setHeader({"Status": $code + " " + $text});
 			} else if ($server_protocol == 'HTTP/1.1' || $server_protocol == 'HTTP/1.0') {
-				PHP.header($server_protocol + " " + $code + " " + $text, true, $code);
+				response.addTrailers({"": $server_protocol + " " + $code + " " + $text});
 			} else {
-				PHP.headr("HTTP/1.1 " + $code + " " + $text, true, $code);
+				response.addTrailers({"": "HTTP/1.1 " + $code + " " + $text});
 			}
 		}
 		
@@ -338,7 +351,6 @@
 			}
 		
 			var CI_Exceptions = this.load_class('Exceptions');
-			CI_Exceptions.__construct();
 		
 			// Should we display the error?
 			// We'll get the current error_reporting level and add its bits
@@ -349,7 +361,7 @@
 			}
 			
 			// Should we log the error?  No?  We're done...
-			$config = this.get_config();
+			var $config = this.get_config();
 			
 			if ($config['log_threshold'] == 0) {
 				return;
@@ -357,7 +369,7 @@
 		
 			//$error->log_exception($severity, $message, $filepath, $line);
 		}
-		
+	
 		return CI_Common;
 	}
 	

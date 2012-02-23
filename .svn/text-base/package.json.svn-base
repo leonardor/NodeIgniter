@@ -1,27 +1,18 @@
 {
-    "name": "ci",
-    "version": "0.1.0",
-    "directories": {
-        "application": "application",
-		"system": "system"
-    },
-    "main": "system/core/ci",
+    "name": "NodeIgniter",
+    "version": "0.0.1",
     "engines": {
-        "node" : ">=0.2.0"
+        "node" : ">=0.6.0"
     },
     "dependencies": {
-      "step": ">=0.0.1",
-      "connect": ">=0.0.1",
-      "quip": ">=0.0.1",
-      "mu": ">=0.0.1",
-      "util": ">=0.0.1"
+      "ejs": ">=0.0.1"
     },
-    "description": "A minimalistic Node module / framework that makes setting up an MVC project a breeze",
-    "author": "Chetan Surpur <chetan.surpur@gmail.com>",
-    "homepage": "http://github.com/chetan51/ni",
+    "description": "CodeIgniter framework ported on Javascript for Node.js",
+    "author": "Leonardo Radoiu <leonardo.radoiu@gmail.com>",
+    "homepage": "http://github.com/leonardor/NodeIgniter",
     "repository" :
     {
         "type" : "git",
-        "url" : "git@github.com:chetan51/ni.git"
+        "url" : "git@github.com:leonardor/NodeIgniter.git"
     }
 }

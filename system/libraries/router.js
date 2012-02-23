@@ -26,17 +26,15 @@
  * @category	Libraries
  * @link		http://codeigniter.com/user_guide/general/routing.html
  */
-	var CI_Router = new function CI_Router() {
+	function CI_Router() {
 			
 		var $error_routes	= [];
 		var $uri_protocol 	= 'auto';
 		var $default_controller;
 		var $scaffolding_request = false; // Must be set to FALSE
 		
-		this.$route			= null;
-		this.$uri 			= null;
-		this.$config 		= null;
-		this.$routes		= {};
+		var $route;
+		this.routes		= {};
 		
 		
 		var $directory		= '';
@@ -48,10 +46,8 @@
 		 *
 		 * Runs the route mapping function.
 		 */
-		CI_Router.__construct = function() {
-			this.$directory		= '';
-			this.$config = CI_Config;
-			this.$uri = CI_Common.load_class('URI');
+		this.__construct = function() {
+			$directory		= '';
 			this._set_routing();
 			CI_Common.log_message('debug', "Router Class Initialized");
 		}
@@ -67,40 +63,42 @@
 		 * @access	private
 		 * @return	void
 		 */
-		CI_Router._set_routing = function() {
+		this._set_routing = function() {
 			// Are query strings enabled in the config file?
 			// If so, we're done since segment based URIs are not used with query strings.
-			if (this.$config.item('enable_query_strings') == true && PHP.$_GET[this.$config.item('controller_trigger')]) {
-				this.set_class(PHP.trim(this.$uri._filter_uri(PHP.$_GET[this.$config.item('controller_trigger')])));
+			if (CI_Common.config_item('enable_query_strings') == true && PHP.$_GET[CI_Common.config_item('controller_trigger')]) {
+				this.set_class(PHP.trim(CI_URI._filter_uri(PHP.$_GET[CI_Common.config_item('controller_trigger')])));
 	
-				if (PHP.$_GET[this.$config.item('function_trigger')]) {
-					this.set_method(PHP.trim(this.$uri._filter_uri(PHP.$_GET[this.$config.item('function_trigger')])));
+				if (PHP.$_GET[CI_Common.config_item('function_trigger')]) {
+					this.set_method(PHP.trim(CI_URI._filter_uri(PHP.$_GET[CI_Common.config_item('function_trigger')])));
 				}
 				
 				return;
 			}
 			
 			// Load the routes.php file.
-			this.$route = require(PHP.constant('APPPATH') + 'config/routes' + PHP.constant('EXT'));
+			$route = require(PHP.constant('APPPATH') + 'config/routes' + PHP.constant('EXT'));
 			
-			this.$routes = ( ! this.$route.routes || ! PHP.is_array(this.$route.routes)) ? {} : this.$route.routes;
-			PHP.unset(this.$route.routes);
+			this.routes = ( ! $route.routes || ! PHP.is_array($route.routes)) ? {} : $route.routes;
+			PHP.unset($route.routes);
 	
 			// Set the default controller so we can display it in the event
 			// the URI doesn't correlated to a valid controller.
-			$default_controller = ( ! this.$route['default_controller'] || this.$route['default_controller'] == '') ? false : PHP.strtolower(this.$route['default_controller']);	
+			$default_controller = ( ! $route['default_controller'] || $route['default_controller'] == '') ? false : PHP.strtolower($route['default_controller']);	
 
 			// Fetch the complete URI string
-			this.$uri._fetch_uri_string();
+			CI_URI._fetch_uri_string();
 
 			// Is there a URI string? If not, the default controller specified in the "routes" file will be shown.
-			if (this.$uri.$uri_string == '') {
+			if (CI_URI.uri_string() == '') {
+				
 				if ($default_controller == false) {
 					CI_Common.show_error("Unable to determine what should be displayed. A default route has not been specified in the routing file.");
+					return;
 				}
 				
 				if (PHP.strpos($default_controller, '/') != false) {
-					$x = PHP.explode('/', $default_controller);
+					var $x = PHP.explode('/', $default_controller);
 	
 					this.set_class(PHP.end($x));
 					this.set_method('index');
@@ -112,26 +110,25 @@
 				}
 				
 				// re-index the routed segments array so it starts with 1 rather than 0
-				this.$uri._reindex_segments();
+				CI_URI._reindex_segments();
 				
 				CI_Common.log_message('debug', "No URI present. Default controller set.");
 				return;
 			}
 			
-			
-			PHP.unset(this.$route['default_controller']);
+			PHP.unset($route['default_controller']);
 			
 			// Do we need to remove the URL suffix?
-			this.$uri._remove_url_suffix();
+			CI_URI._remove_url_suffix();
 			
 			// Compile the segments into an array
-			this.$uri._explode_segments();
+			CI_URI._explode_segments();
 			
 			// Parse any custom routing that may exist
 			this._parse_routes();		
 			
 			// Re-index the segment array so that it starts with 1 rather than 0
-			this.$uri._reindex_segments();
+			CI_URI._reindex_segments();
 		}
 		
 		// --------------------------------------------------------------------
@@ -147,7 +144,7 @@
 		 * @param	bool
 		 * @return	void
 		 */
-		CI_Router._set_request = function($segments) {
+		this._set_request = function($segments) {
 			$segments = this._validate_request($segments);
 			
 			if (PHP.count($segments) == 0) {
@@ -158,9 +155,9 @@
 			
 			if (PHP.isset($segments[1])) {
 				// A scaffolding request. No funny business with the URL
-				if (this.$route['scaffolding_trigger'] == $segments[1] && $segments[1] != '_ci_scaffolding') {
+				if ($route['scaffolding_trigger'] == $segments[1] && $segments[1] != '_ci_scaffolding') {
 					$scaffolding_request = true;
-					PHP.unset(this.$route.config['scaffolding_trigger']);
+					PHP.unset($route.config['scaffolding_trigger']);
 				} else {
 					// A standard method request
 					this.set_method($segments[1]);
@@ -176,7 +173,7 @@
 			// Note: If there is no custom routing, this array will be
 			// identical to $this->uri->segments
 			
-			this.$uri.$rsegments = $segments;
+			CI_URI.$rsegments = $segments;
 		}
 		
 		// --------------------------------------------------------------------
@@ -189,12 +186,14 @@
 		 * @param	array
 		 * @return	array
 		 */	
-		CI_Router._validate_request = function($segments) {
+		this._validate_request = function($segments) {
 			// Does the requested controller exist in the root folder?
 			if (PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + $segments[0] + PHP.constant('EXT'))) {
 				return $segments;
 			}
 	
+			console.log(PHP.constant('APPPATH') + 'controllers/' + $segments[0]);
+			
 			// Is the controller in a sub-folder?
 			if (PHP.is_dir(PHP.constant('APPPATH') + 'controllers/' + $segments[0])) {		
 				// Set the directory and remove it from the segment array
@@ -211,8 +210,8 @@
 					this.set_method('index');
 				
 					// Does the default controller exist in the sub-folder?
-					if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + this.fetch_directory() + this.$default_controller + PHP.constant('EXT'))) {
-						this.$directory = '';
+					if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + this.fetch_directory() + $default_controller + PHP.constant('EXT'))) {
+						$directory = '';
 						return [];
 					}
 				
@@ -222,7 +221,8 @@
 			}
 	
 			// Can't find the requested controller...
-			CI_Common.show_404($segments[0]);
+			CI_Common.show_404($segments[0], 404);
+			return;
 		}
 	
 		// --------------------------------------------------------------------
@@ -237,26 +237,26 @@
 		 * @access	private
 		 * @return	void
 		 */
-		CI_Router._parse_routes = function() {
+		this._parse_routes = function() {
 			// Do we even have any custom routing to deal with?
 			// There is a default scaffolding trigger, so we'll look just for 1
 
-			if (PHP.count(this.$routes) == 0) {
-				this._set_request(this.$uri.$segments);
+			if (PHP.count(this.routes) == 0) {
+				this._set_request(CI_URI.$segments);
 				return;
 			}
 			
 			// Turn the segment array into a URI string
-			$uri = PHP.implode('/', this.$uri.$segments);
+			var $uri = PHP.implode('/', CI_URI.$segments);
 			
 			// Is there a literal match?  If so we're done
-			if (this.$routes[$uri]) {
-				this._set_request(PHP.explode('/', this.$routes[$uri]));		
+			if (this.routes[$uri]) {
+				this._set_request(PHP.explode('/', this.routes[$uri]));		
 				return;
 			}
 			
 			// Loop through the route array looking for wild-cards
-			for($key in this.$routes) {						
+			for(var $key in this.routes) {						
 				// Convert wild-cards to RegEx
 				
 				$key = $key.replace('/:num/', '[0-9]+').replace('/:any/', '.+');
@@ -265,7 +265,7 @@
 				if (PHP.preg_match('#^' + $key + '$#', $uri)) {			
 					// Do we have a back-reference?
 					if (PHP.strpos($val, '$') != false && PHP.strpos($key, '(') != false) {
-						$val = $uri.replace('#^' + $key + '$#', this.$routes[$key]);
+						var $val = $uri.replace('#^' + $key + '$#', this.routes[$key]);
 					}
 					this._set_request(PHP.explode('/', $val));		
 					return;
@@ -274,7 +274,7 @@
 	
 			// If we got this far it means we didn't encounter a
 			// matching route so we'll set the site default route
-			this._set_request(this.$uri.$segments);
+			this._set_request(CI_URI.$segments);
 		}
 	
 		// --------------------------------------------------------------------
@@ -286,7 +286,7 @@
 		 * @param	string
 		 * @return	void
 		 */	
-		CI_Router.set_class = function($classname) {
+		this.set_class = function($classname) {
 			$class = $classname;
 		}
 		
@@ -298,7 +298,7 @@
 		 * @access	public
 		 * @return	string
 		 */	
-		CI_Router.fetch_class = function() {
+		this.fetch_class = function() {
 			return $class;
 		}
 		
@@ -311,7 +311,7 @@
 		 * @param	string
 		 * @return	void
 		 */	
-		CI_Router.set_method = function($methodname) {
+		this.set_method = function($methodname) {
 			$method = $methodname;
 		}
 	
@@ -323,7 +323,7 @@
 		 * @access	public
 		 * @return	string
 		 */	
-		CI_Router.fetch_method = function() {
+		this.fetch_method = function() {
 			if ($method == this.fetch_class()) {
 				return 'index';
 			}
@@ -340,7 +340,7 @@
 		 * @param	string
 		 * @return	void
 		 */	
-		CI_Router.set_directory = function($dir) {
+		this.set_directory = function($dir) {
 			$directory = $dir + '/';
 		}
 	
@@ -352,15 +352,13 @@
 		 * @access	public
 		 * @return	string
 		 */	
-		CI_Router.fetch_directory = function() {
+		this.fetch_directory = function() {
 			return $directory;
 		}
 	
-		return CI_Router;
+		return this;
 	}
 	
-	//CI_Router.prototype.constructor = CI_Router.__construct();
-
 	module.exports = CI_Router;
 })();
 // END Router Class
