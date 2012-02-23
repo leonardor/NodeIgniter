@@ -3,7 +3,6 @@
 		$separator = $separator || 'dash';
 		$lowercase = $lowercase || true;
 		
-		response.write('am incarcat url_title');
 		return $str.toLowerCase();
 	}
 })();

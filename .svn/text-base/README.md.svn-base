@@ -48,3 +48,15 @@ Enjoy!
 Contact
 -------
 If you would like to contact me you can email me at leonardo.radoiu [ at ] gmail.com
+
+Thanks
+------
+
+I want to thank to my colleague Dan Harabor for the nodejs insights and tricks that he had kindfully given to me.
+He is one of the contributors on this framework.
+
+Contributors
+------------
+
+Leonardo Radoiu
+Dan Harabor 
