@@ -1,14 +1,14 @@
 10
 
 dir
-28774
+28966
 svn://dev/nodejs/branches/framework/1.0/application/front/views/templates
 svn://dev
 
 
 
-2012-02-06T17:41:24.962650Z
-28774
+2012-02-23T11:22:08.243993Z
+28962
 leonardo
 
 
@@ -26,33 +26,9 @@ leonardo
 
 a4b13bc7-8a40-0410-a248-d7564483f918
 
-main.tpl
-file
-28830
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-deleted
-
 main.html
 file
-28962
+
 
 
 
@@ -83,28 +59,4 @@ leonardo
 
 
 779
-
-main.jqtpl
-file
-28781
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-deleted
 

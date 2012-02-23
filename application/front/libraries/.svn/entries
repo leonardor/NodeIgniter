@@ -1,14 +1,14 @@
 10
 
 dir
-28860
+28966
 svn://dev/nodejs/branches/framework/1.0/application/front/libraries
 svn://dev
 
 
 
-2012-02-14T16:09:31.473005Z
-28860
+2012-02-23T11:22:08.243993Z
+28962
 leonardo
 
 
@@ -28,7 +28,7 @@ a4b13bc7-8a40-0410-a248-d7564483f918
 
 other_library.js
 file
-28936
+
 
 
 
@@ -62,7 +62,7 @@ leonardo
 
 my_controller.js
 file
-28962
+
 
 
 
@@ -96,7 +96,7 @@ leonardo
 
 my_db.js
 file
-28960
+
 
 
 
@@ -130,7 +130,7 @@ leonardo
 
 my_loader.js
 file
-28962
+
 
 
 
