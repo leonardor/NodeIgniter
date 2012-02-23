@@ -39,7 +39,7 @@ var autoload = {
 |	$autoload['libraries'] = array('database', 'session', 'xmlrpc');
 */
 
-		'libraries': [],
+		'libraries': ['other_library', 'custom_library'],
 
 
 /*
@@ -51,7 +51,7 @@ var autoload = {
 |	$autoload['helper'] = array('url', 'file');
 */
 
-	'helper': [],
+	'helper': ['url', 'string'],
 
 
 /*
@@ -79,7 +79,7 @@ var autoload = {
 |
 */
 
-	'config': [],
+	'config': ['cms'],
 
 
 /*
@@ -95,7 +95,7 @@ var autoload = {
 |
 */
 
-	'language': ['romanian'],
+	'language': ['db'],
 
 
 /*
@@ -108,7 +108,7 @@ var autoload = {
 |
 */
 
-	'model': []
+	'model': ['item']
 
 }
 

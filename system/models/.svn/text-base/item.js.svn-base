@@ -3,39 +3,48 @@
 	
 	Item = Object.create(CI_Model);
 	
+	Item.name = 'Item';
+	
 	Item.__construct = function() {	
+		console.log('Model: Item.__construct()');
+		CI_Model.__construct();
+		return this;
 	}
-		
-	Item.doSomething = function() {
-		CI.load.library('other_library');
 
-		CI.other_library.doSomething();
-			
-		response.write('am incarcat item');
-	}
-		
 	Item.select_items = function() {
 		var self = this;
 		
-		if(CI.db.client) {
-			var $sql = "CALL udsp_item_SelectItems()";
-			
-			CI.db.query($sql).on('data', function(results) {
-				console.log('am interceptat eventul de db.data');
+		CI.db.on('select', function(database) {
+			CI.db.on('set_charset', function(charset) {
+				var $sql = "CALL udsp_item_SelectItems()";
+				
+				CI.db.query($sql).on('data', function(results) {
+					console.log('intercepting db.data event...');
 
-				console.log('emit eventul de model.data');
-				self.emit('data', results);
+					console.log('emitting model.data event...');
+					self.emit('data', results);
+				}).on('error', function(error) {
+					console.log('intercepting db.error event...');
+					console.log('cannot load data of model "' + self.name + '". error: ' + error);
+					
+					console.log('emitting model.error event...');
+					self.emit('error', error);
+				});
+			}).on('error', function(error) {
+				console.log('intercepting db.error event...');
+				console.log('cannot load data of model "' + self.name + '". error: ' + error);
 				
-				return self;
-			}).on('db_error', function(error) {
-				console.log('a aparut o eroare la query');
-				
-				self.emit('model_error', error);
-	
-				return self;
+				console.log('emitting model.error event...');
+				self.emit('error', error);
 			});
-		}
-		
+		}).on('error', function(error) {
+			console.log('intercepting db.error event...');
+			console.log('cannot load data of model "' + self.name + '". error: ' + error);
+			
+			console.log('emitting model.error event...');
+			self.emit('error', error);
+		});
+
 		return self;
 	}
 

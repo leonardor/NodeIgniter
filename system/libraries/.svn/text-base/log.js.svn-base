@@ -50,6 +50,8 @@
 			if (CI_Common.config_item('log_date_format') != '') {
 				$_date_fmt = CI_Common.config_item('log_date_format');
 			}
+			
+			return this;
 		}
 		
 		// --------------------------------------------------------------------
@@ -65,7 +67,10 @@
 		 * @param	bool	whether the error is a native PHP error
 		 * @return	bool
 		 */		
-		this.write_log = function($level, $msg, $php_error) {		
+		this.write_log = function($level, $msg, $php_error) {	
+			$level = $level || 'error';
+			$php_error = $php_error || false;
+			
 			if ($_enabled == false) {
 				return false;
 			}

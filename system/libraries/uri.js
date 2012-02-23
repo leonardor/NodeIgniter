@@ -260,6 +260,8 @@
 		 * @return	string
 		 */
 		this.segment = function($n, $no_result) {
+			$no_result = $no_result || false;
+			
 			return ( ! PHP.isset(this.$segments[$n])) ? $no_result : this.$segments[$n];
 		}
 	
@@ -278,6 +280,8 @@
 		 * @return	string
 		 */
 		this.rsegment = function($n, $no_result) {
+			$no_result = $no_result || false;
+			
 			return ( ! PHP.isset(this.$rsegments[$n])) ? $no_result : this.$rsegments[$n];
 		}
 	
@@ -305,6 +309,9 @@
 		 * @return	array
 		 */
 		this.uri_to_assoc = function($n, $default) {
+			$n = $n || 3;
+			$default = $default || [];
+			
 		 	return this._uri_to_assoc($n, $default, 'segment');
 		}
 		/**
@@ -312,6 +319,9 @@
 		 *
 		 */
 		this.ruri_to_assoc = function($n, $default) {
+			$n = $n || 3;
+			$default = $default || [];
+			
 		 	return this._uri_to_assoc($n, $default, 'rsegment');
 		}
 	
@@ -327,6 +337,10 @@
 		 * @return	array
 		 */
 		this._uri_to_assoc = function($n, $default, $which) {
+			$n = $n || 3;
+			$default = $default || [];
+			$which = $which || 'segment';
+				
 			if ($which == 'segment') {
 				$total_segments = 'total_segments';
 				$segment_array = 'segment_array';
@@ -419,6 +433,8 @@
 		 * @return	string
 		 */
 		this.slash_segment = function($n, $where) {
+			$where = $where || 'trailing';
+			
 			return this._slash_segment($n, $where, 'segment');
 		}
 	
@@ -433,6 +449,8 @@
 		 * @return	string
 		 */
 		this.slash_rsegment = function($n, $where) {
+			$where = $where || 'trailing';
+			
 			return this._slash_segment($n, $where, 'rsegment');
 		}
 	
@@ -448,6 +466,9 @@
 		 * @return	string
 		 */
 		this._slash_segment = function($n, $where, $which) {
+			$where = $where || 'trailing';
+			$which = $which || 'segment';
+				
 			if ($where == 'trailing') {
 				var $trailing	= '/';
 				var $leading	= '';

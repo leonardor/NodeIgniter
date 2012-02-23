@@ -145,6 +145,8 @@
 		 * @return	void
 		 */
 		this._set_request = function($segments) {
+			$segments = $segments || [];
+			
 			$segments = this._validate_request($segments);
 			
 			if (PHP.count($segments) == 0) {

@@ -82,6 +82,8 @@
 		 * @return	mixed
 		 */
 		this._call_hook = function($which) {
+			$which = $which || '';
+				
 			if ( ! $enabled || ! PHP.isset($hooks[$which])) {
 				return false;
 			}

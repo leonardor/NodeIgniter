@@ -55,8 +55,6 @@
 		
 		return CI_Compat;
 	}
-	
-	CI_Compat.prototype.constructor = CI_Compat.__construct();
-	
+
 	module.exports = CI_Compat;
 })();

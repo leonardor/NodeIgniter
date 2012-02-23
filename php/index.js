@@ -50,6 +50,7 @@
 			LOCK_UN: 2,
 			
 			PREG_SPLIT_NO_EMPTY: 0,
+			PREG_OFFSET_CAPTURE: 1,
 			
 			ENT_COMPAT: 0,
 			ENT_QUOTES: 1,
@@ -615,6 +616,10 @@
 		
 		PHP.stripslashes = function(str) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/stripslashes.js')(str);
+	    }
+		
+		PHP.strip_tags = function(input, allowed) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strip_tags.js')(input, allowed);
 	    }
 		
 		PHP.serialize = function(mixed_var) {

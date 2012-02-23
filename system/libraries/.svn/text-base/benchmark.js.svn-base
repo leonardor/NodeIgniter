@@ -68,6 +68,10 @@
 		 * @return	mixed
 		 */
 		this.elapsed_time = function($point1, $point2, $decimals) {
+			$point1 = $point1 || '';
+			$point2 = $point2 || '';
+			$decimals = $decimals || 4;
+			
 			if ($point1 == '') {
 				return '{elapsed_time}';
 			}

@@ -99,6 +99,8 @@
 		 * @return	void
 		 */	
 		this.set_header = function($header, $replace) {
+			$replace = $replace || true;
+			
 			$headers.push([$header, $replace]);
 		}
 	
@@ -114,6 +116,9 @@
 		 * @return	void
 		 */	
 		this.set_status_header = function($code, $text) {
+			$code = $code || '200';
+			$text = $text || '';
+				
 			CI_Common.set_status_header($code, $text);
 		}
 		
@@ -127,6 +132,8 @@
 		 * @return	void
 		 */	
 		this.enable_profiler = function($val) {
+			$val = $val || true;
+			
 			$enable_profiler = (PHP.is_bool($val)) ? $val : true;
 		}
 		
@@ -160,6 +167,7 @@
 		 * @return	mixed
 		 */		
 		this._display = function($output) {	
+			$output = $output || '';
 			// Note:  We use globals because we can't use $CI =& get_instance()
 			// since this function is sometimes called by the caching mechanism,
 			// which happens before the CI super object is available.
@@ -249,7 +257,8 @@
 				CI_Base._output($output);
 			} else {
 				$CI.on('data', function(html) {
-					console.log('am interceptat eventul de controller.data');
+					console.log('intercepting controller.data event...');
+					console.log('sending final output...');
 					response.write(html);
 					response.end();
 					
@@ -269,7 +278,6 @@
 		 * @return	void
 		 */	
 		this._write_cache = function($output) {
-			var $uri = CI_URI;
 			var $path = CI_Common.config_item('cache_path');
 		
 			var $cache_path = ($path == '') ? PHP.constant('BASEPATH') + 'cache/' : $path;
@@ -278,12 +286,13 @@
 				return;
 			}
 			
-			var uri =	CI_Common.config_item('base_url') + CI_Common.config_item('index_page') + $uri.uri_string();
+			var uri =	CI_Common.config_item('base_url') + CI_Common.config_item('index_page') + CI_URI.uri_string();
 			
 			$cache_path += PHP.md5(uri);
+			
+			$fp = PHP.fopen($cache_path, PHP.constant('FOPEN_WRITE_CREATE_DESTRUCTIVE'));
 	
-			if ( ! $fp = PHP.fopen($cache_path, PHP.constant('FOPEN_WRITE_CREATE_DESTRUCTIVE')))
-			{
+			if ( ! $fp) {
 				CI_Common.log_message('error', "Unable to write cache file: " + $cache_path);
 				return;
 			}
@@ -313,14 +322,14 @@
 		 * @return	void
 		 */	
 		this._display_cache = function($CFG, $URI) {
-			var $cache_path = ($CFG.item('cache_path') == '') ? PHP.constant('BASEPATH') + 'cache/' : $CFG.item('cache_path');
+			var $cache_path = (CI_Common.config_item('cache_path') == '') ? PHP.constant('BASEPATH') + 'cache/' : CI_Common.config_item('cache_path');
 				
 			if ( ! PHP.file_exists($cache_path) || ! CI_Common.is_really_writable($cache_path)) {
 				return false;
 			}
 			
 			// Build the file path.  The file name is an MD5 hash of the full URI
-			var uri =	$CFG.item('base_url') + $CFG.item('index_page') + $URI.uri_string();
+			var uri =	$CFG.item('base_url') + $CFG.item('index_page') + CI_URI.uri_string();
 					
 			var $filepath = $cache_path + PHP.md5(uri);
 			

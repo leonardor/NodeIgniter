@@ -1,4 +1,6 @@
 (function() {
+	console.log('loading string helper...');
+	
 	exports.strip_slashes = function($str) {
 		if (PHP.is_array($str)){	
 			for(var $key in $str) {

@@ -6,6 +6,7 @@
 	IndexController.__construct = function () {
 		MY_Controller.__construct();
 		console.log('IndexController.__construct()');
+		return this;
 	}
 
 	IndexController.index = function() {
@@ -16,25 +17,18 @@
 		
 		console.log('IndexController.index()');
 		
-		CI.load.model('item');
-
 		var items = CI.item.select_items();
 		
 		items.on('data', function(results) {
 			console.log('intercepting model.data event...');
 			console.log('getting results: ' + JSON.stringify(results));
 			
-			CI.load.helper('url');
-			CI.helpers.url_title('some_text');
-			
-			CI.load.helper('string');
-			CI.helpers.strip_slashes('some_string');
-			
-			CI.load.library('other_library');
 			CI.other_library.doSomething();
+
+			CI.load.plugin('item');
+			var url = CI.plugins.get_url({ title: 'this _is_ a title # . ' });
 			
-			CI.load.library('custom_library');
-			CI.custom_library.doSomething();
+			console.log(url);
 			
 			var file = PHP.constant('APPPATH') + 'views/templates/main.html';
 			

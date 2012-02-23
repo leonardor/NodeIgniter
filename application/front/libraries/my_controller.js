@@ -8,6 +8,7 @@
 	MY_Controller.__construct = function () {
 		Controller.__construct();
 		console.log('MY_Controller.__construct()');
+		return this;
 	}
 		
 	MY_Controller.index = function() {

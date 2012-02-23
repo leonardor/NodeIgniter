@@ -35,6 +35,7 @@
 		 */
 		this.__construct = function() {
 			CI_Common.log_message('debug', "Language Class Initialized");
+			return this;
 		}
 	
 		// --------------------------------------------------------------------
@@ -48,6 +49,10 @@
 		 * @return	mixed
 		 */
 		this.load = function($langfile, $idiom, $return) {
+			$langfile = $langfile || '';
+			$idiom = $idiom || '';
+			$return = $return || false;
+			
 			$langfile = $langfile || '';
 			$idiom = $idiom || '';
 			$return = $return || false;

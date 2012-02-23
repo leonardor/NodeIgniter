@@ -55,6 +55,7 @@
 		this.__construct = function() {
 			$ob_level = PHP.ob_get_level();
 			// Note:  Do not log messages from this constructor.
+			return this;
 		}
 	  	
 		// --------------------------------------------------------------------
@@ -87,6 +88,8 @@
 		 * @return	string
 		 */
 		this.show_404 = function($page) {	
+			$page = $page || '';
+				
 			$heading = "404 Page Not Found";
 			$message = "The page you requested was not found.";
 	
@@ -111,6 +114,9 @@
 		 * @return	string
 		 */
 		this.show_error = function($heading, $message, $template, $status_code) {
+			$template = $template || 'error_general';
+			$status_code = $status_code || 500;
+			
 			CI_Common.set_status_header($status_code, $message);
 			
 			$message = '<p>' + PHP.implode('</p><p>', ( ! PHP.is_array($message)) ? $message : $message) + '</p>';

@@ -21,10 +21,10 @@
 		this.model = function($model, $name, $db_conn) {	
 			$name = $name || '';
 			$db_conn = $db_conn || true;
-			
+
 			if (PHP.is_array($model)) {
-				for($babe in $model) {
-					this.model($babe);	
+				for(var $babe in $model) {
+					this.model($model[$babe]);	
 				}
 				
 				return;
@@ -59,7 +59,8 @@
 			$model = PHP.strtolower($model);
 			
 			if (!global.CI_Model) {
-				CI_Model = CI_Model = require(PHP.constant('BASEPATH') + 'libraries/model' + PHP.constant('EXT'));
+				CI_Model = CI_Common.load_class('Model');
+				CI_Model.__construct();
 			}
 			
 			if(PHP.file_exists(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constant('EXT'))){
@@ -80,6 +81,7 @@
 			}
 
 			CI[$name] = $c;
+			CI[$name].__construct();
 			CI[$name]._assign_libraries();
 			
 			$_ci_models.push($name);

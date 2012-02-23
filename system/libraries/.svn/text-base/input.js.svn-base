@@ -226,6 +226,9 @@
 		* @return	string
 		*/
 		this._fetch_from_array = function($array, $index, $xss_clean) {
+			$index = $index || '';
+			$xss_clean = $xss_clean || false;
+			
 			if ( ! PHP.isset($array[$index])) {
 				return false;
 			}
@@ -248,6 +251,9 @@
 		* @return	string
 		*/
 		this.get = function($index, $xss_clean) {
+			$index = $index || '';
+			$xss_clean = $xss_clean || false;
+			
 			return this._fetch_from_array(PHP.$_GET, $index, $xss_clean);
 		}
 	
@@ -262,6 +268,9 @@
 		* @return	string
 		*/
 		this.post = function($index, $xss_clean) {
+			$index = $index || '';
+			$xss_clean = $xss_clean || false;
+			
 			return this._fetch_from_array(PHP.$_POST, $index, $xss_clean);
 		}
 	
@@ -276,11 +285,12 @@
 		* @return	string
 		*/
 		this.get_post = function($index, $xss_clean) {
-			if ( ! PHP.isset(PHP.$_POST[$index]) ) {
+			$index = $index || '';
+			$xss_clean = $xss_clean || false;
+			
+			if ( ! PHP.$_POST[$index] ) {
 				return this.get($index, $xss_clean);
-			}
-			else
-			{
+			} else {
 				return this.post($index, $xss_clean);
 			}
 		}
@@ -296,6 +306,9 @@
 		* @return	string
 		*/
 		this.cookie = function($index, $xss_clean) {
+			$index = $index || '';
+			$xss_clean = $xss_clean || false;
+			
 			return this._fetch_from_array(PHP.$_COOKIE, $index, $xss_clean);
 		}
 	
@@ -310,6 +323,9 @@
 		* @return	string
 		*/
 		this.server = function($index, $xss_clean) {
+			$index = $index || '';
+			$xss_clean = $xss_clean || false;
+			
 			return this._fetch_from_array(PHP.$_SERVER, $index, $xss_clean);
 		}
 	
@@ -488,6 +504,8 @@
 		* @return	string
 		*/
 		this.xss_clean = function($str, $is_image) {
+			$is_image = $is_image || false;
+			
 			/*
 			* Is the string an array?
 			*
@@ -934,6 +952,8 @@
 		fix to versions other than PHP 5.x.
 		*/
 		this._html_entity_decode = function($str, $charset) {
+			$charset = $charset || 'UTF-8';
+				
 			if (PHP.stristr($str, '&') == false) return $str;
 	
 			// The reason we are not using html_entity_decode() by itself is because

@@ -6,8 +6,9 @@
 	Item.name = 'Item';
 	
 	Item.__construct = function() {	
-		console.log('Item.__construct()');
+		console.log('Model: Item.__construct()');
 		CI_Model.__construct();
+		return this;
 	}
 
 	Item.select_items = function() {

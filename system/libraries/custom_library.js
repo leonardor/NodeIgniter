@@ -2,6 +2,7 @@
 	function Custom_library() {
 		this.__construct = function() {
 			console.log('custom_library loaded');
+			return this;
 		}
 		
 		this.doSomething = function() {

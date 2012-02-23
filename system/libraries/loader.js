@@ -115,8 +115,9 @@
 			$db_conn = $db_conn || false;
 
 			if (PHP.is_array($model)) {
-				for($babe in $model) {
-					this.model($babe);	
+				for(var $babe in $model) {
+					console.log($model[$babe]);
+					this.model($model[$babe]);	
 				}
 				
 				return;
@@ -434,6 +435,8 @@
 			if (!PHP.is_array($plugins)) {
 				$plugins = [$plugins];
 			}
+			
+			CI_Plugin = require(PHP.constant('BASEPATH') + 'libraries/plugin' + PHP.constant('EXT'));	
 		
 			for(var $plugin in $plugins) {	
 				var $name = $plugins[$plugin];
@@ -454,6 +457,8 @@
 						return;
 					}
 				}
+				
+				$p.__construct();
 				
 				_plugins = PHP.array_merge(_plugins, $p);
 				
@@ -500,8 +505,9 @@
 				$file = [$file];
 			}
 	
-			for($langfile in $file) {	
-				CI.lang.load($langfile, $lang);
+			
+			for(var $langfile in $file) {	
+				CI.lang.load($file[$langfile], $lang);
 			}
 		}
 	
@@ -907,9 +913,11 @@
 			}		
 	
 			// Autoload plugins, helpers and languages
-			for(var $type in ['helper', 'plugin', 'language']) {			
-				if ($autoload[$type] && PHP.count($autoload[$type]) > 0) {
-					this.$type($autoload[$type]);
+			var $array = ['helper', 'plugin', 'language'];
+			
+			for(var $type in $array) {	
+				if ($autoload[$array[$type]] && PHP.count($autoload[$array[$type]]) > 0) {
+					this[$array[$type]]($autoload[$array[$type]]);
 				}		
 			}
 	

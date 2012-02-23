@@ -21,10 +21,10 @@
 		this.model = function($model, $name, $db_conn) {	
 			$name = $name || '';
 			$db_conn = $db_conn || true;
-			
+
 			if (PHP.is_array($model)) {
-				for($babe in $model) {
-					this.model($babe);	
+				for(var $babe in $model) {
+					this.model($model[$babe]);	
 				}
 				
 				return;

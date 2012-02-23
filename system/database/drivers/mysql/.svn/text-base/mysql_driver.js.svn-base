@@ -19,7 +19,7 @@
 			debug: self.$db_debug
 		});
 		
-		console.log('execut db_connect');
+		console.log('connecting to db server on "' + self.$hostname + ':' + self.$port + '"...');
 		
 		client._connect();
 
@@ -34,15 +34,12 @@
 			    console.log('Connection Error:');
 			    console.log(error);
 			    
-			    console.log('emit eventul db.error');
-			    self.emit('db_error', error);
-			    
-			    return error;
+			    console.log('emitting db.error event...');
+			    self.emit('error', error);
 			}
 			
-			console.log('emit eventul db.select');
+			console.log('emitting db.select event...');
 			self.emit('select', self.$database);
-			return self;
 		});
 		
 		return self;
@@ -56,15 +53,12 @@
 			    console.log('Connection Error:');
 			    console.log(error);
 			    
-			    console.log('emit eventul db.error');
+			    console.log('emitting db.error event...');
 			    self.emit('error', error);
-			    
-			    return error;
 			}
 			
-			 console.log('emit eventul db.set_charset');
+			 console.log('emitting db.set_charset event...');
 			self.emit('set_charset', self.escape_str($charset));
-			return self;
 		});
 		
 		return self;
@@ -78,17 +72,15 @@
 			    console.log('Connection Error:');
 			    console.log(error);
 			    
-			    console.log('emit eventul db.error');
-			    self.emit('db_error', error);
-			    
-			    return false;
+			    console.log('emitting db.error event...');
+			    self.emit('error', error);
 			}
 			
-			  console.log('emit eventul db.data');
+			console.log('emitting db.data event...');
 			self.emit('data', results);
-			
-			return results;
 		});
+		
+		return self;
 	}
 	
 	CI_DB_mysql_driver._error_number = function () {

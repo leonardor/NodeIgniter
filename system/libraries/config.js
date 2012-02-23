@@ -56,6 +56,10 @@
 		 * @return	boolean	if the file was loaded correctly
 		 */	
 		this.load = function($file, $use_sections, $fail_gracefully) {
+			$file = $file || '';
+			$use_sections = $use_sections || false;
+			$fail_gracefully = $fail_gracefully || false;
+			
 			var $file = ($file == '') ? 'config' : PHP.str_replace(PHP.constant('EXT'), '', $file);
 		
 			if(PHP.in_array($file, $is_loaded, true)) {
@@ -110,7 +114,7 @@
 		 * @return	string
 		 */
 		this.item = function($item, $index) {	
-			var $index = $index || '';
+			$index = $index || '';
 			
 			if ($index == '') {	
 				if ( ! $config[$item]) {
@@ -170,6 +174,8 @@
 		 * @return	string
 		 */
 		this.site_url = function($uri) {
+			$uri = $uri || '';
+			
 			if (PHP.is_array($uri)) {
 				$uri = PHP.implode('/', $uri);
 			}
