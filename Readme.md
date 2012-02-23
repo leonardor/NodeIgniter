@@ -58,5 +58,6 @@ He is one of the contributors on this framework.
 Contributors
 ------------
 
-Leonardo Radoiu\n
+Leonardo Radoiu
+
 Dan Harabor 
