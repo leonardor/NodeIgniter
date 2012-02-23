@@ -186,3 +186,114 @@ DEBUG - 2012-02-23 14:15:24 --> Final output sent to browser
 DEBUG - 2012-02-23 14:15:24 --> Total execution time: 0.200
 DEBUG - 2012-02-23 14:15:25 --> Helper loaded: url_helper
 DEBUG - 2012-02-23 14:15:25 --> Helper loaded: string_helper
+DEBUG - 2012-02-23 14:17:17 --> Config Class Initialized
+DEBUG - 2012-02-23 14:17:17 --> Hooks Class Initialized
+DEBUG - 2012-02-23 14:17:17 --> URI Class Initialized
+DEBUG - 2012-02-23 14:17:17 --> Router Class Initialized
+DEBUG - 2012-02-23 14:17:17 --> Output Class Initialized
+DEBUG - 2012-02-23 14:17:17 --> Input Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:17:18 --> Language Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Config Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Input Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:17:18 --> URI Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Output Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Language Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Router Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Loader Class Initialized
+DEBUG - 2012-02-23 14:17:18 --> Controller Class Initialized
+DEBUG - 2012-02-23 14:17:19 --> Final output sent to browser
+DEBUG - 2012-02-23 14:17:19 --> Total execution time: 0.359
+DEBUG - 2012-02-23 14:17:19 --> Helper loaded: url_helper
+DEBUG - 2012-02-23 14:17:19 --> Helper loaded: string_helper
+DEBUG - 2012-02-23 14:19:09 --> Config Class Initialized
+DEBUG - 2012-02-23 14:19:10 --> Hooks Class Initialized
+DEBUG - 2012-02-23 14:19:10 --> URI Class Initialized
+DEBUG - 2012-02-23 14:19:10 --> Router Class Initialized
+DEBUG - 2012-02-23 14:19:10 --> Output Class Initialized
+DEBUG - 2012-02-23 14:19:10 --> Input Class Initialized
+DEBUG - 2012-02-23 14:19:10 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:19:10 --> Language Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Config Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Input Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:19:11 --> URI Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Output Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Language Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Router Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Loader Class Initialized
+DEBUG - 2012-02-23 14:19:11 --> Controller Class Initialized
+DEBUG - 2012-02-23 14:19:12 --> Model Class Initialized
+DEBUG - 2012-02-23 14:19:12 --> Final output sent to browser
+DEBUG - 2012-02-23 14:19:12 --> Total execution time: -0.495
+DEBUG - 2012-02-23 14:19:12 --> Helper loaded: url_helper
+DEBUG - 2012-02-23 14:19:12 --> Helper loaded: string_helper
+DEBUG - 2012-02-23 14:19:46 --> Config Class Initialized
+DEBUG - 2012-02-23 14:19:46 --> Hooks Class Initialized
+DEBUG - 2012-02-23 14:19:46 --> URI Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Router Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Output Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Input Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:19:47 --> Language Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Config Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Input Class Initialized
+DEBUG - 2012-02-23 14:19:47 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:19:47 --> URI Class Initialized
+DEBUG - 2012-02-23 14:19:48 --> Output Class Initialized
+DEBUG - 2012-02-23 14:19:48 --> Language Class Initialized
+DEBUG - 2012-02-23 14:19:48 --> Router Class Initialized
+DEBUG - 2012-02-23 14:19:48 --> Loader Class Initialized
+DEBUG - 2012-02-23 14:19:48 --> Controller Class Initialized
+DEBUG - 2012-02-23 14:19:49 --> Model Class Initialized
+DEBUG - 2012-02-23 14:19:49 --> Final output sent to browser
+DEBUG - 2012-02-23 14:19:49 --> Total execution time: -0.623
+DEBUG - 2012-02-23 14:19:49 --> Helper loaded: url_helper
+DEBUG - 2012-02-23 14:19:49 --> Helper loaded: string_helper
+DEBUG - 2012-02-23 14:20:27 --> Config Class Initialized
+DEBUG - 2012-02-23 14:20:27 --> Hooks Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> URI Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> Router Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> Output Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> Input Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:20:28 --> Language Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> Config Class Initialized
+DEBUG - 2012-02-23 14:20:28 --> Input Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:20:29 --> URI Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Output Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Language Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Router Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Loader Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Controller Class Initialized
+DEBUG - 2012-02-23 14:20:29 --> Model Class Initialized
+DEBUG - 2012-02-23 14:20:30 --> Model Class Initialized
+DEBUG - 2012-02-23 14:20:30 --> Final output sent to browser
+DEBUG - 2012-02-23 14:20:30 --> Total execution time: -0.581
+DEBUG - 2012-02-23 14:20:30 --> Helper loaded: url_helper
+DEBUG - 2012-02-23 14:20:30 --> Helper loaded: string_helper
+DEBUG - 2012-02-23 14:22:15 --> Config Class Initialized
+DEBUG - 2012-02-23 14:22:15 --> Hooks Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> URI Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Router Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Output Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Input Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:22:16 --> Language Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Config Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Input Class Initialized
+DEBUG - 2012-02-23 14:22:16 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-02-23 14:22:17 --> URI Class Initialized
+DEBUG - 2012-02-23 14:22:17 --> Output Class Initialized
+DEBUG - 2012-02-23 14:22:17 --> Language Class Initialized
+DEBUG - 2012-02-23 14:22:17 --> Router Class Initialized
+DEBUG - 2012-02-23 14:22:17 --> Loader Class Initialized
+DEBUG - 2012-02-23 14:22:17 --> Controller Class Initialized
+DEBUG - 2012-02-23 14:22:17 --> Model Class Initialized
+DEBUG - 2012-02-23 14:22:18 --> Model Class Initialized
+DEBUG - 2012-02-23 14:22:18 --> Final output sent to browser
+DEBUG - 2012-02-23 14:22:18 --> Total execution time: -0.465
+DEBUG - 2012-02-23 14:22:18 --> Helper loaded: url_helper
+DEBUG - 2012-02-23 14:22:18 --> Helper loaded: string_helper

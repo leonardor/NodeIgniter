@@ -6,6 +6,7 @@
 	Item.name = 'Item';
 	
 	Item.__construct = function() {	
+		console.log('Item.__construct()');
 		CI_Model.__construct();
 	}
 
@@ -28,7 +29,19 @@
 					console.log('emitting model.error event...');
 					self.emit('error', error);
 				});
+			}).on('error', function(error) {
+				console.log('intercepting db.error event...');
+				console.log('cannot load data of model "' + self.name + '". error: ' + error);
+				
+				console.log('emitting model.error event...');
+				self.emit('error', error);
 			});
+		}).on('error', function(error) {
+			console.log('intercepting db.error event...');
+			console.log('cannot load data of model "' + self.name + '". error: ' + error);
+			
+			console.log('emitting model.error event...');
+			self.emit('error', error);
 		});
 
 		return self;

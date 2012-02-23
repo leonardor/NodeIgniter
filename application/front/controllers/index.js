@@ -11,7 +11,10 @@
 	IndexController.index = function() {
 		var self = this;
 		
+		console.log('extending MY_Controller.index()...');
 		MY_Controller.index();
+		
+		console.log('IndexController.index()');
 		
 		CI.load.model('item');
 

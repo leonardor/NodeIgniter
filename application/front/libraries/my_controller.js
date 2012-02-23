@@ -11,7 +11,7 @@
 	}
 		
 	MY_Controller.index = function() {
-		console.log('extending MY_Controller.index()');
+		console.log('MY_Controller.index()');
 	}
 
 	module.exports = MY_Controller;

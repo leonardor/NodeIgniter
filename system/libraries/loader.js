@@ -153,6 +153,7 @@
 			
 			if (!global.CI_Model) {
 				CI_Model = CI_Common.load_class('Model');
+				CI_Model.__construct();
 			}
 	
 			if (PHP.file_exists(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constant('EXT'))) {
@@ -171,6 +172,7 @@
 			}
 		
 			CI[$name] = $c;
+			CI[$name].__construct();
 			CI[$name]._assign_libraries();
 			
 			$_ci_models.push($name);	
