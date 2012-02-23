@@ -108,9 +108,9 @@
 			$active_record = $database.active_record;
 		}
 		
-		CI_DB_driver = require(PHP.constant('BASEPATH') + 'libraries/db/db_driver' + PHP.constant('EXT'));
+		CI_DB_driver = require(PHP.constant('BASEPATH') + 'database/db_driver' + PHP.constant('EXT'));
 		
-		var $driver = require(PHP.constant('BASEPATH') + 'libraries/db/drivers/' + $params.dbdriver + '_driver' + PHP.constant('EXT'));
+		var $driver = require(PHP.constant('BASEPATH') + 'database/drivers/' + $params.dbdriver + '/' + $params.dbdriver + '_driver' + PHP.constant('EXT'));
 
 		var $db = $driver.__construct($params);
 		

@@ -199,7 +199,7 @@
 				return false;
 			}	
 		
-			DB = require(PHP.constant('BASEPATH') + 'database/DB' + PHP.constant('EXT'));
+			DB = require(PHP.constant('BASEPATH') + 'database/db' + PHP.constant('EXT'));
 	
 			if ($return === true) {
 				return DB($params, $active_record);
