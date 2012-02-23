@@ -1,11 +1,11 @@
 (function() {
 	function Other_library() {
 		this.__construct = function() {
-			
+			console.log('other_library loaded');
 		}
 		
 		this.doSomething = function() {
-			response.write('am incarcat other_library');
+			console.log('other_library.doSomething()');
 		}
 
 		return this;

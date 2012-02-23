@@ -249,7 +249,8 @@
 				CI_Base._output($output);
 			} else {
 				$CI.on('data', function(html) {
-					console.log('am interceptat eventul de controller.data');
+					console.log('intercepting controller.data event...');
+					console.log('sending final output...');
 					response.write(html);
 					response.end();
 					

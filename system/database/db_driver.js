@@ -40,7 +40,6 @@
 	CI_DB_driver.client = false;
 
 	CI_DB_driver.__construct = function($params) {
-			console.log('apelez CI_DB_driver.__construct()');
 			if (PHP.is_array($params)) {
 				for(var $key in $params) {
 					this['$' + $key] = $params[$key];
@@ -53,175 +52,179 @@
 		}
 
 	CI_DB_driver.initialize = function(){
-			if (PHP.is_resource(this.client) || PHP.is_object(this.client)) {
-				return true;
-			}
-			
-			this.client = this.db_connect();
+		var self = this;
 
-			// ----------------------------------------------------------------
-	
-			// Select the DB... assuming a database name is specified in the config file
-			if (this.$database != '') {
-				var self = this;
-
-				this.db_select().on('select', function() {
-					// We've selected the DB. Now we set the character set
-					self.db_set_charset(self.$char_set, self.$dbcollat).on('set_charset', function() {
-						console.log('m-am conectat');
-						return true;
-					}).on('error', function() {
-						CI_Common.log_message('error', 'Unable to set database charset: ' + self.$database);
-						
-						console.log('nu ma pot conecta');
-						
-						return false;
-					});
-				}).on('error', function() {
-					CI_Common.log_message('error', 'Unable to select database: ' + self.$database);
-					
-					console.log('nu ma pot conecta');
-					
-					if (self.$db_debug) {
-						self.display_error('db_unable_to_select', self.$database);
-					}
-					return false;
-				});
-			}
-
+		if (PHP.is_resource(this.client) || PHP.is_object(this.client)) {
 			return true;
 		}
 		
-		CI_DB_driver.close = function () {
-			if (PHP.is_resource(this.client) || PHP.is_object(this.client)) {
-				this._close(this.client);
-			}
-			this.client = false;
-		}
-		
-		CI_DB_driver.query = function ($sql, $binds, $return_object) {
-			$binds = $binds || false;
-			$return_object = $return_object || true;
-			
-			if ($sql == '') {
-				if (this.$db_debug) {
-					CI_Common.log_message('error', 'Invalid query: ' + $sql);
-					return this.display_error('db_invalid_query');
-				}
-				return false;
-			}
-	
-			// Verify table prefix and replace if necessary
-			if ( (this.$dbprefix != '' && this.$swap_pre != '') && (this.$dbprefix != this.$swap_pre) ) {			
-				$sql = PHP.preg_replace("/(\W)" + this.$swap_pre + "(\S+?)/", "\\1" + this.$dbprefix + "\\2", $sql);
-			}
-			
-			// Compile binds if needed
-			if ($binds !== false) {
-				$sql = this.compile_binds($sql, $binds);
-			}
-	
-			// Run the Query
-			if (false === (this.$result_id = this.simple_query($sql))) {
-				if (this.$db_debug) {
-					// grab the error number and message now, as we might run some
-					// additional queries before displaying the error
-					var $error_no = this._error_number();
-					var $error_msg = this._error_message();
+		this.client = this.db_connect();
+
+		// ----------------------------------------------------------------
+
+		// Select the DB... assuming a database name is specified in the config file
+		if (this.$database != '') {
+			this.db_select().on('select', function(database) {
+				console.log('intercepting db.select event...');
+				console.log('connected to database "' + database + '".');
+				
+				// We've selected the DB. Now we set the character set
+				self.db_set_charset(self.$char_set, self.$dbcollat).on('set_charset', function(charset) {
+					console.log('intercepting db.set_charset event...');
+					console.log('change charset to "' + charset + '" successfully.');
+				}).on('error', function() {
+					CI_Common.log_message('error', 'Unable to set database charset: ' + self.$database);
 					
-					// Log and display errors
-					CI_Common.log_message('error', 'Query error: ' + $error_msg);
-					return this.display_error(
-											[
-												'Error Number: ' + $error_no,
-												$error_msg,
-												$sql
-											]
-										);
+					console.log('intercepting db.error event...');
+					console.log('cannot change charset to "' + charset + '". error: ' + error);
+					
+					if (self.$db_debug) {
+						self.display_error('db_unable_set_charset', self.$database);
+					}
+				});
+			}).on('error', function() {
+				CI_Common.log_message('error', 'Unable to select database: ' + self.$database);
+				
+				console.log('intercepting db.error event...');
+				console.log('cannot connect to database "' + self.$database + '". error: ' + error);
+				
+				if (self.$db_debug) {
+					self.display_error('db_unable_to_select', self.$database);
 				}
-			
-				return false;
+			});
+		}
+
+		return self;
+	}
+	
+	CI_DB_driver.close = function () {
+		if (PHP.is_resource(this.client) || PHP.is_object(this.client)) {
+			this._close(this.client);
+		}
+		this.client = false;
+	}
+	
+	CI_DB_driver.query = function ($sql, $binds, $return_object) {
+		$binds = $binds || false;
+		$return_object = $return_object || true;
+		
+		if ($sql == '') {
+			if (this.$db_debug) {
+				CI_Common.log_message('error', 'Invalid query: ' + $sql);
+				return this.display_error('db_invalid_query');
 			}
-			
-			return this;
+			return false;
+		}
+
+		// Verify table prefix and replace if necessary
+		if ( (this.$dbprefix != '' && this.$swap_pre != '') && (this.$dbprefix != this.$swap_pre) ) {			
+			$sql = PHP.preg_replace("/(\W)" + this.$swap_pre + "(\S+?)/", "\\1" + this.$dbprefix + "\\2", $sql);
 		}
 		
-		CI_DB_driver.simple_query = function ($sql) {
-			if ( ! this.client) {
-				this.initialize();
+		// Compile binds if needed
+		if ($binds !== false) {
+			$sql = this.compile_binds($sql, $binds);
+		}
+
+		// Run the Query
+		if (false === (this.$result_id = this.simple_query($sql))) {
+			if (this.$db_debug) {
+				// grab the error number and message now, as we might run some
+				// additional queries before displaying the error
+				var $error_no = this._error_number();
+				var $error_msg = this._error_message();
+				
+				// Log and display errors
+				CI_Common.log_message('error', 'Query error: ' + $error_msg);
+				return this.display_error(
+										[
+											'Error Number: ' + $error_no,
+											$error_msg,
+											$sql
+										]
+									);
 			}
-			
-			return this._execute($sql);
+		
+			return false;
 		}
 		
-		CI_DB_driver.compile_binds = function ($sql, $binds) {
-			if (PHP.strpos($sql, this.$bind_marker) === false) {
-				return $sql;
-			}
-			
-			if ( ! PHP.is_array($binds)) {
-				$binds = [$binds];
-			}
-			
-			// Get the sql segments around the bind markers
-			var $segments = PHP.explode(this.$bind_marker, $sql);
+		return this;
+	}
 	
-			// The count of bind should be 1 less then the count of segments
-			// If there are more bind arguments trim it down
-			if (PHP.count($binds) >= PHP.count($segments)) {
-				$binds = PHP.array_slice($binds, 0, PHP.count($segments)-1);
-			}
-	
-			// Construct the binded query
-			var $result = $segments[0];
-			var $i = 0;
-			
-			for(var $bind in $binds) {
-				$result += this.escape($binds[$bind]);
-				$result += $segments[++$i];
-			}
-	
-			return $result;
+	CI_DB_driver.simple_query = function ($sql) {
+		if ( ! this.client) {
+			this.initialize();
 		}
 		
-		CI_DB_driver.escape = function ($str) {
-			if (PHP.is_string($str)) {
-				$str = "'" + this.escape_str($str) + "'";
-			} else if (PHP.is_bool($str)) {
-				$str = ($str === false) ? 0 : 1;
-			} else if (PHP.is_null($str)) {
-				$str = 'NULL';
-			}
+		return this._execute($sql);
+	}
 	
-			return $str;
+	CI_DB_driver.compile_binds = function ($sql, $binds) {
+		if (PHP.strpos($sql, this.$bind_marker) === false) {
+			return $sql;
 		}
 		
-		CI_DB_driver.escape_like_str = function ($str) {    
-	    	return this.escape_str($str, true);
+		if ( ! PHP.is_array($binds)) {
+			$binds = [$binds];
 		}
 		
-		CI_DB_driver.display_error = function ($error, $swap, $native) {
-			$error = $error || '';
-			$swap = $swap || '';
-			$native = $native || false;
-			
-			var $LANG = CI_Common.load_class('Language');
-			$LANG.load('db');
-			
-			var $heading = $LANG.line('db_error_heading');
-	
-			if ($native == true) {
-				var $message = $error;
-			} else {
-				var $message = ( ! PHP.is_array($error)) ? [PHP.str_replace('%s', $swap, $LANG.line($error))] : $error;
-			}
-			
-			var $error = CI_Common.load_class('Exceptions');
-			
-			response.write($error.show_error($heading, $message, 'error_db'));
+		// Get the sql segments around the bind markers
+		var $segments = PHP.explode(this.$bind_marker, $sql);
+
+		// The count of bind should be 1 less then the count of segments
+		// If there are more bind arguments trim it down
+		if (PHP.count($binds) >= PHP.count($segments)) {
+			$binds = PHP.array_slice($binds, 0, PHP.count($segments)-1);
 		}
-	
+
+		// Construct the binded query
+		var $result = $segments[0];
+		var $i = 0;
 		
+		for(var $bind in $binds) {
+			$result += this.escape($binds[$bind]);
+			$result += $segments[++$i];
+		}
+
+		return $result;
+	}
+	
+	CI_DB_driver.escape = function ($str) {
+		if (PHP.is_string($str)) {
+			$str = "'" + this.escape_str($str) + "'";
+		} else if (PHP.is_bool($str)) {
+			$str = ($str === false) ? 0 : 1;
+		} else if (PHP.is_null($str)) {
+			$str = 'NULL';
+		}
+
+		return $str;
+	}
+	
+	CI_DB_driver.escape_like_str = function ($str) {    
+    	return this.escape_str($str, true);
+	}
+	
+	CI_DB_driver.display_error = function ($error, $swap, $native) {
+		$error = $error || '';
+		$swap = $swap || '';
+		$native = $native || false;
+		
+		var $LANG = CI_Common.load_class('Language');
+		$LANG.load('db');
+		
+		var $heading = $LANG.line('db_error_heading');
+
+		if ($native == true) {
+			var $message = $error;
+		} else {
+			var $message = ( ! PHP.is_array($error)) ? [PHP.str_replace('%s', $swap, $LANG.line($error))] : $error;
+		}
+		
+		var $error = CI_Common.load_class('Exceptions');
+		
+		response.write($error.show_error($heading, $message, 'error_db'));
+	}
 
 	module.exports = CI_DB_driver;
 })();

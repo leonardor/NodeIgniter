@@ -3,6 +3,7 @@
 	
 	Model = Object.create(Events.EventEmitter.prototype);
 	
+	Model.name = 'Model';
 	Model.$_parent_name = '';
 
 	Model.__construct = function() {
@@ -29,6 +30,8 @@
 	 * @access private
 	 */	
 	Model._assign_libraries = function($use_reference) {
+		console.log('Model._assign_libraries()');
+		
 		$use_reference = $use_reference || true;
 		
 		for($key in PHP.array_keys(PHP.get_object_vars(CI))) {

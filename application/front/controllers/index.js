@@ -18,19 +18,20 @@
 		var items = CI.item.select_items();
 		
 		items.on('data', function(results) {
-			console.log('am interceptat eventul de model.data');
-			console.log(results);
-
-			/*
-			CI.load.model('listx');
-			CI.listx.doSomething();
+			console.log('intercepting model.data event...');
+			console.log('getting results: ' + JSON.stringify(results));
+			
 			CI.load.helper('url');
-			CI.helpers.url_title('BUBU');
-			CI.load.helper('text');
-			CI.helpers.character_limiter('BUBULICA', 5);
+			CI.helpers.url_title('some_text');
+			
+			CI.load.helper('string');
+			CI.helpers.strip_slashes('some_string');
+			
+			CI.load.library('other_library');
+			CI.other_library.doSomething();
+			
 			CI.load.library('custom_library');
 			CI.custom_library.doSomething();
-			*/
 			
 			var file = PHP.constant('APPPATH') + 'views/templates/main.html';
 			
@@ -42,11 +43,14 @@
 				request: request
 			});
 		
-			console.log('emit eventul de controller_data');
-			
+			console.log('emitting controller.data event...');
 			self.emit('data', html);
 			
 			return self;
+		}).on('error', function(error) {
+			console.log('intercepting model.error event...');
+			console.log('cannot get model "' + this.name + '" data. error: ' + error)
+			self.emit('data', html);
 		});
 		
 		return self;
@@ -54,10 +58,6 @@
 
 	IndexController.custom_route = function() {
 		var file = PHP.constant('APPPATH') + 'views/templates/main.html';
-		
-		CI.load.helper('string');
-
-		CI.helpers.strip_slashes('d/sfsf/');
 		
 		var str = FileSystem.readFileSync(file, 'utf8');
 		

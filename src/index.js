@@ -36,9 +36,8 @@ var app = Http.createServer(function (request, response) {
 			global.request = request;
 			global.response = response;
 			
-			var PHP = require('../php');
+			PHP = require('../php');
 			PHP.__construct(request, response);
-			global.PHP = PHP;
 			
 			var $system_folder = '../system';
 
