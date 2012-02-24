@@ -1,5 +1,5 @@
 (function() {
-	console.log('loading string helper...');
+	console.log('Helper: String');
 	
 	exports.strip_slashes = function($str) {
 		if (PHP.is_array($str)){	

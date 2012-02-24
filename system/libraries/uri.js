@@ -180,7 +180,7 @@
 				// compatibility as many are unaware of how characters in the permitted_uri_chars will be parsed as a regex pattern
 				if ( ! PHP.preg_match("|^[" + PHP.str_replace(['\\-', '\-'], '-', PHP.preg_quote(CI_Common.config_item('permitted_uri_chars'), '-')) + "]+$|i", $str)) {
 					CI_Common.show_error('The URI you submitted has disallowed characters.', 400);
-					return;
+					PHP.exit('The URI you submitted has disallowed characters.', 400);
 				}
 			}
 	

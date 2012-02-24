@@ -32,8 +32,8 @@
 			var $database = require(PHP.constant('APPPATH') + 'config/database' + PHP.constant('EXT'));
 			
 			if ( !$database ||PHP.count($database) == 0) {
-				CI_Common.show_error('No database connection settings were found in the database config file.');
-				return;
+				CI_Common.show_error('No database connection settings were found in the database config file.', 500);
+				PHP.exit('No database connection settings were found in the database config file.', 500);
 			}
 
 			if($params != '') {
@@ -43,8 +43,8 @@
 			}
 
 			if ( ! $active_group || ! $database.db[$active_group]) {
-				CI_Common.show_error('You have specified an invalid database connection group.');
-				return;
+				CI_Common.show_error('You have specified an invalid database connection group.', 500);
+				PHP.exit('You have specified an invalid database connection group.', 500);
 			}
 			
 			$params = $database.db[$active_group];
@@ -58,7 +58,8 @@
 			*/
 		
 			if ((PHP.dns = PHP.parse_url($params)) === false) {
-				CI_Common.show_error('Invalid DB Connection String');
+				CI_Common.show_error('Invalid DB Connection String', 500);
+				PHP.exit('Invalid DB Connection String', 500);
 			}
 			
 			this.$params = {
@@ -89,8 +90,8 @@
 		
 		// No DB specified yet?  Beat them senseless...
 		if ( !$params.dbdriver || $params.dbdriver == '') {
-			CI_Common.show_error('You have not selected a database type to connect to.');
-			return;
+			CI_Common.show_error('You have not selected a database type to connect to.', 500);
+			PHP.exit('You have not selected a database type to connect to.', 500);
 		}
 	
 		// Load the DB classes.  Note: Since the active record class is optional

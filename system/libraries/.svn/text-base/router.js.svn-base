@@ -93,8 +93,8 @@
 			if (CI_URI.uri_string() == '') {
 				
 				if ($default_controller == false) {
-					CI_Common.show_error("Unable to determine what should be displayed. A default route has not been specified in the routing file.");
-					return;
+					CI_Common.show_error("Unable to determine what should be displayed. A default route has not been specified in the routing file.", 500);
+					PHP.exit("Unable to determine what should be displayed. A default route has not been specified in the routing file.", 500);
 				}
 				
 				if (PHP.strpos($default_controller, '/') != false) {
@@ -206,6 +206,7 @@
 					// Does the requested controller exist in the sub-folder?
 					if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + this.fetch_directory() + $segments[0] + PHP.constant('EXT'))) {
 						CI_Common.show_404(this.fetch_directory() + $segments[0]);
+						PHP.exit(this.fetch_directory() + $segments[0], 404);
 					}
 				} else {
 					this.set_class($default_controller);
@@ -223,8 +224,8 @@
 			}
 	
 			// Can't find the requested controller...
-			CI_Common.show_404($segments[0], 404);
-			return;
+			CI_Common.show_404($segments[0]);
+			PHP.exit($segments[0], 404);
 		}
 	
 		// --------------------------------------------------------------------

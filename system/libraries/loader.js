@@ -146,8 +146,8 @@
 			}
 			
 			if (CI[$name]) {
-				CI_Common.show_error('The model name you are loading is the name of a resource that is already being used: ' + $name);
-				return;
+				CI_Common.show_error('The model name you are loading is the name of a resource that is already being used: ' + $name, 500);
+				PHP.exit('The model name you are loading is the name of a resource that is already being used: ' + $name, 500);
 			}
 		
 			$model = PHP.strtolower($model);
@@ -161,7 +161,7 @@
 				var $c = require(PHP.constant('APPPATH') + 'models/' + $path + $model + PHP.constant('EXT'));
 			} else {
 				CI_Common.show_error('Unable to locate the model you have specified: ' + $model, 500);
-				return;
+				PHP.exit('Unable to locate the model you have specified: ' + $model, 500);
 			}
 					
 			if ($db_conn !== false && !global.CI_DB) {
@@ -374,8 +374,8 @@
 					var $base_helper = PHP.constant('BASEPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT');
 					
 					if (!PHP.file_exists($base_helper)) {
-						CI_Common.show_error('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'));
-						return;
+						CI_Common.show_error('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'), 500);
+						PHP.exit('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'), 500);
 					}
 					
 					var $eh = require($ext_helper);
@@ -386,8 +386,8 @@
 					if(PHP.file_exists(PHP.constant('BASEPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT'))) {
 						var $h = require(PHP.constant('BASEPATH') + 'helpers/' + $helpers[$helper] + PHP.constant('EXT'));
 					} else {
-						CI_Common.show_error('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'));
-						return;
+						CI_Common.show_error('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'), 500);
+						PHP.exit('Unable to load the requested file: helpers/' + $helpers[$helper] + PHP.constant('EXT'), 500);
 					}
 				}
 		
@@ -453,8 +453,8 @@
 					if (PHP.file_exists(PHP.constant('BASEPATH') + 'plugins/' + $plugins[$plugin] + PHP.constant('EXT'))) {
 						var $p = require(PHP.constant('BASEPATH') + 'plugins/' + $plugins[$plugin] + PHP.constant('EXT'));	
 					} else {
-						CI_Common.show_error('Unable to load the requested file: plugins/' + $plugins[$plugin] + PHP.constant('EXT'));
-						return;
+						CI_Common.show_error('Unable to load the requested file: plugins/' + $plugins[$plugin] + PHP.constant('EXT'), 500);
+						PHP.exit('Unable to load the requested file: plugins/' + $plugins[$plugin] + PHP.constant('EXT'), 500);
 					}
 				}
 				
@@ -566,8 +566,8 @@
 			$table = $table || '';
 				
 			if($table === false) {
-				CI_Common.show_error('You must include the name of the table you would like to access when you initialize scaffolding');
-				return;
+				CI_Common.show_error('You must include the name of the table you would like to access when you initialize scaffolding', 500);
+				PHP.exit('You must include the name of the table you would like to access when you initialize scaffolding', 500);
 			}
 			
 			CI.Controller.$_ci_scaffolding = true;
@@ -605,7 +605,8 @@
 			}
 			
 			if (!PHP.file_exists($_ci_path)) {
-				CI_Common.show_error('Unable to load the requested file: ' + $_ci_file);
+				CI_Common.show_error('Unable to load the requested file: ' + $_ci_file, 500);
+				PHP.exit('Unable to load the requested file: ' + $_ci_file, 500);
 			}
 		
 			// This allows anything loaded using $this->load (views, files, etc.)
@@ -746,8 +747,8 @@
 				
 					if (!PHP.file_exists($baseclass)) {
 						CI_Common.log_message("error", "Unable to load the requested class: " + $classes[$class]);
-						CI_Common.show_error("Unable to load the requested class: " + $classes[$class]);
-						return;
+						CI_Common.show_error("Unable to load the requested class: " + $classes[$class], 500);
+						PHP.exit("Unable to load the requested class: " + $classes[$class], 500);
 					}
 	
 					var $bc = require($baseclass);	
@@ -822,8 +823,8 @@
 			// We do not issue errors if the load call failed due to a duplicate request
 			if ($is_duplicate == false) {
 				CI_Common.log_message('error', "Unable to load the requested class: " + $classes[$class]);
-				CI_Common.show_error("Unable to load the requested class: " + $classes[$class]);
-				return;
+				CI_Common.show_error("Unable to load the requested class: " + $classes[$class], 500);
+				PHP.exit("Unable to load the requested class: " + $classes[$class], 500);
 			}
 		}
 		

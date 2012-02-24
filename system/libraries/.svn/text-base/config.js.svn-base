@@ -70,8 +70,8 @@
 				if ($fail_gracefully === true) {
 					return false;
 				}
-				CI_Common.show_error('The configuration file ' + $file + PHP.constant('EXT') + ' does not exist.');
-				return;
+				CI_Common.show_error('The configuration file ' + $file + PHP.constant('EXT') + ' does not exist.', 500);
+				PHP.exit('The configuration file ' + $file + PHP.constant('EXT') + ' does not exist.', 500);
 			}
 		
 			var $cfg = require(PHP.constant('APPPATH') + 'config/' + $file + PHP.constant('EXT'));
@@ -80,8 +80,8 @@
 				if ($fail_gracefully === true) {
 					return false;
 				}
-				CI_Common.show_error('Your ' + $file + PHP.constant('EXT') + ' file does not appear to contain a valid configuration array.');
-				return;
+				CI_Common.show_error('Your ' + $file + PHP.constant('EXT') + ' file does not appear to contain a valid configuration array.', 500);
+				PHP.exit('Your ' + $file + PHP.constant('EXT') + ' file does not appear to contain a valid configuration array.', 500);
 			}
 	
 			if ($use_sections === true) {

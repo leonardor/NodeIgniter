@@ -1,7 +1,9 @@
 (function() {
+	console.log('Library: Other_library');
+	
 	function Other_library() {
 		this.__construct = function() {
-			console.log('other_library loaded');
+			console.log('other_library.__construct()');
 		}
 		
 		this.doSomething = function() {

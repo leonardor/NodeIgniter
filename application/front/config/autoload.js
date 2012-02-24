@@ -63,7 +63,7 @@ var autoload = {
 |	$autoload['plugin'] = array('captcha', 'js_calendar');
 */
 
-	'plugin': [],
+	'plugin': ['item'],
 
 
 /*

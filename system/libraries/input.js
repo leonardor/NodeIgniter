@@ -204,9 +204,8 @@
 		* @return	string
 		*/
 		this._clean_input_keys = function($str) {
-			if ( ! PHP.preg_match("/^[a-z0-9:_\/-]+$/i", $str))
-			{
-				PHP.exit('Disallowed Key Characters.');
+			if ( ! PHP.preg_match("/^[a-z0-9:_\/-]+$/i", $str)) {
+				PHP.exit('Disallowed Key Characters.', 1);
 			}
 	
 			return $str;

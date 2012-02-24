@@ -267,8 +267,11 @@
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/end.js')(array);
 		}
 	    
-		PHP.exit = function(status) {
-			response.end(status);
+		PHP.exit = function(status, code) {
+			status = status || 'n/a';
+			code = code || 0;
+			
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/exit.js')(status, code);
 	    }
 		
 		PHP.explode = function(delimiter, string, limit) {

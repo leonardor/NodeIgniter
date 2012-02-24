@@ -115,7 +115,7 @@
 		
 			if (CI_Hooks._call_hook('cache_override') == false) {
 				if (CI_Output._display_cache(CI_Config, CI_URI) == true) {
-					PHP.exit();
+					return;
 				}
 			}
 		
@@ -155,6 +155,7 @@
 			
 			if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'))) {
 				CI_Common.show_error('Unable to load your default controller.  Please make sure the controller specified in your Routes.php file is valid.', 404);
+				PHP.exit('Unable to load your default controller.  Please make sure the controller specified in your Routes.php file is valid.', 500);
 			}
 		
 			var $controller = require(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
@@ -176,7 +177,8 @@
 			var $method = CI_Router.fetch_method();
 			
 			if ( $method == 'controller' || PHP.strncmp($method, '_', 1) == 0 || PHP.in_array(PHP.strtolower($method), PHP.array_map('strtolower', PHP.get_class_methods($controller)))) {
-				CI_Common.show_404("{$class}/{$method}");
+				CI_Common.show_404($class + "/" + $method);
+				PHP.exit($class + "/" + $method, 404);
 			}
 		
 			/*

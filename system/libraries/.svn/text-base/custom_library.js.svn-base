@@ -1,7 +1,9 @@
 (function() {
+	console.log('Library: Custom_library');
+	
 	function Custom_library() {
 		this.__construct = function() {
-			console.log('custom_library loaded');
+			console.log('custom_library.__construct()');
 			return this;
 		}
 		

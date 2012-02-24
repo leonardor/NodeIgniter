@@ -25,7 +25,7 @@
 			
 			CI.other_library.doSomething();
 
-			CI.load.plugin('item');
+			//CI.load.plugin('item');
 			var url = CI.plugins.get_url({ title: 'this _is_ a title # . ' });
 			
 			console.log(url);

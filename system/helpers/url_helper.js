@@ -1,5 +1,5 @@
 (function() {
-	console.log('loading url helper...');
+	console.log('Helper: Url');
 	
 	exports.site_url = function($uri) {
 		$uri = $uri || '';

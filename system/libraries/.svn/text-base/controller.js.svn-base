@@ -83,7 +83,7 @@
 	Controller._ci_scaffolding = function() {
 		if(this.$_ci_scaffolding == false || this.$_ci_scaff_table === false) {
 			CI_Common.show_404('Scaffolding unavailable');
-			return;
+			PHP.exit('Scaffolding unavailable', 404);
 		}
 		
 		var $method = ( ! PHP.in_array(CI_URI.segment[3], ['add', 'insert', 'edit', 'update', 'view', 'delete', 'do_delete'], true)) ? 'view' : CI_URI.segment[3];

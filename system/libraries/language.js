@@ -75,8 +75,8 @@
 				if (PHP.file_exists(PHP.constant('BASEPATH') + 'language/' + $idiom + '/' + $langfile)) {
 					var $lang = require(PHP.constant('BASEPATH') + 'language/' + $idiom + '/' + $langfile);
 				} else {
-					CI_Common.show_error('Unable to load the requested language file: language/' + $idiom + '/' + $langfile);
-					return;
+					CI_Common.show_error('Unable to load the requested language file: language/' + $idiom + '/' + $langfile, 500);
+					PGP.exit('Unable to load the requested language file: language/' + $idiom + '/' + $langfile, 500);
 				}
 			}
 	

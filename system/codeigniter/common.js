@@ -153,13 +153,13 @@
 		
 			if ($main_conf.length == 0) {
 				if (!PHP.file_exists(PHP.constant('APPPATH') + 'config/config' + PHP.constant('EXT'))) {
-					PHP.exit('The configuration file config' + PHP.constant('EXT') + ' does not exist.');
+					PHP.exit('The configuration file config' + PHP.constant('EXT') + ' does not exist.', 3);
 				}
 		
 				var $config = require(PHP.constant('APPPATH') + 'config/config' + PHP.constant('EXT'));
 		
 				if (!$config || !PHP.is_array($config)) {
-					PHP.exit('Your config file does not appear to be formatted correctly.');
+					PHP.exit('Your config file does not appear to be formatted correctly.', 2);
 				}
 		
 				$main_conf[0] = $config;
