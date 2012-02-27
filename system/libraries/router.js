@@ -194,7 +194,7 @@
 				return $segments;
 			}
 	
-			console.log(PHP.constant('APPPATH') + 'controllers/' + $segments[0]);
+			console.log('#' + PHP.constant('APPPATH') + 'controllers/' + $segments[0]);
 			
 			// Is the controller in a sub-folder?
 			if (PHP.is_dir(PHP.constant('APPPATH') + 'controllers/' + $segments[0])) {		

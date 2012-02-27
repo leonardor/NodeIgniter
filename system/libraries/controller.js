@@ -48,8 +48,11 @@
 				};
 		
 		for(var $var in $classes) {
-			CI[$var] = CI_Common.load_class($classes[$var]);
-			CI[$var].__construct();
+			if(!CI[$var]) {
+				CI[$var] = CI_Common.load_class($classes[$var]);
+				CI[$var].__construct();
+			}
+			
 		}
 		
 		// In PHP 5 the Loader class is run as a discreet
@@ -57,7 +60,10 @@
 
 		if (Math.floor(PHP.phpversion()) >= 5) {
 			CI.load = CI_Common.load_class('Loader');
+			CI.load.__construct();
 			CI.load._ci_autoloader();
+			
+			this.load = CI.load;
 		} else {
 			this._ci_autoloader();
 			

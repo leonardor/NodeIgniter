@@ -256,17 +256,22 @@
 			if (PHP.method_exists(CI_Base, '_output')) {
 				CI_Base._output($output);
 			} else {
-				$CI.on('data', function(html) {
-					console.log('intercepting controller.data event...');
+				$Controller.on('ready', function(html) {
+					console.log('intercepting controller.ready event...');
 					console.log('sending final output...');
 					response.write(html);
 					response.end();
 					
+				}).on('error', function(error) {
+					console.log('intercepting controller.error event...');
+					console.log('sending final output...');
+					response.write(error);
+					response.end();
 				}); // Send it to the browser!
 			}
 			
 			CI_Common.log_message('debug', "Final output sent to browser");
-			CI_Common.log_message('debug', "Total execution time: " + $elapsed);		
+			CI_Common.log_message('debug', "Total execution time: " + $elapsed);	
 		}
 		
 		// --------------------------------------------------------------------

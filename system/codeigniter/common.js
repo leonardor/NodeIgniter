@@ -109,7 +109,9 @@
 				if(typeof($sc) == 'object') {
 					$objects[$class] = this.instantiate_class($sc);
 				} else {
-					$objects[$class] = this.instantiate_class(new $sc);
+					$subrc = new $sc;
+					
+					$objects[$class] = this.instantiate_class($subrc);
 				}
 				
 				return $objects[$class];
@@ -120,7 +122,9 @@
 			if(typeof($c) == 'object') {
 				$objects[$class] = this.instantiate_class($c);
 			} else {
-				$objects[$class] = this.instantiate_class(new $c);
+				$rc = new $c;
+
+				$objects[$class] = this.instantiate_class($rc);
 			}
 				
 			return $objects[$class];

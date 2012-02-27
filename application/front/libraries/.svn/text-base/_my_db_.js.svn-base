@@ -23,14 +23,18 @@
  * @link		http://codeigniter.com/user_guide/database/
  */
 	
-	var DB = new function DB() {
-		DB.__construct = function($params, $active_record_override) {
+	var DB = function() {
+		this.__construct = function($params, $active_record_override) {
 			$params = $params || '';
 			$active_record_override = $active_record_override || false;
-			
+		
 			// Load the DB config file if a DSN string wasn't passed
 			if (PHP.is_string($params) && PHP.strpos($params, '://') === false) {
-				var $database = require(PHP.constant('APPPATH') + 'config/database' + PHP.constant('EXT'));
+				if (PHP.file_exists(PHP.constant('APPPATH') + 'config/database' + PHP.constant('EXT'))) {
+					var $database = require(PHP.constant('APPPATH') + 'config/database' + PHP.constant('EXT'));
+				} else {
+					var $database = require(PHP.constant('BASEPATH') + 'config/database'  + PHP.constant('EXT'));
+				}
 				
 				if ( !$database ||PHP.count($database) == 0) {
 					CI_Common.show_error('No database connection settings were found in the database config file.', 500);
@@ -91,7 +95,7 @@
 			
 			// No DB specified yet?  Beat them senseless...
 			if ( !$params.dbdriver || $params.dbdriver == '') {
-				CI_Common.show_error('You have not selected a database type to connect to.', 500);
+				CI_Common.show_error('You have not selected a database type to connect to.');
 				PHP.exit('You have not selected a database type to connect to.', 500);
 			}
 		
@@ -116,10 +120,12 @@
 				$db.initialize();
 			}
 			
+			console.log($db);
+			
 			return $db;
 		}
-		
-		return DB;
+			
+		return this;
 	}
 	
 	module.exports = DB;

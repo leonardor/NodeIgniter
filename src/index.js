@@ -1,4 +1,4 @@
-var Http = require('http');
+Http = require('http');
 
 Path = require('path'),
 FileSystem = require('fs'),
@@ -109,7 +109,14 @@ var app = Http.createServer(function (request, response) {
 			var CI = require($system_folder + '/codeigniter/codeigniter')(request, response);
 			CI.__construct(request, response);
 		}
-	})
+	});
+	
+	response.on('finish', function() {
+		if (CI.db) {
+			delete global['CI_DB'];
+			CI.db.close();
+		}
+	});
 });
 
 app.listen('3001', '127.0.0.1', function() {

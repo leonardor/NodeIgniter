@@ -53,48 +53,58 @@
 
 	CI_DB_driver.initialize = function(){
 		var self = this;
-
+		
 		if (PHP.is_resource(this.client) || PHP.is_object(this.client)) {
 			return true;
 		}
 		
-		this.client = this.db_connect();
-
 		// ----------------------------------------------------------------
 
-		// Select the DB... assuming a database name is specified in the config file
-		if (this.$database != '') {
-			this.db_select().on('select', function(database) {
-				console.log('intercepting db.select event...');
-				console.log('connected to database "' + database + '".');
-				
-				// We've selected the DB. Now we set the character set
-				self.db_set_charset(self.$char_set, self.$dbcollat).on('set_charset', function(charset) {
-					console.log('intercepting db.set_charset event...');
-					console.log('change charset to "' + charset + '" successfully.');
+		this.db_connect().on('connect', function(client) {
+			console.log('intercepting db.connect event...');
+			console.log('connected to server "' + client.host + ':' + client.port + '".');
+			
+			self.client = client;
+			
+			// Select the DB... assuming a database name is specified in the config file
+			if (self.$database != '') {
+				self.db_select().on('select', function(database) {
+					console.log('intercepting db.select event...');
+					console.log('connected to database "' + database + '".');
+					
+					
+					// We've selected the DB. Now we set the character set
+					self.db_set_charset(self.$char_set, self.$dbcollat).on('set_charset', function(charset) {
+						console.log('intercepting db.set_charset event...');
+						console.log('change charset to "' + charset + '" successfully.');
+						
+						console.log('emittind db.ready event...');
+						self.emit('ready', self);
+						return;
+					}).on('error', function() {
+						CI_Common.log_message('error', 'Unable to set database charset: ' + self.$database);
+						
+						console.log('intercepting db.error event...');
+						console.log('cannot change charset to "' + charset + '". error: ' + error);
+						
+						if (this.$db_debug) {
+							this.display_error('db_unable_set_charset', self.$database);
+						}
+					});
 				}).on('error', function() {
-					CI_Common.log_message('error', 'Unable to set database charset: ' + self.$database);
+					CI_Common.log_message('error', 'Unable to select database: ' + self.$database);
 					
 					console.log('intercepting db.error event...');
-					console.log('cannot change charset to "' + charset + '". error: ' + error);
+					console.log('cannot connect to database "' + self.$database + '". error: ' + error);
 					
 					if (self.$db_debug) {
-						self.display_error('db_unable_set_charset', self.$database);
+						self.display_error('db_unable_to_select', self.$database);
 					}
 				});
-			}).on('error', function() {
-				CI_Common.log_message('error', 'Unable to select database: ' + self.$database);
-				
-				console.log('intercepting db.error event...');
-				console.log('cannot connect to database "' + self.$database + '". error: ' + error);
-				
-				if (self.$db_debug) {
-					self.display_error('db_unable_to_select', self.$database);
-				}
-			});
-		}
-
-		return self;
+			}
+		});
+		
+		return this;
 	}
 	
 	CI_DB_driver.close = function () {
@@ -225,6 +235,6 @@
 		
 		response.write($error.show_error($heading, $message, 'error_db'));
 	}
-
+	
 	module.exports = CI_DB_driver;
 })();

@@ -34,15 +34,17 @@
 		
 		$use_reference = $use_reference || true;
 		
-		for($key in PHP.array_keys(PHP.get_object_vars(CI))) {
-			if ( ! this[$key] && $key != this.$_parent_name) {			
+		var $array = PHP.array_keys(PHP.get_object_vars(CI));
+		
+		for(var $key in $array) {
+			if ( ! this[$array[$key]] && $array[$key] != this.$_parent_name) {			
 				// In some cases using references can cause
 				// problems so we'll conditionally use them
 				if ($use_reference == true) {
-					this[$key] = null; // Needed to prevent reference errors with some configurations
-					this[$key] = CI[$key];
+					this[$array[$key]] = null; // Needed to prevent reference errors with some configurations
+					this[$array[$key]] = CI[$array[$key]];
 				} else {
-					this[$key] = CI[$key];
+					this[$array[$key]] = CI[$array[$key]];
 				}
 			}
 		}		

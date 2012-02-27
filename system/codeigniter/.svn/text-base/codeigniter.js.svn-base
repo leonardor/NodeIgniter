@@ -29,6 +29,10 @@
 	PHP.define('CI_VERSION', '1.0.0');
 	
 	var CI = new function CI(request, response) {
+		CI.helpers = [];
+		CI.plugins = [];
+		CI.models = [];
+		
 	    CI.__construct = function(request, response) {
 	    	global.CI = this;
 	    	
@@ -147,19 +151,20 @@
 			
 			// Load the base controller class
 			var Controller = CI_Common.load_class('Controller');
+			Controller.__construct();
 			
 			// Load the local application controller
 			// Note: The Router class automatically validates the controller path.  If this include fails it 
 			// means that the default controller in the Routes.php file is not resolving to something valid.
-			console.log(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
+			console.log('*' + PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
 			
 			if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'))) {
 				CI_Common.show_error('Unable to load your default controller.  Please make sure the controller specified in your Routes.php file is valid.', 404);
 				PHP.exit('Unable to load your default controller.  Please make sure the controller specified in your Routes.php file is valid.', 500);
 			}
 		
-			var $controller = require(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
-			$controller.__construct();
+			$Controller = require(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
+			$Controller.__construct();
 			
 			// Set a mark point for benchmarking
 			CI_Benchmark.mark('loading_time_base_classes_end');
@@ -176,7 +181,7 @@
 			var $class  = CI_Router.fetch_class();
 			var $method = CI_Router.fetch_method();
 			
-			if ( $method == 'controller' || PHP.strncmp($method, '_', 1) == 0 || PHP.in_array(PHP.strtolower($method), PHP.array_map('strtolower', PHP.get_class_methods($controller)))) {
+			if ( $method == 'controller' || PHP.strncmp($method, '_', 1) == 0 || PHP.in_array(PHP.strtolower($method), PHP.array_map('strtolower', PHP.get_class_methods($Controller)))) {
 				CI_Common.show_404($class + "/" + $method);
 				PHP.exit($class + "/" + $method, 404);
 			}
@@ -197,12 +202,10 @@
 			// Mark a start point so we can benchmark the controller
 			CI_Benchmark.mark('controller_execution_time_( ' + $class + ' / ' + $method + ' )_start');
 	
-			$CI = $controller;
-			
 			// Is this a scaffolding request?
 			if (CI_Router.scaffolding_request == true) {
 				if (CI_Hooks._call_hook('scaffolding_override') == false) {
-					$CI._ci_scaffolding();
+					$Controller._ci_scaffolding();
 				}
 			} else {
 				/*
@@ -213,13 +216,13 @@
 				CI_Hooks._call_hook('post_controller_constructor');
 				
 				// Is there a "remap" function?
-				if (PHP.method_exists($CI, '_remap')) {
-					$CI._remap($method);
+				if (PHP.method_exists($Controller, '_remap')) {
+					$Controller._remap($method);
 				} else {
 					// is_callable() returns TRUE on some versions of PHP 5 for private and protected
 					// methods, so we'll use this workaround for consistent behavior
 					
-					var $keys = PHP.array_keys(PHP.get_class_methods($CI));
+					var $keys = PHP.array_keys(PHP.get_class_methods($Controller));
 		
 					if ( ! PHP.in_array(PHP.strtolower($method), PHP.array_map('strtolower', $keys))) {
 						CI_Common.show_404($class + '/' + $method);
@@ -229,7 +232,7 @@
 					// Call the requested method.
 					// Any URI segments present (besides the class/function) will be passed to the method for convenience
 
-					PHP.call_user_func_array([$CI, $method], PHP.array_slice(CI_URI.$rsegments, 2));
+					PHP.call_user_func_array([$Controller, $method], PHP.array_slice(CI_URI.$rsegments, 2));
 
 				}
 			}
@@ -266,12 +269,6 @@
 			 *  Close the DB connection if one exists
 			 * ------------------------------------------------------
 			 */
-		
-			if (CI.db) {
-				CI.db.on('end', function() {
-					CI.db.close();
-				});
-			}
 	    }
 	    
 	    return CI;

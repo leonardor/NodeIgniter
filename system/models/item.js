@@ -14,28 +14,30 @@
 	Item.select_items = function() {
 		var self = this;
 		
-		CI.db.on('select', function(database) {
-			CI.db.on('set_charset', function(charset) {
-				var $sql = "CALL udsp_item_SelectItems()";
+		this.custom_library.doSomething();
+		
+		console.log('Model: Item.select_items()');
+	
+		CI.db.on('ready', function() {
+			console.log('intercepting db.ready event...');
+			
+			var $sql = "CALL udsp_item_SelectItems()";
+			
+			console.log('executing sql "' + $sql + '"');
+			
+			CI.db.query($sql).on('data', function(results) {
+				console.log('intercepting db.data event...');
+				console.log('emitting model.ready event...');
 				
-				CI.db.query($sql).on('data', function(results) {
-					console.log('intercepting db.data event...');
-
-					console.log('emitting model.data event...');
-					self.emit('data', results);
-				}).on('error', function(error) {
-					console.log('intercepting db.error event...');
-					console.log('cannot load data of model "' + self.name + '". error: ' + error);
-					
-					console.log('emitting model.error event...');
-					self.emit('error', error);
-				});
-			}).on('error', function(error) {
+				self.emit('ready', results);
+				return;
+			}).once('error', function(error) {
 				console.log('intercepting db.error event...');
 				console.log('cannot load data of model "' + self.name + '". error: ' + error);
 				
 				console.log('emitting model.error event...');
 				self.emit('error', error);
+				return;
 			});
 		}).on('error', function(error) {
 			console.log('intercepting db.error event...');
@@ -43,9 +45,10 @@
 			
 			console.log('emitting model.error event...');
 			self.emit('error', error);
+			return;
 		});
 
-		return self;
+		return this;
 	}
 
 	module.exports = Item;

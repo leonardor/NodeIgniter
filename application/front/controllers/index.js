@@ -3,9 +3,12 @@
 	
 	IndexController = Object.create(MY_Controller);
 	
+	IndexController.name = 'IndexController';
+	
 	IndexController.__construct = function () {
 		MY_Controller.__construct();
 		console.log('IndexController.__construct()');
+		
 		return this;
 	}
 
@@ -17,56 +20,72 @@
 		
 		console.log('IndexController.index()');
 		
-		var items = CI.item.select_items();
+		CI.load.on('autoload', function(obj) {
+			console.log('## intercepting loader.autoload event... ###');
+		});
 		
-		items.on('data', function(results) {
-			console.log('intercepting model.data event...');
+		CI.load.model('item');
+		var items = CI.models.item.select_items();
+		
+		items.on('ready', function(results) {
+			console.log('intercepting model.ready event...');
 			console.log('getting results: ' + JSON.stringify(results));
 			
-			CI.other_library.doSomething();
-
-			//CI.load.plugin('item');
+			CI.load.plugin('item');
 			var url = CI.plugins.get_url({ title: 'this _is_ a title # . ' });
 			
 			console.log(url);
 			
 			var file = PHP.constant('APPPATH') + 'views/templates/main.html';
 			
-			var str = FileSystem.readFileSync(file, 'utf8');
-			
-			var html = Ejs.render(str, {
+			var html = Ejs.renderFile(file, {
 				$this: self,
 				items: results,
 				request: request
+			}, function(error, html) {
+				if(error) {
+					console.log('emitting controller.error event...');
+					self.emit('error', error.toString());
+					return;
+				}
+				
+				console.log('emitting controller.ready event...');
+				self.emit('ready', html);
+				return;
 			});
-		
-			console.log('emitting controller.data event...');
-			self.emit('data', html);
-			
-			return self;
-		}).on('error', function(error) {
+		}).once('error', function(error) {
 			console.log('intercepting model.error event...');
 			console.log('cannot get model "' + this.name + '" data. error: ' + error)
-			self.emit('data', html);
+			self.emit('ready', html);
+			return;
 		});
-		
+
 		return self;
 	}
 
 	IndexController.custom_route = function() {
+		var self = this;
+		
 		var file = PHP.constant('APPPATH') + 'views/templates/main.html';
 		
-		var str = FileSystem.readFileSync(file, 'utf8');
-		
-		var html = Ejs.render(str, {
+		var html = Ejs.renderFile(file, {
 			request: request
+		}, function(error, html) {
+			if(error) {
+				console.log('emitting controller.error event...');
+				self.emit('error', error.toString());
+				return;
+			}
+			
+			console.log('emitting controller.ready event...');
+			self.emit('ready', html);
+			return;
 		});
-		
-		response.write(html);
-		response.end();
 	}
 		
 	IndexController.some_method = function(param1, param2) {
+		var self = this;
+		
 		var params = [];
 		
 		if(param1) {
@@ -78,15 +97,22 @@
 		
 		var file = PHP.constant('APPPATH') + 'views/templates/main.html';
 		
-		var str = FileSystem.readFileSync(file, 'utf8');
-		
-		var html = Ejs.render(str, {
+		var html = Ejs.renderFile(file, {
 			request: request,
 			params: params
+		}, function(error, html) {
+			if(error) {
+				console.log('emitting controller.error event...');
+				self.emit('error', error.toString());
+				return;
+			}
+			
+			console.log('emitting controller.ready event...');
+			self.emit('ready', html);
+			return;
 		});
 		
-		response.write(html);
-		response.end();
+		return this;
 	}
 
 	module.exports = IndexController;
