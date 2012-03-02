@@ -88,10 +88,6 @@ var file_get_contents = function(url, flags, context, offset, maxLen) {
         var method = http_stream ? http_options.method : 'GET';
         var async = !! (context && context.stream_params && context.stream_params['phpjs.async']);
  
-        if (ini['phpjs.ajaxBypassCache'] && ini['phpjs.ajaxBypassCache'].local_value) {
-            url += (url.match(/\?/) == null ? "?" : "&") + (new Date()).getTime(); // Give optional means of forcing bypass of cache
-        }
- 
         req.open(method, url, async);
         if (async) {
             var notification = context.stream_params.notification;

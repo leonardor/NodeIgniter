@@ -84,19 +84,19 @@ var pathinfo = function(path, options) {
  
     // Gather path infos
     if (options & OPTS.PATHINFO_DIRNAME) {
-        tmp_arr.dirname = this.dirname(path);
+        tmp_arr.dirname = PHP.dirname(path);
     }
  
     if (options & OPTS.PATHINFO_BASENAME) {
         if (false === have_basename) {
-            have_basename = this.basename(path);
+            have_basename = PHP.basename(path);
         }
         tmp_arr.basename = have_basename;
     }
  
     if (options & OPTS.PATHINFO_EXTENSION) {
         if (false === have_basename) {
-            have_basename = this.basename(path);
+            have_basename = PHP.basename(path);
         }
         if (false === have_extension) {
             have_extension = __getExt(have_basename);
@@ -106,7 +106,7 @@ var pathinfo = function(path, options) {
  
     if (options & OPTS.PATHINFO_FILENAME) {
         if (false === have_basename) {
-            have_basename = this.basename(path);
+            have_basename = PHP.basename(path);
         }
         if (false === have_extension) {
             have_extension = __getExt(have_basename);

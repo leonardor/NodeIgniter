@@ -3,6 +3,7 @@
 	
 	Controller = Object.create(Events.EventEmitter.prototype);
 	
+	Controller.parent = Events.EventEmitter.prototype;
 	Controller.name = 'Controller';
 	
 	Controller.$_ci_scaffolding	= false;

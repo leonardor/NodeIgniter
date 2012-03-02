@@ -1,40 +1,9 @@
-<html>
-<head>
-</head>
+{% include "blocks/headers/dtd.html" %}
 
-<body>
+{% include "blocks/headers/general.html" %}
 
-<p><?= request.url ?></p>
+<div style="width: 900px; height: 350px; border: 1px solid #000000; margin: auto;">
+	{% include page %}
+</div>
 
-<p>
-<?= typeof(items) ?>
-<? if (typeof(items) != 'undefined') { ?>
-	<table border="1" cellspacing="5">
-	<tr>
-	<th>id</th>
-	<th>title</th>
-	<th>text</th>
-	<th>created</th>
-	</tr>
-	<? for(var i in items) { ?>
-		<tr>
-		<td><?= items[i].id ?></td>
-		<td><?= items[i].title ?></td>
-		<td><?= items[i].text ?></td>
-		<td><?= items[i].created ?></td>
-		</tr>
-	<? } ?>
-	</table>
-<? } ?>
-</p>
-
-<p>
-<? if (typeof(params) != 'undefined') { ?>
-	<?- PHP.var_dump(params) ?>
-<? } ?>
-</p>
-
-<p><a href="/index">index</a> | <a href="/index/some_method">some_method</a> | <a href="/custom-route">custom-route</a> | <a href="/index/some_method/abc/123">some method with params</a></p>
-
-</body>
-</html>
+{% include "blocks/footers/general.html" %}

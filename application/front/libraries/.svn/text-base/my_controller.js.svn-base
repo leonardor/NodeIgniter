@@ -1,12 +1,11 @@
 (function() {
 	var MY_Controller = {};
 	
-	MY_Controller = Object.create(Controller);
+	MY_Controller = Object.create(Controller).__construct();
 	
 	MY_Controller.name = 'MY_Controller';
 	
 	MY_Controller.__construct = function () {
-		Controller.__construct();
 		console.log('MY_Controller.__construct()');
 		return this;
 	}

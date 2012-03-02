@@ -107,7 +107,7 @@ var serialize = function (mixed_value) {
                 }
  
                 okey = (key.match(/^[0-9]+$/) ? parseInt(key, 10) : key);
-                vals += this.serialize(okey) + this.serialize(mixed_value[key]);
+                vals += PHP.serialize(okey) + PHP.serialize(mixed_value[key]);
                 count++;
             }
         }

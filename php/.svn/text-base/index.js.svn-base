@@ -1,6 +1,6 @@
 (function() {
 	var PHP = new function PHP(){
-		PHP.$_COOKIES = {};
+		PHP.$_COOKIE = {};
 		PHP.$_ENV = {};
 		PHP.$_SESSION = {};
 		PHP.$_GET = {};
@@ -32,6 +32,9 @@
 		}
 		
 		PHP.flags = { 
+			LC_ALL: 'LC_ALL',
+			LC_MESSAGES: 'LC_MESSAGES',
+				
 			SCANDIR_SORT_ASCENDING: 1,
 			SCANDIR_SORT_DESCENDING: 2,
 			SCANDIR_SORT_NONE: 0,
@@ -166,7 +169,7 @@
 	    	if(cookie != undefined) {
 	    		cookie.split(';').forEach(function(cookie) {
 	    			var parts = cookie.split('=');
-	    			PHP.$_COOKIES[parts[0].trim()] = (parts[1] || '').trim();
+	    			PHP.$_COOKIE[parts[0].trim()] = (parts[1] || '').trim();
 	    		});
 	    	}
 	    }
@@ -227,6 +230,10 @@
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/array_unshift.js')(array); 
 		}
 		
+		PHP.basename = function(path, suffix) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/basename.js')(path, suffix); 
+		}
+		
 		PHP.chmod = function(filename, mode) {
 			FileSystem.chmod(filename, mode, function(err, changed) {
 				if(err) throw err;
@@ -258,6 +265,10 @@
 	    		return false;
 	    	}
 	    }
+		
+		PHP.dirname = function(path) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/dirname.js')(path); 
+		}
 	    
 		PHP.echo = function(str) {
 			response.write(str);
@@ -429,6 +440,10 @@
 		PHP.is_writable = function(filename) {
 	    	return true;
 	    }
+		
+		PHP.include = function (filename) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/include.js')(filename);
+		}
 	    
 		PHP.isset = function(mixed_var) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/isset.js')(mixed_var);
@@ -474,6 +489,14 @@
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/md5.js')(str);
 	    }
 		
+		PHP.mt_getrandmax = function() {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mt_getrandmax.js')();
+	    }
+		
+		PHP.mt_rand = function(min, max) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mt_rand.js')(min, max);
+	    }
+		
 		PHP.method_exists = function(obj, method) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/method_exists.js')(obj, method);
 		}
@@ -482,52 +505,24 @@
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/microtime.js')(get_as_float);
 		}
 		
-		PHP.mysql_connect = function(hostname, username, password, new_link, client_flags) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_connect.js')(hostname, username, password, new_link, client_flags);
-		}
-		
-		PHP.mysql_next_result = function(link_identifier) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_next_result.js')(link_identifier);
-		}
-		
-		PHP.mysql_select_db = function(database_name, link_identifier) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_select_db.js')(database_name, link_identifier);
-		}
-		
-		PHP.mysql_query = function(query, link_identifier) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_query.js')(query, link_identifier);
-		}
-		
-		PHP.mysql_close = function(link_identifier) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_close.js')(link_identifier);
-		}
-		
-		PHP.mysql_error = function(link_identifier) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_error.js')(link_identifier);
-		}
-		
-		PHP.mysql_errno = function(link_identifier) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_errno.js')(link_identifier);
-		}
-		
-		PHP.mysql_num_rows = function(result) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/mysql_num_rows.js')(result);
-		}
-		
 		PHP.number_format = function(number, decimals, dec_point, thousands_sep) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/number_format.js')(number, decimals, dec_point, thousands_sep);
 		}
 		
 		PHP.ob_end_clean = function() {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_end_clean.js');
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_end_clean.js')();
 		}
 		
 		PHP.ob_end_flush = function() {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_end_flush.js');
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_end_flush.js')();
 		}
 		
 		PHP.ob_get_contents = function() {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_get_contents.js');
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_get_contents.js')();
+		}
+		
+		PHP.ob_get_level = function() {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/ob_get_level.js')();
 		}
 		
 		PHP.ob_start = function (output_callback, chunk_size, erase) {
@@ -554,15 +549,15 @@
 				modules: PHP.modules,
 				server: PHP.$_SERVER,
 				env: PHP.$_ENV,
-				cookies: PHP.$_COOKIES,
+				cookies: PHP.$_COOKIE,
 				globals: PHP.$GLOBALS
 			});
 			
 			return html;
 		}
 		
-		PHP.preg_replace = function(pattern, replacement, subject, limit, count) {
-			return require(PHP.PHP_INI_SCAN_DIR + '/functions/preg_replace.js')(pattern, replacement, subject, limit, count);
+		PHP.preg_replace_callback = function(pattern, callback, subject, limit) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/preg_replace_callback.js')(pattern, callback, subject, limit);
 		}
 		
 		PHP.print_r = function(array, return_val) {
@@ -579,6 +574,10 @@
 		
 		PHP.preg_quote = function(str, delimiter) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/preg_quote.js')(str, delimiter);
+		}
+		
+		PHP.putenv = function(setting) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/putenv.js')(setting);
 		}
 		
 		PHP.rand = function(min, max) {
@@ -605,6 +604,14 @@
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strtolower.js')(str);
 		}
 		
+		PHP.strlen = function(str) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strlen.js')(str);
+		}
+		
+		PHP.strstr = function(haystack, needle, bool) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strstr.js')(haystack, needle, bool);
+	    }
+		
 		PHP.strtoupper = function(str) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strtoupper.js')(str);
 		}
@@ -624,6 +631,14 @@
 		PHP.strip_tags = function(input, allowed) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/strip_tags.js')(input, allowed);
 	    }
+
+		PHP.stripos = function(haystack, needle, offset) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/stripos.js')(haystack, needle, offset);
+	    }
+
+		PHP.setcookie = function(name, value, expires, path, domain, secure) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/setcookie.js')(name, value, expires, path, domain, secure);
+	    }
 		
 		PHP.serialize = function(mixed_var) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/serialize.js')(mixed_var);
@@ -631,6 +646,10 @@
 	    
 		PHP.trim = function(str, charlist) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/trim.js')(str, charlist);
+	    }
+		
+		PHP.time = function() {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/time.js')();
 	    }
 		
 		PHP.ucfirst = function(str) {
@@ -644,6 +663,18 @@
 		PHP.unset = function(mixed_var) {
 			return require(PHP.PHP_INI_SCAN_DIR + '/functions/unset.js')(mixed_var);
 		}
+		
+		PHP.uniqid = function(prefix, more_entropy) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/uniqid.js')(prefix, more_entropy);
+	    }
+		
+		PHP.utf8_encode = function(data) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/utf8_encode.js')(data);
+	    }
+		
+		PHP.utf8_decode = function(data) {
+			return require(PHP.PHP_INI_SCAN_DIR + '/functions/utf8_decode.js')(data);
+	    }
 		
 		PHP.var_dump = function($expression) {
 			var out = '';

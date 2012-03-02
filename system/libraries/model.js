@@ -3,7 +3,9 @@
 	
 	Model = Object.create(Events.EventEmitter.prototype);
 	
+	Model.parent = Events.EventEmitter.prototype;
 	Model.name = 'Model';
+	
 	Model.$_parent_name = '';
 
 	Model.__construct = function() {

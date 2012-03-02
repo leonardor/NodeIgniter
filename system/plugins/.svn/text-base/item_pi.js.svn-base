@@ -1,11 +1,10 @@
 (function() {
 	var Item = {};
 	
-	Item = Object.create(CI_Plugin);
+	Item = Object.create(CI_Plugin).__construct();
 	
 	Item.__construct = function() {
 		console.log('Plugin: Item.__construct()');
-		Plugin.__construct();
 		return this;
 	}
 	

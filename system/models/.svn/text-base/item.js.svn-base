@@ -1,13 +1,12 @@
 (function() {
 	var Item = {};
 	
-	Item = Object.create(CI_Model);
+	Item = Object.create(CI_Model).__construct();
 	
 	Item.name = 'Item';
 	
 	Item.__construct = function() {	
 		console.log('Model: Item.__construct()');
-		CI_Model.__construct();
 		return this;
 	}
 

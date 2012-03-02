@@ -24,95 +24,100 @@
  * @author		ExpressionEngine Dev Team
  * @link		http://codeigniter.com/user_guide/libraries/language.html
  */
-	function CI_Language() {
-		var $language	= [];
-		var $is_loaded	= [];
+	var CI_Language = {};
 	
-		/**
-		 * Constructor
-		 *
-		 * @access	public
-		 */
-		this.__construct = function() {
-			CI_Common.log_message('debug', "Language Class Initialized");
-			return this;
-		}
+	CI_Language = Object.create(Events.EventEmitter.prototype);
 	
-		// --------------------------------------------------------------------
+	CI_Language.parent = Events.EventEmitter.prototype;
+	CI_Language.name = 'CI_Language';
 	
-		/**
-		 * Load a language file
-		 *
-		 * @access	public
-		 * @param	mixed	the name of the language file to be loaded. Can be an array
-		 * @param	string	the language (english, etc.)
-		 * @return	mixed
-		 */
-		this.load = function($langfile, $idiom, $return) {
-			$langfile = $langfile || '';
-			$idiom = $idiom || '';
-			$return = $return || false;
-			
-			$langfile = $langfile || '';
-			$idiom = $idiom || '';
-			$return = $return || false;
-			
-			$langfile = PHP.str_replace(PHP.constant('EXT'), '', PHP.str_replace('_lang.', '', $langfile)) + '_lang' + PHP.constant('EXT');
+	CI_Language.$language	= [];
+	CI_Language.$is_loaded	= [];
 	
-			if (PHP.in_array($langfile, $is_loaded, true)) {
-				return;
-			}
+	/**
+	 * Constructor
+	 *
+	 * @access	public
+	 */
+	CI_Language.__construct = function() {
+		console.log('CI_Language.__construct()');
+		
+		CI_Common.log_message('debug', "Language Class Initialized");
+		return this;
+	}
 	
-			if ($idiom == '') {
-				$deft_lang = CI_Common.config_item('language');
-				$idiom = ($deft_lang == '') ? 'english' : $deft_lang;
-			}
-	
-			// Determine where the language file is and load it
-			if (PHP.file_exists(PHP.constant('APPPATH') + 'language/' + $idiom + '/' + $langfile)) {
-				var $lang = require(PHP.constant('APPPATH') + 'language/' + $idiom + '/' + $langfile);
-			} else {
-				if (PHP.file_exists(PHP.constant('BASEPATH') + 'language/' + $idiom + '/' + $langfile)) {
-					var $lang = require(PHP.constant('BASEPATH') + 'language/' + $idiom + '/' + $langfile);
-				} else {
-					CI_Common.show_error('Unable to load the requested language file: language/' + $idiom + '/' + $langfile, 500);
-					PGP.exit('Unable to load the requested language file: language/' + $idiom + '/' + $langfile, 500);
-				}
-			}
-	
-			if ( ! $lang) {
-				CI_Common.log_message('error', 'Language file contains no data: language/' + $idiom + '/' + $langfile);
-			}
-	
-			if ($return == true) {
-				return $lang;
-			}
-	
-			$is_loaded.push($langfile);
-			$language = PHP.array_merge($language, $lang);
-			PHP.unset($lang);
-	
-			CI_Common.log_message('debug', 'Language file loaded: language/' + $idiom + '/' + $langfile);
-			return true;
-		}
-	
-		// --------------------------------------------------------------------
-	
-		/**
-		 * Fetch a single line of text from the language array
-		 *
-		 * @access	public
-		 * @param	string	$line 	the language line
-		 * @return	string
-		 */
-		this.line = function($line) {
-			$line = $line || '';
-			
-			$line = ($line == '' || ! $language[$line]) ? false : $language[$line];
-			return $line;
+	// --------------------------------------------------------------------
+
+	/**
+	 * Load a language file
+	 *
+	 * @access	public
+	 * @param	mixed	the name of the language file to be loaded. Can be an array
+	 * @param	string	the language (english, etc.)
+	 * @return	mixed
+	 */
+	CI_Language.load = function($langfile, $idiom, $return) {
+		$langfile = $langfile || '';
+		$idiom = $idiom || '';
+		$return = $return || false;
+		
+		$langfile = $langfile || '';
+		$idiom = $idiom || '';
+		$return = $return || false;
+		
+		$langfile = PHP.str_replace(PHP.constant('EXT'), '', PHP.str_replace('_lang.', '', $langfile)) + '_lang' + PHP.constant('EXT');
+
+		if (PHP.in_array($langfile, this.$is_loaded, true)) {
+			return;
 		}
 
-		return this;
+		if ($idiom == '') {
+			var $deft_lang = CI_Common.config_item('language');
+			$idiom = ($deft_lang == '') ? 'english' : $deft_lang;
+		}
+
+		// Determine where the language file is and load it
+		if (PHP.file_exists(PHP.constant('APPPATH') + 'language/' + $idiom + '/' + $langfile)) {
+			var $lang = require(PHP.constant('APPPATH') + 'language/' + $idiom + '/' + $langfile);
+		} else {
+			if (PHP.file_exists(PHP.constant('BASEPATH') + 'language/' + $idiom + '/' + $langfile)) {
+				var $lang = require(PHP.constant('BASEPATH') + 'language/' + $idiom + '/' + $langfile);
+			} else {
+				CI_Common.show_error('Unable to load the requested language file: language/' + $idiom + '/' + $langfile, 500);
+				PHP.exit('Unable to load the requested language file: language/' + $idiom + '/' + $langfile, 500);
+			}
+		}
+
+		if ( ! $lang) {
+			CI_Common.log_message('error', 'Language file contains no data: language/' + $idiom + '/' + $langfile);
+		}
+
+		if ($return == true) {
+			return $lang;
+		}
+
+		this.$is_loaded.push($langfile);
+		this.$language = PHP.array_merge(this.$language, $lang);
+		PHP.unset($lang);
+
+		CI_Common.log_message('debug', 'Language file loaded: language/' + $idiom + '/' + $langfile);
+		return true;
+	}
+
+	// --------------------------------------------------------------------
+
+	/**
+	 * Fetch a single line of text from the language array
+	 *
+	 * @access	public
+	 * @param	string	$line 	the language line
+	 * @return	string
+	 */
+	CI_Language.line = function($line) {
+		$line = $line || '';
+		
+		$line = ($line == '' || ! this.$language[$line]) ? false : this.$language[$line];
+		return $line;
 	}
 	
 	module.exports = CI_Language;

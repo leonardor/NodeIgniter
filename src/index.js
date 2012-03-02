@@ -5,7 +5,8 @@ FileSystem = require('fs'),
 Util = require('util'),
 Sys = require('sys'),
 Ejs = require('ejs'),
-Events = require('events');
+Events = require('events'),
+Swig = require('swig');
 
 	Ejs.open = '<?';
 	Ejs.close = '?>';
@@ -88,7 +89,7 @@ var app = Http.createServer(function (request, response) {
 					$application_folder = 'application';
 				}
 
-				PHP.define('APPPATH', PHP.constant.BASEPATH + $application_folder + '/');
+				PHP.define('APPPATH', PHP.constant('BASEPATH') + $application_folder + '/');
 			}
 
 			/*

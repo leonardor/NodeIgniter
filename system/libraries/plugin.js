@@ -1,8 +1,9 @@
 (function() {
-	var CI_Plugin = {};
+	var Plugin = {};
 	
 	Plugin = Object.create(Events.EventEmitter.prototype);
 	
+	Plugin.parent = Events.EventEmitter.prototype;
 	Plugin.name = 'Plugin';
 	
 	Plugin.__construct = function() {

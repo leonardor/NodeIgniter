@@ -30,6 +30,7 @@
 	
 	CI_Loader = Object.create(Events.EventEmitter.prototype);
 	
+	CI_Loader.parent = Events.EventEmitter.prototype;
 	CI_Loader.name = 'CI_Loader';
 	
 	// All these are set automatically. Don't mess with them.
@@ -61,7 +62,7 @@
 		this.$_ci_view_path = PHP.constant('APPPATH') + 'views/';
 		this.$_ci_ob_level  = PHP.ob_get_level();
 
-		console.log('Loader.__construct()');
+		console.log('CI_Loader.__construct()');
 		CI_Common.log_message('debug', "Loader Class Initialized");
 		
 		return this;
@@ -306,7 +307,7 @@
 		$vars = $vars || [];
 		$return = $return || false;
 		
-		return this.$_ci_load({'_ci_view': $view, '_ci_vars': this.$_ci_object_to_array($vars), '_ci_return': $return});
+		return this._ci_load({'_ci_view': $view, '_ci_vars': this._ci_object_to_array($vars), '_ci_return': $return});
 	}
 	
 	// --------------------------------------------------------------------
@@ -324,7 +325,7 @@
 	CI_Loader.file = function($path, $return) {
 		$return = $return || false;
 		
-		return this.$_ci_load({'_ci_path': $path, '_ci_return': $return});
+		return this._ci_load({'_ci_path': $path, '_ci_return': $return});
 	}
 	
 	// --------------------------------------------------------------------
@@ -347,7 +348,7 @@
 			$vars = {$vars: $val};
 		}
 	
-		$vars = this.$_ci_object_to_array($vars);
+		$vars = this._ci_object_to_array($vars);
 	
 		if (PHP.is_array($vars) && PHP.count($vars) > 0) {
 			for(var $key in $vars) {
@@ -524,7 +525,6 @@
 			$file = [$file];
 		}
 
-		
 		for(var $langfile in $file) {	
 			CI.lang.load($file[$langfile], $lang);
 		}
@@ -612,7 +612,7 @@
 		var $array = ['_ci_view', '_ci_vars', '_ci_path', '_ci_return'];
 		
 		for(var $_ci_val in $array) {
-			this['$' + $_ci_val] = (!this.$_ci_data[$array[$_ci_val]]) ? false : this.$_ci_data[$array[$_ci_val]];
+			this['$' + $array[$_ci_val]] = (!$_ci_data[$array[$_ci_val]]) ? false : $_ci_data[$array[$_ci_val]];
 		}
 
 		// Set the path to the requested file
@@ -634,7 +634,7 @@
 		// to become accessible from within the Controller and Model functions.
 		// Only needed when running PHP 5
 		
-		if (this.$_ci_is_instance()) {
+		if (this._ci_is_instance()) {
 			var $_ci_CI = CI;
 			
 			for(var $_ci_key in PHP.get_object_vars($_ci_CI)) {
@@ -671,21 +671,24 @@
 		 * the browser and then stop the timer it won't be accurate.
 		 */
 
+		PHP.ob_start();
+		
 		// If the PHP installation does not support short tags we'll
 		// do a little string replacement, changing the short tags
 		// to standard PHP echo statements.
 		
 		if (PHP.ini_get('short_open_tag') === false && CI_Common.config_item('rewrite_short_tags') == true) {
-			PHP.echo(eval('?>' + PHP.file_get_contents(this.$_ci_path).replace('<?=', '<?php echo ').replace(/;*\s*\?>/, "; ?>")));
+			PHP.echo(eval('?>' + PHP.file_get_contents(this.$_ci_path).replace('<?=', '<?php echo ').replace(new RegExp(";*\s*\?>"), "; ?>")));
 		} else {
-			require(this.$_ci_path); // include() vs include_once() allows for multiple views with the same name
+			PHP.include(this.$_ci_path); // include() vs include_once() allows for multiple views with the same name
 		}
 		
 		CI_Common.log_message('debug', 'File loaded: ' + this.$_ci_path);
 		
 		// Return the file data if requested
 		if (this.$_ci_return === true) {		
-			$buffer = PHP.ob_get_contents();
+			var $buffer = PHP.ob_get_contents();
+			PHP.ob_end_clean();
 			return $buffer;
 		}
 
@@ -704,7 +707,7 @@
 			PHP.ob_end_flush();
 		} else {
 			// PHP 4 requires that we use a global
-			$OUT = PHP.$GLOBALS['OUT'];
+			var $OUT = PHP.$GLOBALS['OUT'];
 			
 			$OUT.append_output(PHP.ob_get_contents());
 			PHP.ob_end_clean();
@@ -733,7 +736,7 @@
 		// but we don't want a leading slash
 
 		$class = PHP.str_replace(PHP.constant('EXT'), '', PHP.trim($class, '/'));
-	
+		
 		// Was the path included with the class name?
 		// We look for a slash to determine this
 		var $subdir = '';
@@ -895,16 +898,16 @@
 		// Instantiate the class		
 		
 		var $c = require($filepath);
-
+		
 		if ($config !== false) {
-			if(typeof($c) == '[object Object]') {
+			if(typeof($c) == 'object') {
 				CI[$classvar] = $c.__construct($config);
 			} else {
 				CI[$classvar] = new $c($config);
 			}
 		} else {	
-			if(typeof($c) == '[object Object]') {
-				CI[$classvar] = new $c.__construct;
+			if(typeof($c) == 'object') {
+				CI[$classvar] = $c.__construct();
 			} else {
 				CI[$classvar] = new $c;
 			}
@@ -967,7 +970,7 @@
 			}
 		
 			// Load all other libraries
-			for($item in $autoload['libraries']) {
+			for(var $item in $autoload['libraries']) {
 				this.library($autoload['libraries'][$item]);
 			}
 		}		
@@ -979,6 +982,7 @@
 		
 		console.log('emitting ' + this.name.toLowerCase() + '.autoload event...');
 		this.emit('autoload', this);
+		
 		return;
 	}
 		

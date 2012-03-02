@@ -15,10 +15,8 @@ var extract = function(arr, type, prefix) {
         (type !== 'EXTR_PREFIX_ALL' && type !== 'EXTR_PREFIX_INVALID')) {
         return 0;
     }
-    var targetObj = this.window;
-    if (this.php_js && this.php_js.ini && this.php_js.ini['phpjs.extractTargetObj'] && this.php_js.ini['phpjs.extractTargetObj'].local_value) { // Allow designated object to be used instead of window
-        targetObj = this.php_js.ini['phpjs.extractTargetObj'].local_value;
-    }
+    var targetObj = {};
+    
     var chng = 0;
  
     for (var i in arr) {

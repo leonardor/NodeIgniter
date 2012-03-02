@@ -58,6 +58,7 @@
 			return true;
 		}
 		
+		console.log('========================');
 		// ----------------------------------------------------------------
 
 		this.db_connect().on('connect', function(client) {
@@ -104,6 +105,8 @@
 			}
 		});
 		
+		console.log('!!!!!!!!!!!!!!!!!!!');
+		
 		return this;
 	}
 	
@@ -128,7 +131,7 @@
 
 		// Verify table prefix and replace if necessary
 		if ( (this.$dbprefix != '' && this.$swap_pre != '') && (this.$dbprefix != this.$swap_pre) ) {			
-			$sql = PHP.preg_replace("/(\W)" + this.$swap_pre + "(\S+?)/", "\\1" + this.$dbprefix + "\\2", $sql);
+			$sql = $sql.replace(new RegExp("(\W)" + this.$swap_pre + "(\S+?)"), "$1" + this.$dbprefix + "$2");
 		}
 		
 		// Compile binds if needed

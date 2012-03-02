@@ -1,12 +1,11 @@
 (function() {
 	var MY_Loader = {};
 	
-	MY_Loader = Object.create(CI_Loader);
+	MY_Loader = Object.create(CI_Loader).__construct();
 	
 	MY_Loader.name = 'MY_Loader';
 	
 	MY_Loader.__construct = function () {
-		CI_Loader.__construct();
 		console.log('MY_Loader.__construct()');
 		return this;
 	}
@@ -70,6 +69,7 @@
 				$db_conn = '';
 			}
 
+			console.log('%%%%%%%%%%%%%%%%%%%%%%');
 			this.database($db_conn, false, true);
 		}
 
@@ -81,7 +81,7 @@
 
 		this.$_ci_models.push($name);
 	}
-		
+	
 	MY_Loader.database = function($params, $return, $active_record){
 		$params = $params || '';
 		$return = $return || false;
@@ -111,6 +111,7 @@
 		CI.db = $db;
 		
 		// Assign the DB object to any existing models
+		console.log('@@@@@@@@@@@@@@@@@');
 		this._ci_assign_to_models();
 	}
 

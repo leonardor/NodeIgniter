@@ -181,10 +181,10 @@
 		CI_Common.config_item = function($item) {
 			var $config_item = [];
 		
-			if (!PHP.isset($config_item[$item])) {
+			if (!$config_item[$item]) {
 				var $config = this.get_config();
-				
-				if (!$config[$item]) {
+			
+				if (typeof($config[$item]) == 'undefined') {
 					return false;
 				}
 				

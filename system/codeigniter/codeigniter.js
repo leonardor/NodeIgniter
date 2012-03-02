@@ -42,7 +42,7 @@
 			 *  Load the global functions
 			 * ------------------------------------------------------
 			 */
-			
+	    	
 			CI_Common = require(PHP.constant('BASEPATH') + 'codeigniter/common' + PHP.constant('EXT'));
 			CI_Common.__construct();
 			
@@ -70,6 +70,9 @@
 			 *  Start the timer... tick tock tick tock...
 			 * ------------------------------------------------------
 			 */
+			
+			CI_Buffer = CI_Common.load_class('Buffer');
+			CI_Buffer.__construct();
 			
 			CI_Config = CI_Common.load_class('Config');
 			CI_Config.__construct();
@@ -156,7 +159,7 @@
 			// Load the local application controller
 			// Note: The Router class automatically validates the controller path.  If this include fails it 
 			// means that the default controller in the Routes.php file is not resolving to something valid.
-			console.log('*' + PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
+			console.log(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'));
 			
 			if ( ! PHP.file_exists(PHP.constant('APPPATH') + 'controllers/' + CI_Router.fetch_directory() + CI_Router.fetch_class() + PHP.constant('EXT'))) {
 				CI_Common.show_error('Unable to load your default controller.  Please make sure the controller specified in your Routes.php file is valid.', 404);
