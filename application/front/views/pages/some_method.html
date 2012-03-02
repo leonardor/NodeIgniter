@@ -1,3 +1,8 @@
-{{ request.url }}
+<p>url: {{ request.url }}</p>
 
-{{ params|PHP.var_dump }}
+<p>Parametrii:</p>
+<ul>
+{% for param in params %}
+	<li>{{ param }}</li>
+{% endfor %}
+</ul>

@@ -1373,3 +1373,239 @@ DEBUG - 2012-03-02 13:32:46 --> Model Class Initialized
 DEBUG - 2012-03-02 13:32:47 --> Controller Class Initialized
 DEBUG - 2012-03-02 13:32:47 --> Final output sent to browser
 DEBUG - 2012-03-02 13:32:47 --> Total execution time: -0.257
+DEBUG - 2012-03-02 13:40:39 --> Config Class Initialized
+DEBUG - 2012-03-02 13:40:39 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:40:39 --> URI Class Initialized
+DEBUG - 2012-03-02 13:40:40 --> Router Class Initialized
+DEBUG - 2012-03-02 13:40:40 --> Output Class Initialized
+DEBUG - 2012-03-02 13:40:40 --> Input Class Initialized
+DEBUG - 2012-03-02 13:40:40 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:40:40 --> Language Class Initialized
+DEBUG - 2012-03-02 13:40:40 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:40:40 --> Input Class Initialized
+DEBUG - 2012-03-02 13:40:40 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:40:40 --> URI Class Initialized
+DEBUG - 2012-03-02 13:40:41 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:40:41 --> Router Class Initialized
+DEBUG - 2012-03-02 13:40:41 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:40:41 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:40:41 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:40:41 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:40:41 --> Session Class Initialized
+DEBUG - 2012-03-02 13:40:42 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:40:42 --> Session routines successfully run
+DEBUG - 2012-03-02 13:40:42 --> View Class Initialized
+DEBUG - 2012-03-02 13:40:42 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:40:42 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:40:42 --> Model Class Initialized
+DEBUG - 2012-03-02 13:40:43 --> Model Class Initialized
+DEBUG - 2012-03-02 13:40:44 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:40:44 --> Final output sent to browser
+DEBUG - 2012-03-02 13:40:44 --> Total execution time: -0.228
+DEBUG - 2012-03-02 13:53:39 --> Config Class Initialized
+DEBUG - 2012-03-02 13:53:39 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:53:40 --> URI Class Initialized
+DEBUG - 2012-03-02 13:53:40 --> Router Class Initialized
+DEBUG - 2012-03-02 13:53:41 --> Output Class Initialized
+DEBUG - 2012-03-02 13:53:41 --> Input Class Initialized
+DEBUG - 2012-03-02 13:53:41 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:53:41 --> Language Class Initialized
+DEBUG - 2012-03-02 13:53:41 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:53:41 --> Input Class Initialized
+DEBUG - 2012-03-02 13:53:41 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:53:42 --> URI Class Initialized
+DEBUG - 2012-03-02 13:53:42 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:53:42 --> Router Class Initialized
+DEBUG - 2012-03-02 13:53:42 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:53:42 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:53:42 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:53:43 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:53:43 --> Session Class Initialized
+DEBUG - 2012-03-02 13:53:43 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:53:43 --> Session routines successfully run
+DEBUG - 2012-03-02 13:53:43 --> View Class Initialized
+DEBUG - 2012-03-02 13:53:44 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:53:44 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:53:44 --> Model Class Initialized
+DEBUG - 2012-03-02 13:53:44 --> Model Class Initialized
+DEBUG - 2012-03-02 13:53:45 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:53:46 --> Final output sent to browser
+DEBUG - 2012-03-02 13:53:46 --> Total execution time: 0.178
+DEBUG - 2012-03-02 13:54:32 --> Config Class Initialized
+DEBUG - 2012-03-02 13:54:33 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:54:33 --> URI Class Initialized
+DEBUG - 2012-03-02 13:54:34 --> Router Class Initialized
+DEBUG - 2012-03-02 13:54:34 --> Output Class Initialized
+DEBUG - 2012-03-02 13:54:34 --> Input Class Initialized
+DEBUG - 2012-03-02 13:54:34 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:54:34 --> Language Class Initialized
+DEBUG - 2012-03-02 13:54:34 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:54:34 --> Input Class Initialized
+DEBUG - 2012-03-02 13:54:34 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:54:35 --> URI Class Initialized
+DEBUG - 2012-03-02 13:54:35 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:54:35 --> Router Class Initialized
+DEBUG - 2012-03-02 13:54:35 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:54:35 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:54:35 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:54:35 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:54:36 --> Session Class Initialized
+DEBUG - 2012-03-02 13:54:36 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:54:36 --> Session routines successfully run
+DEBUG - 2012-03-02 13:54:36 --> View Class Initialized
+DEBUG - 2012-03-02 13:54:36 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:54:37 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:54:37 --> Model Class Initialized
+DEBUG - 2012-03-02 13:54:37 --> Model Class Initialized
+DEBUG - 2012-03-02 13:54:38 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:55:20 --> Config Class Initialized
+DEBUG - 2012-03-02 13:55:20 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:55:21 --> URI Class Initialized
+DEBUG - 2012-03-02 13:55:21 --> Router Class Initialized
+DEBUG - 2012-03-02 13:55:21 --> Output Class Initialized
+DEBUG - 2012-03-02 13:55:21 --> Input Class Initialized
+DEBUG - 2012-03-02 13:55:22 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:55:22 --> Language Class Initialized
+DEBUG - 2012-03-02 13:55:22 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:55:22 --> Input Class Initialized
+DEBUG - 2012-03-02 13:55:22 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:55:22 --> URI Class Initialized
+DEBUG - 2012-03-02 13:55:22 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:55:23 --> Router Class Initialized
+DEBUG - 2012-03-02 13:55:23 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:55:23 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:55:23 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:55:23 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:55:23 --> Session Class Initialized
+DEBUG - 2012-03-02 13:55:23 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:55:24 --> Session routines successfully run
+DEBUG - 2012-03-02 13:55:24 --> View Class Initialized
+DEBUG - 2012-03-02 13:55:24 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:55:24 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:55:25 --> Model Class Initialized
+DEBUG - 2012-03-02 13:55:25 --> Model Class Initialized
+DEBUG - 2012-03-02 13:55:26 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:55:41 --> Config Class Initialized
+DEBUG - 2012-03-02 13:55:42 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:55:42 --> URI Class Initialized
+DEBUG - 2012-03-02 13:55:42 --> Router Class Initialized
+DEBUG - 2012-03-02 13:55:42 --> Output Class Initialized
+DEBUG - 2012-03-02 13:55:43 --> Input Class Initialized
+DEBUG - 2012-03-02 13:55:43 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:55:43 --> Language Class Initialized
+DEBUG - 2012-03-02 13:55:43 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:55:43 --> Input Class Initialized
+DEBUG - 2012-03-02 13:55:43 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:55:43 --> URI Class Initialized
+DEBUG - 2012-03-02 13:55:43 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:55:44 --> Router Class Initialized
+DEBUG - 2012-03-02 13:55:44 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:55:44 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:55:44 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:55:44 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:55:44 --> Session Class Initialized
+DEBUG - 2012-03-02 13:55:44 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:55:45 --> Session routines successfully run
+DEBUG - 2012-03-02 13:55:45 --> View Class Initialized
+DEBUG - 2012-03-02 13:55:45 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:55:45 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:55:46 --> Model Class Initialized
+DEBUG - 2012-03-02 13:55:46 --> Model Class Initialized
+DEBUG - 2012-03-02 13:55:47 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:55:47 --> Final output sent to browser
+DEBUG - 2012-03-02 13:55:47 --> Total execution time: -0.585
+DEBUG - 2012-03-02 13:56:30 --> Config Class Initialized
+DEBUG - 2012-03-02 13:56:30 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:56:31 --> URI Class Initialized
+DEBUG - 2012-03-02 13:56:31 --> Router Class Initialized
+DEBUG - 2012-03-02 13:56:32 --> Output Class Initialized
+DEBUG - 2012-03-02 13:56:32 --> Input Class Initialized
+DEBUG - 2012-03-02 13:56:32 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:56:32 --> Language Class Initialized
+DEBUG - 2012-03-02 13:56:32 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:56:33 --> Input Class Initialized
+DEBUG - 2012-03-02 13:56:33 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:56:33 --> URI Class Initialized
+DEBUG - 2012-03-02 13:56:33 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:56:33 --> Router Class Initialized
+DEBUG - 2012-03-02 13:56:34 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:56:35 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:56:35 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:56:35 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:56:35 --> Session Class Initialized
+DEBUG - 2012-03-02 13:56:35 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:56:36 --> Session routines successfully run
+DEBUG - 2012-03-02 13:56:36 --> View Class Initialized
+DEBUG - 2012-03-02 13:56:36 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:56:36 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:56:37 --> Model Class Initialized
+DEBUG - 2012-03-02 13:56:37 --> Model Class Initialized
+DEBUG - 2012-03-02 13:56:38 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:56:40 --> Final output sent to browser
+DEBUG - 2012-03-02 13:56:40 --> Total execution time: -0.108
+DEBUG - 2012-03-02 13:57:45 --> Config Class Initialized
+DEBUG - 2012-03-02 13:57:45 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:57:45 --> URI Class Initialized
+DEBUG - 2012-03-02 13:57:46 --> Router Class Initialized
+DEBUG - 2012-03-02 13:57:46 --> Output Class Initialized
+DEBUG - 2012-03-02 13:57:46 --> Input Class Initialized
+DEBUG - 2012-03-02 13:57:46 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:57:46 --> Language Class Initialized
+DEBUG - 2012-03-02 13:57:46 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:57:47 --> Input Class Initialized
+DEBUG - 2012-03-02 13:57:47 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:57:47 --> URI Class Initialized
+DEBUG - 2012-03-02 13:57:47 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:57:47 --> Router Class Initialized
+DEBUG - 2012-03-02 13:57:47 --> Loader Class Initialized
+DEBUG - 2012-03-02 13:57:48 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 13:57:48 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 13:57:48 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 13:57:48 --> Session Class Initialized
+DEBUG - 2012-03-02 13:57:48 --> A session cookie was not found.
+DEBUG - 2012-03-02 13:57:49 --> Session routines successfully run
+DEBUG - 2012-03-02 13:57:49 --> View Class Initialized
+DEBUG - 2012-03-02 13:57:49 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 13:57:49 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 13:57:49 --> Model Class Initialized
+DEBUG - 2012-03-02 13:57:50 --> Model Class Initialized
+DEBUG - 2012-03-02 13:57:50 --> Controller Class Initialized
+DEBUG - 2012-03-02 13:57:51 --> Final output sent to browser
+DEBUG - 2012-03-02 13:57:51 --> Total execution time: 0.008
+DEBUG - 2012-03-02 13:59:57 --> Config Class Initialized
+DEBUG - 2012-03-02 13:59:57 --> Hooks Class Initialized
+DEBUG - 2012-03-02 13:59:57 --> URI Class Initialized
+DEBUG - 2012-03-02 13:59:58 --> Router Class Initialized
+DEBUG - 2012-03-02 13:59:58 --> Output Class Initialized
+DEBUG - 2012-03-02 13:59:58 --> Input Class Initialized
+DEBUG - 2012-03-02 13:59:58 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:59:59 --> Language Class Initialized
+DEBUG - 2012-03-02 13:59:59 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:59:59 --> Input Class Initialized
+DEBUG - 2012-03-02 13:59:59 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 13:59:59 --> URI Class Initialized
+DEBUG - 2012-03-02 13:59:59 --> Gettext Class initialized
+DEBUG - 2012-03-02 13:59:59 --> Router Class Initialized
+DEBUG - 2012-03-02 13:59:59 --> Loader Class Initialized
+DEBUG - 2012-03-02 14:00:00 --> Config file loaded: config/cms.js
+DEBUG - 2012-03-02 14:00:00 --> Helper loaded: url_helper
+DEBUG - 2012-03-02 14:00:00 --> Helper loaded: string_helper
+DEBUG - 2012-03-02 14:00:00 --> Session Class Initialized
+DEBUG - 2012-03-02 14:00:00 --> A session cookie was not found.
+DEBUG - 2012-03-02 14:00:01 --> Session routines successfully run
+DEBUG - 2012-03-02 14:00:01 --> View Class Initialized
+DEBUG - 2012-03-02 14:00:01 --> Gettext Class the domain chosen is: lang
+DEBUG - 2012-03-02 14:00:01 --> Language file loaded: language/english/validation_lang.js
+DEBUG - 2012-03-02 14:00:02 --> Model Class Initialized
+DEBUG - 2012-03-02 14:00:02 --> Model Class Initialized
+DEBUG - 2012-03-02 14:00:03 --> Controller Class Initialized
+DEBUG - 2012-03-02 14:00:03 --> Final output sent to browser
+DEBUG - 2012-03-02 14:00:04 --> Total execution time: -0.031
+DEBUG - 2012-03-02 14:00:40 --> Hooks Class Initialized
+DEBUG - 2012-03-02 14:00:40 --> URI Class Initialized
+DEBUG - 2012-03-02 14:00:40 --> Router Class Initialized
+DEBUG - 2012-03-02 14:00:40 --> Input Class Initialized
+DEBUG - 2012-03-02 14:00:40 --> Global POST and COOKIE data sanitized
+DEBUG - 2012-03-02 14:00:40 --> Gettext Class initialized
+DEBUG - 2012-03-02 14:00:41 --> Final output sent to browser
+DEBUG - 2012-03-02 14:00:41 --> Total execution time: 0.390

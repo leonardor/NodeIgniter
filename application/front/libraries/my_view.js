@@ -23,10 +23,14 @@
 		    allowErrors: false,
 		    autoescape: true,
 		    encoding: 'utf8',
-		    filters: {},
+		    filters: {
+		    	PHP: PHP
+		    	
+		    },
 		    root: PHP.constant('APPPATH') + 'views/',
 		    tags: {},
-		    extensions: {},
+		    extensions: {
+		    },
 		    tzOffset: 0
 		});
 		
