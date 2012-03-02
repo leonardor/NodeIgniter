@@ -41,6 +41,15 @@
 		CI.view.set('page', 'pages/some_method.html');
 		CI.view.load('templates/main.html');
 	}
+	
+	IndexController.dynamic = function() {
+		var params = {x: 1, y: 2};
+		
+		CI.view.set('request', request);
+		CI.view.set('params', params);
+		CI.view.set('page', 'pages/dynamic.html');
+		CI.view.load('templates/main.html');
+	}
 
 	module.exports = IndexController;
 })();

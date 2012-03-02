@@ -57,6 +57,13 @@
 		
 		return this;
 	}
+	
+	CI_Router.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
 		
 	// --------------------------------------------------------------------
 	
@@ -200,7 +207,7 @@
 			return $segments;
 		}
 
-		console.log('#' + PHP.constant('APPPATH') + 'controllers/' + $segments[0]);
+		console.log('request url: ' + PHP.constant('APPPATH') + 'controllers/' + $segments[0]);
 		
 		// Is the controller in a sub-folder?
 		if (PHP.is_dir(PHP.constant('APPPATH') + 'controllers/' + $segments[0])) {		

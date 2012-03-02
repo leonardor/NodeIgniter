@@ -10,6 +10,13 @@
 		console.log('Plugin.__construct()');
 		return this;
 	}
+	
+	Plugin.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
 
 	module.exports = Plugin;
 })();

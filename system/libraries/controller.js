@@ -22,6 +22,13 @@
 		return this;
 	}
 	
+	Controller.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
+	
 	// --------------------------------------------------------------------
 
 	/**

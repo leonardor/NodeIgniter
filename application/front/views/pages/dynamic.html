@@ -1,0 +1,41 @@
+<div id="results">
+
+</div>
+
+<script type="text/javascript">
+//<![CDATA[
+	$.ajax({
+		url: baseUrl + '/data/get_items',
+		type: 'GET', 
+		data: {
+			x: 1
+		},
+		dataType: 'json',
+		success: function(data) {
+			if(data) {
+				$('#results').empty();
+				
+				var table = $('<table/>');
+				
+				$('#results').append(table)
+				
+				for(var i in data) {
+					var tr = $('<tr/>');
+					
+						var td = $('<td/>');
+					
+					tr.append(td);
+					
+					table.append(tr);
+				}
+			}
+		},
+		complete: function() {
+			
+		},
+		error: function() {
+			
+		}
+	});
+//]]>
+</script>

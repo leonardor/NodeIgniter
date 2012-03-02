@@ -39,6 +39,13 @@
 	CI_Benchmark.__construct = function() {
 		return this;
 	}
+	
+	CI_Benchmark.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
 		
 	// --------------------------------------------------------------------
 

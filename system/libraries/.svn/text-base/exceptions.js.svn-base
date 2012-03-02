@@ -62,6 +62,13 @@
 		// Note:  Do not log messages from this constructor.
 		return this;
 	}
+	
+	CI_Exceptions.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
 	  	
 	// --------------------------------------------------------------------
 
@@ -121,22 +128,15 @@
 	CI_Exceptions.show_error = function($heading, $message, $template, $status_code) {
 		$template = $template || 'error_general';
 		$status_code = $status_code || 500;
-		
+
 		CI_Common.set_status_header($status_code, $message);
-		
+
 		$message = '<p>' + PHP.implode('</p><p>', ( ! PHP.is_array($message)) ? $message : $message) + '</p>';
 
-		console.log(PHP.constant('APPPATH') + 'errors/' + $template + '.ejs');
-		
-		var file = PHP.constant('APPPATH') + 'errors/' + $template + '.ejs';
-		
-		var str = FileSystem.readFileSync(file, 'utf8');
-		
-		var html = Ejs.render(str, {
-			message: $message,
-			heading: $heading
-		});
-		
+		var file = PHP.constant('APPPATH') + 'errors/' + $template + '.html';
+
+		var html = CI_View.load(file, { message: $message, heading: $heading }, true);
+
 		return html;
 	}
 	
@@ -163,17 +163,10 @@
 			$filepath = $x[PHP.count($x)-2] + '/' + PHP.end($x);
 		}
 
-		var file = PHP.constant('APPPATH') + 'errors/error_php.ejs';
+		var file = PHP.constant('APPPATH') + 'errors/error_php.html';
 		
-		var str = FileSystem.readFileSync(file, 'utf8');
+		var html = CI_View.load(file, { severity: $severity, message: $message, filepath: $filepath, line: $line }, true);
 		
-		var html = Ejs.render(str, {
-			severity: $severity,
-			message: $message,
-			filepath: $filepath,
-			line: $line
-		});
-
 		return html;
 	}
 

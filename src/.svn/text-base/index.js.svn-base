@@ -4,12 +4,8 @@ Path = require('path'),
 FileSystem = require('fs'),
 Util = require('util'),
 Sys = require('sys'),
-Ejs = require('ejs'),
 Events = require('events'),
 Swig = require('swig');
-
-	Ejs.open = '<?';
-	Ejs.close = '?>';
 
 /*
 |---------------------------------------------------------------
@@ -19,11 +15,13 @@ Swig = require('swig');
 
 
 var app = Http.createServer(function (request, response) {
-	var filename = (Path.basename(request.url) != '')?Path.basename(request.url):'index';
-	var path = Path.resolve(__dirname) + '/' + filename;
+	var path = Path.resolve(__dirname) + '/' + request.url;
 
+	console.log(path);
+	
 	Path.exists(path, function(exists){
 		if(exists) {
+			
 			var stats = FileSystem.statSync(path);
 
 			if(stats.isFile()) {

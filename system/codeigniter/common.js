@@ -81,18 +81,18 @@
 			// If the requested class does not exist in the application/libraries
 			// folder we'll load the native class from the system/libraries folder.	
 			if (PHP.file_exists(PHP.constant('APPPATH') + 'libraries/' + this.config_item('subclass_prefix') + $class + PHP.constant('EXT'))) {
-				var $c = require(PHP.constant('BASEPATH') + 'libraries/' + $class + PHP.constant('EXT'));
+				var $c = require(PHP.constant('BASEPATH') + 'libraries/' + $class + PHP.constant('EXT')).__load(Math.random());
 				global[$name] = $c;
-				var $sc = require(PHP.constant('APPPATH') + 'libraries/' + this.config_item('subclass_prefix') + $class + PHP.constant('EXT'));
+				var $sc = require(PHP.constant('APPPATH') + 'libraries/' + this.config_item('subclass_prefix') + $class + PHP.constant('EXT')).__load(Math.random());
 				global[$subname] = $sc;
 				var $is_subclass = true;
 			} else {
 				if (PHP.file_exists(PHP.constant('APPPATH') + 'libraries/' + $class + PHP.constant('EXT'))) {
-					var $c = require(PHP.constant('APPPATH') + 'libraries/' + $class + PHP.constant('EXT'));
+					var $c = require(PHP.constant('APPPATH') + 'libraries/' + $class + PHP.constant('EXT')).__load(Math.random());
 					global[$name] = $c;
 					var $is_subclass = false;
 				} else {
-					var $c = require(PHP.constant('BASEPATH') + 'libraries/' + $class + PHP.constant('EXT'));
+					var $c = require(PHP.constant('BASEPATH') + 'libraries/' + $class + PHP.constant('EXT')).__load(Math.random());
 					global[$name] = $c;
 					var $is_subclass = false;
 				}

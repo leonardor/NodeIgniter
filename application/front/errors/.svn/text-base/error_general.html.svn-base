@@ -1,0 +1,4 @@
+ERROR GENERAL:
+url: {{ request.url }}
+{{ heading }}
+{{ message }}

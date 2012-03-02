@@ -11,6 +11,13 @@
 		return this;
 	}
 	
+	CI_Buffer.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
+	
 	CI_Buffer.set_instance = function(value) {
 		this.instance = value;
 		

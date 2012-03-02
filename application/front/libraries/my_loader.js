@@ -44,7 +44,7 @@
 			CI.models[$name] = this._models[$name];
 			CI.models[$name].__construct();
 			CI.models[$name]._assign_libraries();
-	
+
 			return;
 		}
 		
@@ -69,7 +69,6 @@
 				$db_conn = '';
 			}
 
-			console.log('%%%%%%%%%%%%%%%%%%%%%%');
 			this.database($db_conn, false, true);
 		}
 
@@ -78,7 +77,7 @@
 		CI.models[$name] = $m;
 		CI.models[$name].__construct();
 		CI.models[$name]._assign_libraries();
-
+		
 		this.$_ci_models.push($name);
 	}
 	
@@ -111,7 +110,6 @@
 		CI.db = $db;
 		
 		// Assign the DB object to any existing models
-		console.log('@@@@@@@@@@@@@@@@@');
 		this._ci_assign_to_models();
 	}
 

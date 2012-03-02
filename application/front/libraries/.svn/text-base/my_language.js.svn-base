@@ -40,8 +40,6 @@
   		CI['session'].__construct();
 
   		CI_View = CI['view'] = CI_Common.load_class('View');
-  		console.log(CI_View);
-  		
   		CI_View.__construct();
 
     	if(PHP.stripos(PHP.$_SERVER['HTTP_HOST'],'.ro') !== false || PHP.stripos(PHP.$_SERVER['HTTP_HOST'],'.mpi') !== false){

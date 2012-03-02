@@ -103,7 +103,7 @@
 		if (PHP.method_exists(CI_Base, '_output')) {
 			CI_Base._output($output);
 		} else {
-			MY_View.on('load', function(html) {
+			MY_View.on('ready', function(html) {
 				console.log('intercepting my_view.load event...');
 				
 				console.log('sending final output...');

@@ -23,25 +23,30 @@
 		    allowErrors: false,
 		    autoescape: true,
 		    encoding: 'utf8',
-		    filters: {
-		    	PHP: PHP
-		    	
-		    },
+		    filters: {},
 		    root: PHP.constant('APPPATH') + 'views/',
 		    tags: {},
-		    extensions: {
-		    },
+		    extensions: {},
 		    tzOffset: 0
 		});
 		
-		CI_Output.on('ready', function() {
+		if($return == false) {
+			console.log(MY_Output);
+
+			MY_Output.on('ready', function() {
+				var tpl = Swig.compileFile($tpl);
+				var html = tpl.render(CI.view.$vars);
+	
+				console.log('emitting my_view.load event...');
+				self.emit('ready', html);
+			});
+		} else {
 			var tpl = Swig.compileFile($tpl);
 			var html = tpl.render(CI.view.$vars);
 
-			console.log('emitting my_view.load event...');
-			self.emit('load', html);
-		});
-		
+			return html;
+		}
+			
 		return this;
 	}
 

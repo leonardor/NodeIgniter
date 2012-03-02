@@ -53,6 +53,13 @@
 		this.$rsegments = [];
 		CI_Common.log_message('debug', "URI Class Initialized");
 	}
+	
+	CI_URI.__load = function(random) {
+		console.log('emitting ' + this.name + '.__load event... (' + random + ')');
+		this.emit('__load', this);
+		
+		return this;
+	}
 
 	// --------------------------------------------------------------------
 

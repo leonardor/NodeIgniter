@@ -1,1 +1,8 @@
-{{ request.url }}
+<p>url: {{ request.url }}</p>
+
+<p>Parametrii:</p>
+<ul>
+{% for param in params %}
+	<li>{{ param }}</li>
+{% endfor %}
+</ul>
